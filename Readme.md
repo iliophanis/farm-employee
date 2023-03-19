@@ -25,6 +25,7 @@
 <details>
   <summary>Table of Contents</summary>
   <ol>
+     <li><a href="#contributors">Contributors</a></li>
     <li>
       <a href="#about-the-project">About The Project</a>
       <ul>
@@ -44,6 +45,11 @@
     <li><a href="#ci-cd-rules">CI/CD Rules</a></li>
   </ol>
 </details>
+
+## Contributors
+* Ελευθερία Ντούλια Α.Μ.: 3180129
+* Πελαγία Ροδίτη Α.Μ.: 3190346
+* Ηλίας Θεοφάνης Γραββάνης Α.Μ.: 3200248
 
 <!-- ABOUT THE PROJECT -->
 
