@@ -10,7 +10,7 @@
   <p align="center">
     HIRING EMPLOYEES SYSTEM FOR FARMERS 
     <br />
-    <a href="https://github.com/iliophanis/farm-employee/tree/develop/documentation/analysis.txt"><strong>Docs</strong></a>
+    <a href="https://github.com/iliophanis/farm-employee/documentation/analysis.txt"><strong>Docs</strong></a>
     <br />
     <br />
     <!-- <a href="https://github.com/iliophanis/farm-employee">View Demo</a>
