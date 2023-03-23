@@ -25,6 +25,7 @@
 <details>
   <summary>Table of Contents</summary>
   <ol>
+     <li><a href="#er-diagram">ER Diagram</a></li>
      <li><a href="#contributors">Contributors</a></li>
     <li>
       <a href="#about-the-project">About The Project</a>
@@ -46,6 +47,9 @@
   </ol>
 </details>
 
+## ER Diagram
+*  file documentation/Farm Employee ER.drawio
+![Farm Emplooyee ER](documentation/Farm%20Employee%20ER.png)
 ## Contributors
 * Ελευθερία Ντούλια Α.Μ.: 3180129
 * Πελαγία Ροδίτη Α.Μ.: 3190346
