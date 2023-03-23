@@ -103,16 +103,29 @@ To get a local copy up and running follow these steps.
 
 ### Prerequisites
 
-Installl latest npm ,also if need upate node version minimum 15.0.0.
+Install dotnet 6 sdk - SDK 6.0.407 (The latest)
+
+- https://dotnet.microsoft.com/en-us/download/dotnet/6.0 
+
+Installl latest npm and yarn globally ,also if need upate node version minimum 15.0.0.
 
 - npm
   ```sh
   npm install npm@latest -g
   ```
-
+- yarn 
+  ```sh 
+  npm install -g yarn
+  ```
 ### Installation
 
-Below is instruction on how installing and setting up your app.
+# client
+1. yarn install
+2. yarn dev
+
+# server
+1. dotnet restore
+2. dotnet watch run
 
 TODO
 
