@@ -37,7 +37,7 @@
       <a href="#getting-started">Getting Started</a>
       <ul>
         <li><a href="#prerequisites">Prerequisites</a></li>
-        <li><a href="#installation">Installation</a></li>
+        <li><a href="#project-installation">Installation</a></li>
         <li><a href="#run-project">Run Project</a> </li>
         <li><a href="#deploy-project">Deploy Project</a> </li>
       </ul>
@@ -107,17 +107,15 @@ Install dotnet 6 sdk - SDK 6.0.407 (The latest)
 
 - https://dotnet.microsoft.com/en-us/download/dotnet/6.0 
 
-Installl latest npm and yarn globally ,also if need upate node version minimum 15.0.0.
+Installl latest node - npm and yarn globally ,also if need upate node version minimum 15.0.0.
+- https://nodejs.org/en - LTS Version
 
-- npm
-  ```sh
-  npm install npm@latest -g
-  ```
 - yarn 
   ```sh 
   npm install -g yarn
   ```
-### Installation
+
+### Project Installation
 
 # client
 1. yarn install
