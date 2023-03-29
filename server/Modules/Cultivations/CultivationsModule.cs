@@ -9,18 +9,18 @@ namespace server.Modules.Users
 {
     public class UsersModule : IModule
     {
-        public const string BasePath = "api/users";
+        public const string BasePath = "api/cultivations";
         public IEndpointRouteBuilder MapEndpoints(IEndpointRouteBuilder endpoints, IConfiguration config)
         {
-            // get all users
-            endpoints.MapGet(BasePath + "/users", [Authorize] async (DataContext context, CancellationToken token) =>
+            // get all cultivations 
+            endpoints.MapGet(BasePath + "/list", [AllowAnonymous] async (DataContext context, CancellationToken token) =>
             {
-                var users = await context.Cultivations.ToListAsync(token);
+                var cultivations = await context.Cultivations.ToListAsync(token);
 
-                if (users == null)
+                if (cultivations == null)
                     return Results.BadRequest();
 
-                return Results.Ok(users);
+                return Results.Ok(cultivations);
             })
             .Produces<List<Cultivation>>(StatusCodes.Status200OK)
             .Produces(StatusCodes.Status400BadRequest)

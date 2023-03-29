@@ -1,5 +1,4 @@
 using Newtonsoft.Json;
-using Microsoft.EntityFrameworkCore;
 using server.Data.Entities;
 
 namespace server.Data.DataSeed;
@@ -38,6 +37,6 @@ public class DataSeeder
     public void Seed()
     {
         // HAF structure data
-        SeedTable<Cultivation>(_context, _context.Cultivations, @"DataSeed\cultivations.json");
+        // SeedTable<Cultivation>(_context, _context.Cultivations, @"DataSeed\cultivations.json");
     }
 }

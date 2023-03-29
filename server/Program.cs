@@ -1,13 +1,11 @@
 using System.Reflection;
 using System.Text;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.OpenApi.Models;
 using server.Modules;
 using Serilog;
 using server.Services;
-using server.Data;
 using server.Data.DataSeed;
 
 var builder = WebApplication.CreateBuilder(args);
