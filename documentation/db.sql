@@ -1,6 +1,6 @@
-CREATE DATABASE farm_employee;
+CREATE DATABASE farmemployee;
 
-USE farm_employee;
+USE farmemployee;
 
 CREATE TABLE Cultivation (
 	id int NOT NULL PRIMARY KEY AUTO_INCREMENT,
@@ -41,7 +41,7 @@ CREATE TABLE Roles (
 	description text NULL
 );
 
-CREATE TABLE Document (
+CREATE TABLE File (
 	id int NOT NULL PRIMARY KEY AUTO_INCREMENT,
 	insertDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
 	updateDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL,
@@ -50,7 +50,7 @@ CREATE TABLE Document (
 	data longblob NOT NULL	
 );
 
-CREATE TABLE Contact_Info (
+CREATE TABLE ContactInfo (
 	id int NOT NULL PRIMARY KEY AUTO_INCREMENT,
 	insertDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
 	updateDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL,
@@ -89,7 +89,7 @@ CREATE TABLE Farmer (
 	userId int NOT NULL,
 	contactInfo int NOT NULL,
 	FOREIGN KEY (userId) REFERENCES User(id),
-	FOREIGN KEY (contactInfo) REFERENCES Contact_Info(id)
+	FOREIGN KEY (contactInfo) REFERENCES ContactInfo(id)
 );
 
 CREATE TABLE Employee (
@@ -101,14 +101,14 @@ CREATE TABLE Employee (
 	avgPrice decimal NOT NULL DEFAULT 0,
 	avgContactQuality decimal NOT NULL DEFAULT 0,   	
 	userId int NOT NULL,
-	documentId int NULL,
+	fileId int NULL,
 	contactInfo int NOT NULL,
 	FOREIGN KEY (userId) REFERENCES User(id),
-	FOREIGN KEY (documentId) REFERENCES Document(id),
-	FOREIGN KEY (contactInfo) REFERENCES Contact_Info(id)
+	FOREIGN KEY (fileId) REFERENCES File(id),
+	FOREIGN KEY (contactInfo) REFERENCES ContactInfo(id)
 );
 
-CREATE TABLE Farmer_Location (
+CREATE TABLE FarmerLocation (
 	id int NOT NULL PRIMARY KEY AUTO_INCREMENT,
 	insertDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
 	updateDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL,
@@ -140,7 +140,7 @@ CREATE TABLE Request (
 	FOREIGN KEY (farmerId) REFERENCES Farmer(id)
 ); 
 
-CREATE TABLE Employee_Request (
+CREATE TABLE EmployeeRequest (
 	id int NOT NULL PRIMARY KEY AUTO_INCREMENT,
 	insertDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
 	updateDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL,
@@ -155,7 +155,7 @@ CREATE TABLE Employee_Request (
 	FOREIGN KEY (packageId) REFERENCES Package(id)
 );
 
-CREATE TABLE Farmer_Rating (
+CREATE TABLE FarmerRating (
 	id int NOT NULL PRIMARY KEY AUTO_INCREMENT,
 	insertDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
 	updateDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL,
@@ -167,10 +167,10 @@ CREATE TABLE Farmer_Rating (
 	CHECK (workPlaceRate BETWEEN 1 AND 5),
 	CHECK (paymentConsequence BETWEEN 1 AND 5),  	
 	employeeRequestId int NOT NULL,
-	FOREIGN KEY (employeeRequestId) REFERENCES Employee_Request(id)
+	FOREIGN KEY (employeeRequestId) REFERENCES EmployeeRequest(id)
 );
 
-CREATE TABLE Employee_Rating (
+CREATE TABLE EmployeeRating (
 	id int NOT NULL PRIMARY KEY AUTO_INCREMENT,
 	insertDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
 	updateDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL,
@@ -182,5 +182,5 @@ CREATE TABLE Employee_Rating (
 	CHECK (jobQualityRate BETWEEN 1 AND 5), 
 	CHECK (ContactQualityRate BETWEEN 1 AND 5), 
 	employeeRequestId int NOT NULL,
-	FOREIGN KEY (employeeRequestId) REFERENCES Employee_Request(id)
+	FOREIGN KEY (employeeRequestId) REFERENCES EmployeeRequest(id)
 );

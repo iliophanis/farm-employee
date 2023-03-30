@@ -8,7 +8,7 @@ namespace server.Data.Entities
         public EmployeeRequest()
         {
             EmployeeRatings = new HashSet<EmployeeRating>();
-            Farmerratings = new HashSet<Farmerrating>();
+            FarmerRatings = new HashSet<FarmerRating>();
         }
 
         public int Id { get; set; }
@@ -25,6 +25,6 @@ namespace server.Data.Entities
         public virtual Package Package { get; set; }
         public virtual Request Request { get; set; }
         public virtual ICollection<EmployeeRating> EmployeeRatings { get; set; }
-        public virtual ICollection<Farmerrating> Farmerratings { get; set; }
+        public virtual ICollection<FarmerRating> FarmerRatings { get; set; }
     }
 }
