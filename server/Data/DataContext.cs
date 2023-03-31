@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
-using server.Data.Entities;
+﻿using server.Data.Entities;
 using server.Data.Mappings;
 
 namespace server.Data
@@ -38,7 +34,7 @@ namespace server.Data
 
             modelBuilder.ApplyConfiguration(new ContactInfoMap());
 
-            modelBuilder.ApplyConfiguration(new CultivationMap());            
+            modelBuilder.ApplyConfiguration(new CultivationMap());
 
             modelBuilder.ApplyConfiguration(new DocumentMap());
 
