@@ -27,5 +27,6 @@ namespace server.Data.Entities
         public virtual User User { get; set; }
         public virtual ICollection<FarmerLocation> FarmerLocations { get; set; }
         public virtual ICollection<Request> Requests { get; set; }
+        
     }
 }

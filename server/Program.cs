@@ -67,6 +67,13 @@ builder.Services.AddCors(options =>
 builder.Services.AddScoped<DataSeeder>();
 
 builder.Services.AddAuthorization();
+
+builder.Services.AddAuthentication()
+        .AddGoogle(options =>
+        {
+            options.ClientId = "835350653644-8e8j2lns21efkrdc3u746vflrj759v88.apps.googleusercontent.com";
+            options.ClientSecret = "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";
+        });
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(opt =>
 {
     opt.TokenValidationParameters = new()
