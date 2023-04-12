@@ -15,6 +15,11 @@ namespace server.Data.Mappings
                 .HasColumnType("int(11)")
                 .HasColumnName("id");
 
+            entity.Property(e => e.AuthProvider)
+                .IsRequired()
+                .HasColumnType("enum('Google','Facebook','Credentals')")
+                .HasColumnName("authProvider");
+
             entity.Property(e => e.Email)
                 .IsRequired()
                 .HasMaxLength(255)
