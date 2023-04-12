@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace server.Data.Entities
+﻿namespace server.Data.Entities
 {
     public partial class User
     {
@@ -24,6 +21,7 @@ namespace server.Data.Entities
         public DateTime? LastLoginDate { get; set; }
         public int RoleId { get; set; }
 
+        //TODO public string AuthProvider {get; set;} UPDATE IN ER DIAGRAM , ER PNG , MODEL AND UserMap 
         public virtual Role Role { get; set; }
         public virtual ICollection<Employee> Employees { get; set; }
         public virtual ICollection<Farmer> Farmers { get; set; }

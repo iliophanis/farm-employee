@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace server.Data.Entities
+﻿namespace server.Data.Entities
 {
     public partial class EmployeeRequest
     {
@@ -26,5 +23,6 @@ namespace server.Data.Entities
         public virtual Request Request { get; set; }
         public virtual ICollection<EmployeeRating> EmployeeRatings { get; set; }
         public virtual ICollection<FarmerRating> FarmerRatings { get; set; }
+        public virtual ICollection<SubEmployee> SubEmployees { get; set; }
     }
 }

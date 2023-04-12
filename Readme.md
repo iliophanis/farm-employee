@@ -49,7 +49,7 @@
 
 ## ER Diagram
 *  file documentation/Farm Employee ER.drawio
-![Farm Emplooyee ER](documentation/Farm%20Employee%20ER.png)
+![Farm Emplooyee ER](documentation/MariaDb/Farm%20Employee%20ER.png)
 ## Contributors
 * Ελευθερία Ντούλια Α.Μ.: 3180129
 * Πελαγία Ροδίτη Α.Μ.: 3190346
@@ -125,6 +125,12 @@ Installl latest node - npm and yarn globally ,also if need upate node version mi
 1. dotnet restore
 2. dotnet watch run
 
+# server db scaffolding
+* [.net scaffold docs](https://learn.microsoft.com/en-us/ef/core/managing-schemas/scaffolding/?tabs=dotnet-core-cli)
+```sh
+ dotnet ef dbcontext scaffold "Server=localhost;User=root;Password=;Database=farm_employee" "Pomelo.EntityFrameworkCore.MySql" --context DataContext --context-dir Data --output-dir .\Data\Entities\ --no-onconfiguring
+```
+
 TODO
 
 <p align="right">(<a href="#top">back to top</a>)</p>
@@ -145,7 +151,7 @@ TODO
 
 ## Roadmap
 
-- [ ] Add ER diagram in [flowchart](https://app.diagrams.net/)
+- [x] Add ER diagram in [flowchart](https://app.diagrams.net/)
 - [ ] Business Requirements - Use cases of project
 - [ ] Add clickup for Agile - Set ticketing system , sprints
 - [ ] Create Template for backend , frontend

@@ -7,6 +7,9 @@ using server.Modules;
 using Serilog;
 using server.Services;
 using server.Data.DataSeed;
+using MediatR;
+using FluentValidation;
+using server.Modules.Common.Behaviours;
 
 var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;
@@ -89,6 +92,10 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
 });
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddTransient<CurrentUserService>();
+builder.Services.AddTransient<CurrentUserService>();
+builder.Services.AddMediatR(Assembly.GetExecutingAssembly());
+builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestValidationBehaviour<,>));
+builder.Services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 
 var app = builder.Build();
 

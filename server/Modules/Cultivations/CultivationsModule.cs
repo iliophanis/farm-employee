@@ -1,13 +1,10 @@
-using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
 using MongoDB.Driver;
-
-using server.Data;
 using server.Data.Entities;
 
-namespace server.Modules.Users
+namespace server.Modules.Cultivations
 {
-    public class UsersModule : IModule
+    public class CultivationsModule : IModule
     {
         public const string BasePath = "api/cultivations";
         public IEndpointRouteBuilder MapEndpoints(IEndpointRouteBuilder endpoints, IConfiguration config)
