@@ -26,11 +26,6 @@ namespace server.Modules.Users.Commands.GoogleAuth
             }
             //FIND THE RECORD IN DB AND SENT HIM THE TOKEN, EXPIRATION AND CLAIMS LIKE EMAIL
             //TODO BUSINESS LOGIC
-            // var JwtTokenHandler = new JwtSecurityTokenHandler();
-            // var claims = new[] { new Claim(ClaimTypes.Name, paramName) };
-            // var credentials = new SigningCredentials(SecurityKey, SecurityAlgorithms.HmacSha256);
-            // var token = new JwtSecurityToken("ExampleServer", "ExampleClients", claims, expires: DateTime.Now.AddSeconds(60), signingCredentials: credentials);
-            
             var displayName = await _context.Users
                         .Where(u => u.Email == dto.UserName)
                         .Select(u => u.FirstName)
@@ -44,9 +39,27 @@ namespace server.Modules.Users.Commands.GoogleAuth
             var usersRole = await _context.Users
                         .Where(u => u.Email == dto.UserName)
                         .Select(u => u.Role)
-                        .FirstOrDefaultAsync();  
+                        .FirstOrDefaultAsync(); 
 
-            return await Task.FromResult(new GoogleAuthResponseDto(null, new DateTime(), displayName, usersId, null));
+            var SecurityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:key"]));
+            var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
+            
+            var claims = new[]
+            {
+                new Claim(ClaimTypes.NameIdentifier,user.Username),
+                new Claim(ClaimTypes.Role,user.Role)
+            };
+
+            var token = new JwtSecurityToken(_config["Jwt:Issuer"],
+                _config["Jwt:Audience"],
+                claims,
+                expires: DateTime.Now.AddMinutes(15),
+                signingCredentials: credentials);
+
+            var token = GenerateToken(displayName); 
+
+            return await Task.FromResult(new GoogleAuthResponseDto(token, new DateTime(), displayName, usersId, usersRole));
         }
+
     }
 }
