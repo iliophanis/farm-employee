@@ -72,7 +72,7 @@ CREATE TABLE User (
 	emailConformed boolean NOT NULL DEFAULT FALSE,
 	isActive boolean NOT NULL DEFAULT TRUE,
 	lastLoginDate datetime NULL,
-	authProvider ENUM('Google', 'Facebook', 'Credentals') NOT NULL, 
+	authProvider ENUM('Google', 'Facebook') NOT NULL, 
 	roleId int NOT NULL,
 	FOREIGN KEY (roleId) REFERENCES Roles(id)
 );
