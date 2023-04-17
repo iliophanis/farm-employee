@@ -1,5 +1,6 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Text;
 using MediatR;
 using Microsoft.IdentityModel.Tokens;
 using server.Modules.Users.Dto;
@@ -41,24 +42,17 @@ namespace server.Modules.Users.Commands.GoogleAuth
                         .Select(u => u.Role)
                         .FirstOrDefaultAsync(); 
 
-            var SecurityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:key"]));
-            var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
+            var usersEmail = await _context.Users
+                        .Where(u => u.Email == dto.UserName)
+                        .Select(u => u.Email)
+                        .FirstOrDefaultAsync(); 
+
+            var claims = new[] { new Claim(ClaimTypes.Name, usersEmail) };
+            var credentials = new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes("secret-key")), SecurityAlgorithms.HmacSha256);
+            var token = new JwtSecurityToken("ExampleServer", "ExampleClients", claims, expires: DateTime.Now.AddSeconds(60), signingCredentials: credentials);
+            var tokenValue = new JwtSecurityTokenHandler().WriteToken(token);           
             
-            var claims = new[]
-            {
-                new Claim(ClaimTypes.NameIdentifier,user.Username),
-                new Claim(ClaimTypes.Role,user.Role)
-            };
-
-            var token = new JwtSecurityToken(_config["Jwt:Issuer"],
-                _config["Jwt:Audience"],
-                claims,
-                expires: DateTime.Now.AddMinutes(15),
-                signingCredentials: credentials);
-
-            var token = GenerateToken(displayName); 
-
-            return await Task.FromResult(new GoogleAuthResponseDto(token, new DateTime(), displayName, usersId, usersRole));
+            return await Task.FromResult(new GoogleAuthResponseDto(tokenValue, new DateTime(), displayName, usersId, null));
         }
 
     }

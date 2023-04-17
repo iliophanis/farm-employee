@@ -24,5 +24,12 @@
         public virtual Role Role { get; set; }
         public virtual ICollection<Employee> Employees { get; set; }
         public virtual ICollection<Farmer> Farmers { get; set; }
+
+        
     }
+    public class AuthProvider
+        {
+            public enum authProvider { Google, Facebook }
+        }
+    
 }

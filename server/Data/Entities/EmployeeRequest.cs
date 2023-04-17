@@ -12,8 +12,8 @@
         public DateTime InsertDate { get; set; }
         public DateTime UpdateDate { get; set; }
         public bool? MessageSent { get; set; }
-        public string PaymentStatus { get; set; }
-        public string PaymentMethod { get; set; }
+        public PaymentStatus PaymentStatus { get; set; }
+        public PaymentMethod PaymentMethod { get; set; }
         public int EmployeeId { get; set; }
         public int RequestId { get; set; }
         public int PackageId { get; set; }
@@ -24,5 +24,15 @@
         public virtual ICollection<EmployeeRating> EmployeeRatings { get; set; }
         public virtual ICollection<FarmerRating> FarmerRatings { get; set; }
         public virtual ICollection<SubEmployee> SubEmployees { get; set; }
+    }
+
+    public class PaymentMethod
+    {
+        public enum paymentMethod{ bankTransfer, paypal, ebanking }
+    }
+
+    public class PaymentStatus
+    {
+        public enum paymentStatus{ pemdingPayment, processing, onHold, completed , canceled, refunded, failed }
     }
 }
