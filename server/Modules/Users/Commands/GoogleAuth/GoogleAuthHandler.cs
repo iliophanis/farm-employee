@@ -20,10 +20,17 @@ namespace server.Modules.Users.Commands.GoogleAuth
         {
             var dto = request.GoogleAuthDto;
             var isUserWithSameEmailExisted = await _context.Users.AnyAsync(u => u.Email == dto.UserName);
-            if (isUserWithSameEmailExisted)
+            if (!isUserWithSameEmailExisted)
             {
                 //TODO REGISTER USER USING THE GOOGLE AUTHENITCATOR
-                
+                var newUser = new Data.Entities.User { 
+                    Email = request.GoogleAuthDto.UserName,
+                    FirstName = request.GoogleAuthDto.FirstName,
+                    LastName = request.GoogleAuthDto.LastName
+                    };
+                    
+                _context.Users.Add(newUser);
+                await _context.SaveChangesAsync(cancellationToken);                
             }
             //FIND THE RECORD IN DB AND SENT HIM THE TOKEN, EXPIRATION AND CLAIMS LIKE EMAIL
             //TODO BUSINESS LOGIC
@@ -45,14 +52,19 @@ namespace server.Modules.Users.Commands.GoogleAuth
             var usersEmail = await _context.Users
                         .Where(u => u.Email == dto.UserName)
                         .Select(u => u.Email)
-                        .FirstOrDefaultAsync(); 
+                        .FirstOrDefaultAsync();
+
+            var roles = _context.Users
+                    .Where(u=>u.Email == dto.UserName)
+                    .Select(u=>u.Role)
+                    .ToList(); 
 
             var claims = new[] { new Claim(ClaimTypes.Name, usersEmail) };
-            var credentials = new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes("secret-key")), SecurityAlgorithms.HmacSha256);
-            var token = new JwtSecurityToken("ExampleServer", "ExampleClients", claims, expires: DateTime.Now.AddSeconds(60), signingCredentials: credentials);
+            var credentials = new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes("Jwt:Key")), SecurityAlgorithms.HmacSha256);
+            var token = new JwtSecurityToken("farm-employees", "farm-employees", claims, expires: DateTime.Now.AddSeconds(60), signingCredentials: credentials);
             var tokenValue = new JwtSecurityTokenHandler().WriteToken(token);           
             
-            return await Task.FromResult(new GoogleAuthResponseDto(tokenValue, new DateTime(), displayName, usersId, null));
+            return await Task.FromResult(new GoogleAuthResponseDto(tokenValue, new DateTime(), displayName, usersId, roles));
         }
 
     }
