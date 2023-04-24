@@ -17,7 +17,7 @@
         public DateTime UpdateDate { get; set; }
         public bool? MessageSent { get; set; }
         public paymentStatus PaymentStatus { get; set; }  
-        public paymentStatus PaymentMethod { get; set; }  
+        public paymentMethod PaymentMethod { get; set; }  
         public int EmployeeId { get; set; }
         public int RequestId { get; set; }
         public int PackageId { get; set; }
