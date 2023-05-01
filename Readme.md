@@ -145,7 +145,7 @@ TODO
 
 ## Roadmap
 
-- [ ] Add ER diagram in [flowchart](https://app.diagrams.net/)
+- [x] Add ER diagram in [flowchart](https://app.diagrams.net/)
 - [ ] Business Requirements - Use cases of project
 - [ ] Add clickup for Agile - Set ticketing system , sprints
 - [ ] Create Template for backend , frontend
