@@ -19,7 +19,7 @@
         public string Email { get; set; }
         public string Password { get; set; }
         public bool EmailConformed { get; set; }
-        public bool IsActive { get; set; } 
+        public bool? IsActive { get; set; } 
         public DateTime? LastLoginDate { get; set; }
         public int RoleId { get; set; }
         public authProvider AuthProvider { get; set; }  

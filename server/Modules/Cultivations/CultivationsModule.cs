@@ -1,6 +1,10 @@
 using Microsoft.AspNetCore.Authorization;
+using MediatR;
 using MongoDB.Driver;
 using server.Data.Entities;
+using server.Modules.Cultivations.Dto;
+using server.Modules.Cultivations.Commands;
+using Microsoft.AspNetCore.Mvc;
 
 namespace server.Modules.Cultivations
 {
@@ -24,6 +28,16 @@ namespace server.Modules.Cultivations
             .Produces(StatusCodes.Status401Unauthorized)
             .Produces(StatusCodes.Status403Forbidden);
 
+            endpoints.MapGet(BasePath + "/getall", 
+            [AllowAnonymous] 
+            async ([FromBody] GetAllDto dto, IMediator mediator, CancellationToken token)
+            =>Results.Ok(await mediator.Send(new GetAllCommand(dto), token))
+            )
+            .Produces<List<Location>>(StatusCodes.Status200OK)
+            .Produces(StatusCodes.Status400BadRequest)
+            .Produces(StatusCodes.Status401Unauthorized)
+            .Produces(StatusCodes.Status403Forbidden);
+            
             return endpoints;
         }
 
