@@ -28,10 +28,20 @@ namespace server.Modules.Cultivations
             .Produces(StatusCodes.Status401Unauthorized)
             .Produces(StatusCodes.Status403Forbidden);
 
-            endpoints.MapGet(BasePath + "/getall", 
+            endpoints.MapPost(BasePath + "/getall", 
             [AllowAnonymous] 
             async ([FromBody] GetAllDto dto, IMediator mediator, CancellationToken token)
             =>Results.Ok(await mediator.Send(new GetAllCommand(dto), token))
+            )
+            .Produces<List<Location>>(StatusCodes.Status200OK)
+            .Produces(StatusCodes.Status400BadRequest)
+            .Produces(StatusCodes.Status401Unauthorized)
+            .Produces(StatusCodes.Status403Forbidden);
+
+            endpoints.MapPost(BasePath + "/getbyid", 
+            [Authorize] 
+            async ([FromBody] GetByIdDto dto, IMediator mediator, CancellationToken token)
+            =>Results.Ok(await mediator.Send(new GetByIdCommand(dto), token))
             )
             .Produces<List<Location>>(StatusCodes.Status200OK)
             .Produces(StatusCodes.Status400BadRequest)

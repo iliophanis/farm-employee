@@ -12,7 +12,7 @@ namespace server.Modules.Users
         public IEndpointRouteBuilder MapEndpoints(IEndpointRouteBuilder endpoints, IConfiguration config)
         {
             // google authenticate
-            endpoints.MapGet(
+            endpoints.MapPost(
             BasePath + "/google-auth",
             [AllowAnonymous]
             async ([FromBody] GoogleAuthDto dto, IMediator mediator, CancellationToken token)
