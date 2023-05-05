@@ -12,12 +12,12 @@ namespace server.Modules.Cultivations.Commands
             _context = context;
         }
 
-        public async Task<GetByIdResponseDto> Handle(GetByIdCommand request, CancellationToken cancellationToken)
+        public Task<GetByIdResponseDto> Handle(GetByIdCommand request, CancellationToken cancellationToken)
         {
-            var dto = request.GetByIdDto;
-            var location = await this._context.Locations.Where(l => l.Id == dto.Id).ToListAsync(); 
-            return await Task.FromResult(new GetByIdResponseDto(location));  
+            //var dto = request.GetByIdDto;
+            var id = request.id;   //TODO: check this!!!!!!!!
+            var location = this._context.Locations.Where(l => l.Id == id).ToListAsync(cancellationToken).Result; 
+            return Task.FromResult(new GetByIdResponseDto(location));  
         }
-
     }
 }

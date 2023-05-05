@@ -15,7 +15,7 @@ namespace server.Modules.Cultivations.Commands
         {
             var dto = request.GetAllDto;
 
-            var locations = await this._context.Locations.ToListAsync();  //TODO: if not list how should I pass it to ResponseDto?
+            var locations = await this._context.Locations.ToListAsync(cancellationToken);  //TODO: if not list how should I pass it to ResponseDto?
 
             return await Task.FromResult(new GetAllResponseDto(locations));
         }
