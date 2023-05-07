@@ -23,31 +23,40 @@ namespace server.Modules.Cultivations
 
                 return Results.Ok(cultivations);
             })
-            .Produces<List<Cultivation>>(StatusCodes.Status200OK)
-            .Produces(StatusCodes.Status400BadRequest)
-            .Produces(StatusCodes.Status401Unauthorized)
-            .Produces(StatusCodes.Status403Forbidden);
+            .WithName("GetCultivations")
+            .WithTags("Cultivation")
+            .Produces<List<Cultivation>>(200)
+            .Produces(400)
+            .Produces(401)
+            .Produces(404)
+            .Produces(500);
 
-            endpoints.MapGet(BasePath + "/getall", 
-            [AllowAnonymous] 
+            endpoints.MapGet(BasePath + "/all",
+            [AllowAnonymous]
             async ([FromBody] GetAllDto dto, IMediator mediator, CancellationToken token)
-            =>Results.Ok(await mediator.Send(new GetAllCommand(dto), token))
+            => Results.Ok(await mediator.Send(new GetAllCommand(dto), token))
             )
-            .Produces<List<Location>>(StatusCodes.Status200OK)
-            .Produces(StatusCodes.Status400BadRequest)
-            .Produces(StatusCodes.Status401Unauthorized)
-            .Produces(StatusCodes.Status403Forbidden);
+            .WithName("GetCultivationsAll")
+            .WithTags("Cultivation")
+            .Produces<List<Location>>(200)
+            .Produces(400)
+            .Produces(401)
+            .Produces(404)
+            .Produces(500);
 
-            endpoints.MapGet(BasePath + "/{id}", 
-            [Authorize] 
+            endpoints.MapGet(BasePath + "/{id}",
+            [Authorize]
             async (int id, IMediator mediator, CancellationToken token)
-            =>Results.Ok(await mediator.Send(new GetByIdCommand(id), token))
+            => Results.Ok(await mediator.Send(new GetByIdCommand(id), token))
             )
-            .Produces<List<Location>>(StatusCodes.Status200OK)
-            .Produces(StatusCodes.Status400BadRequest)
-            .Produces(StatusCodes.Status401Unauthorized)
-            .Produces(StatusCodes.Status403Forbidden);
-            
+            .WithName("GetCultivationById")
+            .WithTags("Cultivation")
+            .Produces<List<Location>>(200)
+            .Produces(400)
+            .Produces(401)
+            .Produces(404)
+            .Produces(500);
+
             return endpoints;
         }
 

@@ -1,5 +1,6 @@
 ﻿namespace server.Data.Entities
 {
+    public enum AuthProvider { Google, Facebook }
     public partial class User
     {
         public User()
@@ -8,9 +9,6 @@
             Farmers = new HashSet<Farmer>();
             IsActive = true;
         }
-
-        public enum authProvider { Google, Facebook }
-
         public int Id { get; set; }
         public DateTime InsertDate { get; set; }
         public DateTime UpdateDate { get; set; }
@@ -19,14 +17,14 @@
         public string Email { get; set; }
         public string Password { get; set; }
         public bool EmailConformed { get; set; }
-        public bool? IsActive { get; set; } 
+        public bool? IsActive { get; set; }
         public DateTime? LastLoginDate { get; set; }
-        public int RoleId { get; set; }
-        public authProvider AuthProvider { get; set; }  
+        public int? RoleId { get; set; }
+        public AuthProvider AuthProvider { get; set; }
         public virtual Role Role { get; set; }
         public virtual ICollection<Employee> Employees { get; set; }
         public virtual ICollection<Farmer> Farmers { get; set; }
-        
+
     }
-    
+
 }

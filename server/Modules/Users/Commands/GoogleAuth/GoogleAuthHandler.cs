@@ -1,8 +1,5 @@
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
 using MediatR;
-using Microsoft.IdentityModel.Tokens;
+using server.Data.Entities;
 using server.Modules.Users.Dto;
 
 namespace server.Modules.Users.Commands.GoogleAuth
@@ -19,52 +16,29 @@ namespace server.Modules.Users.Commands.GoogleAuth
         public async Task<GoogleAuthResponseDto> Handle(GoogleAuthCommand request, CancellationToken cancellationToken)
         {
             var dto = request.GoogleAuthDto;
-            var isUserWithSameEmailExisted = await _context.Users.AnyAsync(u => u.Email == dto.UserName);
-            if (!isUserWithSameEmailExisted)
+            var user = await _context.Users
+            .Include(x => x.Role)
+            .Where(x => x.Email == dto.UserName)
+            .FirstOrDefaultAsync(cancellationToken);
+            if (user != null)
             {
-                //TODO REGISTER USER USING THE GOOGLE AUTHENITCATOR
-                var newUser = new Data.Entities.User { 
+                var newUser = new User
+                {
                     Email = request.GoogleAuthDto.UserName,
                     FirstName = request.GoogleAuthDto.FirstName,
-                    LastName = request.GoogleAuthDto.LastName
-                    };
-                    
+                    LastName = request.GoogleAuthDto.LastName,
+                    AuthProvider = AuthProvider.Google,
+                    Password = "",
+                    EmailConformed = true,
+                    IsActive = false
+                };
+
                 _context.Users.Add(newUser);
-                await _context.SaveChangesAsync(cancellationToken);                
+                await _context.SaveChangesAsync(cancellationToken);
+                return new GoogleAuthResponseDto(true);
             }
-            //FIND THE RECORD IN DB AND SENT HIM THE TOKEN, EXPIRATION AND CLAIMS LIKE EMAIL
-            //TODO BUSINESS LOGIC
-            var displayName = await _context.Users
-                        .Where(u => u.Email == dto.UserName)
-                        .Select(u => u.FirstName)
-                        .FirstOrDefaultAsync();     
 
-            var usersId = await _context.Users
-                        .Where(u => u.Email == dto.UserName)
-                        .Select(u => u.Id)
-                        .FirstOrDefaultAsync();   
-
-            var usersRole = await _context.Users
-                        .Where(u => u.Email == dto.UserName)
-                        .Select(u => u.Role)
-                        .FirstOrDefaultAsync(); 
-
-            var usersEmail = await _context.Users
-                        .Where(u => u.Email == dto.UserName)
-                        .Select(u => u.Email)
-                        .FirstOrDefaultAsync();
-
-            var roles = _context.Users
-                    .Where(u=>u.Email == dto.UserName)
-                    .Select(u=>u.Role)
-                    .ToList(); 
-
-            var claims = new[] { new Claim(ClaimTypes.Name, usersEmail) };
-            var credentials = new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes("Jwt:Key")), SecurityAlgorithms.HmacSha256);
-            var token = new JwtSecurityToken("farm-employees", "farm-employees", claims, expires: DateTime.Now.AddSeconds(60), signingCredentials: credentials);
-            var tokenValue = new JwtSecurityTokenHandler().WriteToken(token);           
-            
-            return await Task.FromResult(new GoogleAuthResponseDto(tokenValue, new DateTime(), displayName, usersId, roles));
+            return new GoogleAuthResponseDto(user.RoleId == null);
         }
 
     }

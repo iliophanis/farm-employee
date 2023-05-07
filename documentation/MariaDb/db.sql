@@ -73,7 +73,7 @@ CREATE TABLE User (
 	isActive boolean NOT NULL DEFAULT TRUE,
 	lastLoginDate datetime NULL,
 	authProvider ENUM('Google', 'Facebook') NOT NULL, 
-	roleId int NOT NULL,
+	roleId int NULL,
 	FOREIGN KEY (roleId) REFERENCES Roles(id)
 );
 
