@@ -7,9 +7,9 @@ namespace server.Data.Mappings
     {
         public void Configure(EntityTypeBuilder<Employee> entity)
         {
-           entity.ToTable("employee");
+            entity.ToTable("employee");
 
-            entity.HasIndex(e => e.ContactInfo, "contactInfo");
+            entity.HasIndex(e => e.ContactInfoId, "contactInfoId");
 
             entity.HasIndex(e => e.DocumentId, "documentId");
 
@@ -35,9 +35,9 @@ namespace server.Data.Mappings
                 .HasPrecision(10)
                 .HasColumnName("avgRate");
 
-            entity.Property(e => e.ContactInfo)
+            entity.Property(e => e.ContactInfoId)
                 .HasColumnType("int(11)")
-                .HasColumnName("contactInfo");
+                .HasColumnName("contactInfoId");
 
             entity.Property(e => e.DocumentId)
                 .HasColumnType("int(11)")
@@ -58,9 +58,9 @@ namespace server.Data.Mappings
                 .HasColumnType("int(11)")
                 .HasColumnName("userId");
 
-            entity.HasOne(d => d.ContactInfoNavigation)
+            entity.HasOne(d => d.ContactInfo)
                 .WithMany(p => p.Employees)
-                .HasForeignKey(d => d.ContactInfo)
+                .HasForeignKey(d => d.ContactInfoId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("employee_ibfk_3");
 

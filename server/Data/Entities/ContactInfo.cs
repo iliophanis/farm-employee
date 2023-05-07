@@ -17,5 +17,6 @@ namespace server.Data.Entities
 
         public virtual ICollection<Employee> Employees { get; set; }
         public virtual ICollection<Farmer> Farmers { get; set; }
+        public virtual ICollection<SubEmployee> SubEmployees { get; set; }
     }
 }

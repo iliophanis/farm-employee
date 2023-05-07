@@ -72,6 +72,7 @@ CREATE TABLE User (
 	emailConformed boolean NOT NULL DEFAULT FALSE,
 	isActive boolean NOT NULL DEFAULT TRUE,
 	lastLoginDate datetime NULL,
+	authProvider ENUM('Google', 'Facebook') NOT NULL, 
 	roleId int NOT NULL,
 	FOREIGN KEY (roleId) REFERENCES Roles(id)
 );
@@ -87,9 +88,9 @@ CREATE TABLE Farmer (
   	paymentStatus ENUM('pendingPayment', 'processing', 'onHold', 'completed', 'canceled', 'refunded', 'failed') NOT NULL,
 	paymentMethod ENUM('bankTransfer', 'paypal', 'ebanking') NOT NULL,
 	userId int NOT NULL,
-	contactInfo int NOT NULL,
+	contactInfoId int NOT NULL,
 	FOREIGN KEY (userId) REFERENCES User(id),
-	FOREIGN KEY (contactInfo) REFERENCES Contact_Info(id)
+	FOREIGN KEY (contactInfoId) REFERENCES Contact_Info(id)
 );
 
 CREATE TABLE Employee (
@@ -102,10 +103,10 @@ CREATE TABLE Employee (
 	avgContactQuality decimal NOT NULL DEFAULT 0,   	
 	userId int NOT NULL,
 	documentId int NULL,
-	contactInfo int NOT NULL,
+	contactInfoId int NOT NULL,
 	FOREIGN KEY (userId) REFERENCES User(id),
 	FOREIGN KEY (documentId) REFERENCES Document(id),
-	FOREIGN KEY (contactInfo) REFERENCES Contact_Info(id)
+	FOREIGN KEY (contactInfoId) REFERENCES Contact_Info(id)
 );
 
 CREATE TABLE Farmer_Location (
@@ -153,6 +154,19 @@ CREATE TABLE Employee_Request (
 	FOREIGN KEY (employeeId) REFERENCES Employee(id),
 	FOREIGN KEY (requestId) REFERENCES Request(id),
 	FOREIGN KEY (packageId) REFERENCES Package(id)
+);
+
+CREATE TABLE SubEmployee (
+	id int NOT NULL PRIMARY KEY AUTO_INCREMENT,
+	insertDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+	updateDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL,
+	firstName varchar(255) NOT NULL,
+	lastName varchar(255) NOT NULL,
+	email varchar(255) NOT NULL,
+	employeeRequestId int NOT NULL,
+	contactInfoId int NOT NULL,
+	FOREIGN KEY (employeeRequestId) REFERENCES Employee_Request(id),
+	FOREIGN KEY (contactInfoId) REFERENCES Contact_Info(id)
 );
 
 CREATE TABLE Farmer_Rating (

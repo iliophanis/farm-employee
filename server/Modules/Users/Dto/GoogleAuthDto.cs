@@ -1,0 +1,8 @@
+using server.Data.Entities;
+
+namespace server.Modules.Users.Dto
+{
+    public record GoogleAuthDto(string UserName, string FirstName, string LastName);
+
+    public record GoogleAuthResponseDto(string Token, DateTime Expiration, string DisplayName, int UserId, List<Role> Roles); //string
+}

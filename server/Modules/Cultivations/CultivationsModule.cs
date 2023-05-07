@@ -1,13 +1,14 @@
-using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
+using MediatR;
 using MongoDB.Driver;
-
-using server.Data;
 using server.Data.Entities;
+using server.Modules.Cultivations.Dto;
+using server.Modules.Cultivations.Commands;
+using Microsoft.AspNetCore.Mvc;
 
-namespace server.Modules.Users
+namespace server.Modules.Cultivations
 {
-    public class UsersModule : IModule
+    public class CultivationsModule : IModule
     {
         public const string BasePath = "api/cultivations";
         public IEndpointRouteBuilder MapEndpoints(IEndpointRouteBuilder endpoints, IConfiguration config)
@@ -27,6 +28,26 @@ namespace server.Modules.Users
             .Produces(StatusCodes.Status401Unauthorized)
             .Produces(StatusCodes.Status403Forbidden);
 
+            endpoints.MapGet(BasePath + "/getall", 
+            [AllowAnonymous] 
+            async ([FromBody] GetAllDto dto, IMediator mediator, CancellationToken token)
+            =>Results.Ok(await mediator.Send(new GetAllCommand(dto), token))
+            )
+            .Produces<List<Location>>(StatusCodes.Status200OK)
+            .Produces(StatusCodes.Status400BadRequest)
+            .Produces(StatusCodes.Status401Unauthorized)
+            .Produces(StatusCodes.Status403Forbidden);
+
+            endpoints.MapGet(BasePath + "/{id}", 
+            [Authorize] 
+            async (int id, IMediator mediator, CancellationToken token)
+            =>Results.Ok(await mediator.Send(new GetByIdCommand(id), token))
+            )
+            .Produces<List<Location>>(StatusCodes.Status200OK)
+            .Produces(StatusCodes.Status400BadRequest)
+            .Produces(StatusCodes.Status401Unauthorized)
+            .Produces(StatusCodes.Status403Forbidden);
+            
             return endpoints;
         }
 

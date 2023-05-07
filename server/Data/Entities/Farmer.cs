@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace server.Data.Entities
+﻿namespace server.Data.Entities
 {
     public partial class Farmer
     {
@@ -21,11 +18,12 @@ namespace server.Data.Entities
         public string PaymentStatus { get; set; }
         public string PaymentMethod { get; set; }
         public int UserId { get; set; }
-        public int ContactInfo { get; set; }
+        public int ContactInfoId { get; set; }
 
-        public virtual ContactInfo ContactInfoNavigation { get; set; }
+        public virtual ContactInfo ContactInfo { get; set; }
         public virtual User User { get; set; }
         public virtual ICollection<FarmerLocation> FarmerLocations { get; set; }
         public virtual ICollection<Request> Requests { get; set; }
+
     }
 }

@@ -9,7 +9,7 @@ namespace server.Data.Mappings
         {
             entity.ToTable("farmer");
 
-            entity.HasIndex(e => e.ContactInfo, "contactInfo");
+            entity.HasIndex(e => e.ContactInfoId, "contactInfoId");
 
             entity.HasIndex(e => e.UserId, "userId");
 
@@ -29,9 +29,9 @@ namespace server.Data.Mappings
                 .HasPrecision(10)
                 .HasColumnName("avgWorkPlaceRate");
 
-            entity.Property(e => e.ContactInfo)
+            entity.Property(e => e.ContactInfoId)
                 .HasColumnType("int(11)")
-                .HasColumnName("contactInfo");
+                .HasColumnName("ContactInfoId");
 
             entity.Property(e => e.Description)
                 .HasColumnType("text")
@@ -62,9 +62,9 @@ namespace server.Data.Mappings
                 .HasColumnType("int(11)")
                 .HasColumnName("userId");
 
-            entity.HasOne(d => d.ContactInfoNavigation)
+            entity.HasOne(d => d.ContactInfo)
                 .WithMany(p => p.Farmers)
-                .HasForeignKey(d => d.ContactInfo)
+                .HasForeignKey(d => d.ContactInfoId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("farmer_ibfk_2");
 
@@ -72,7 +72,7 @@ namespace server.Data.Mappings
                 .WithMany(p => p.Farmers)
                 .HasForeignKey(d => d.UserId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("farmer_ibfk_1");   
+                .HasConstraintName("farmer_ibfk_1");
         }
     }
 }
