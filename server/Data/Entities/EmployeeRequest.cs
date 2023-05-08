@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace server.Data.Entities
+﻿namespace server.Data.Entities
 {
     public partial class EmployeeRequest
     {
@@ -11,12 +8,16 @@ namespace server.Data.Entities
             FarmerRatings = new HashSet<FarmerRating>();
         }
 
+        public enum paymentMethod{ bankTransfer, paypal, ebanking }
+
+        public enum paymentStatus{ pemdingPayment, processing, onHold, completed , canceled, refunded, failed }
+
         public int Id { get; set; }
         public DateTime InsertDate { get; set; }
         public DateTime UpdateDate { get; set; }
         public bool? MessageSent { get; set; }
-        public string PaymentStatus { get; set; }
-        public string PaymentMethod { get; set; }
+        public paymentStatus PaymentStatus { get; set; }  
+        public paymentMethod PaymentMethod { get; set; }  
         public int EmployeeId { get; set; }
         public int RequestId { get; set; }
         public int PackageId { get; set; }
@@ -26,5 +27,7 @@ namespace server.Data.Entities
         public virtual Request Request { get; set; }
         public virtual ICollection<EmployeeRating> EmployeeRatings { get; set; }
         public virtual ICollection<FarmerRating> FarmerRatings { get; set; }
+        public virtual ICollection<SubEmployee> SubEmployees { get; set; }
     }
+
 }

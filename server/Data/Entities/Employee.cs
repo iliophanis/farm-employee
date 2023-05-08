@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace server.Data.Entities
+﻿namespace server.Data.Entities
 {
     public partial class Employee
     {
@@ -19,9 +16,9 @@ namespace server.Data.Entities
         public decimal AvgContactQuality { get; set; }
         public int UserId { get; set; }
         public int? DocumentId { get; set; }
-        public int ContactInfo { get; set; }
+        public int? ContactInfoId { get; set; }
 
-        public virtual ContactInfo ContactInfoNavigation { get; set; }
+        public virtual ContactInfo ContactInfo { get; set; }
         public virtual Document Document { get; set; }
         public virtual User User { get; set; }
         public virtual ICollection<EmployeeRequest> EmployeeRequests { get; set; }

@@ -1,8 +1,14 @@
 import { AppProps } from 'next/app';
+import { GoogleOAuthProvider } from '@react-oauth/google';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
-import '@/styles/globals.css';
+import '@/shared/styles/globals.css';
 // !STARTERCONF This is for demo purposes, remove @/styles/colors.css import immediately
-import '@/styles/colors.css';
+import '@/shared/styles/colors.css';
+import '@/shared/styles/main.css';
+import Layout from '@/shared/components/layout/Layout';
+import AuthProvider from '@/shared/contexts/AuthProvider';
+import { LayoutProvider } from '@/shared/contexts/LayoutProvider';
 
 /**
  * !STARTERCONF info
@@ -10,7 +16,30 @@ import '@/styles/colors.css';
  */
 
 function MyApp({ Component, pageProps }: AppProps) {
-  return <Component {...pageProps} />;
+  const clientId = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID!;
+  const queryClient = new QueryClient({
+    defaultOptions: {
+      queries: {
+        retry: false,
+        refetchOnWindowFocus: false,
+        // cacheTime: 0,
+        suspense: true,
+      },
+    },
+  });
+  return (
+    <QueryClientProvider client={queryClient}>
+      <GoogleOAuthProvider clientId={clientId}>
+        <AuthProvider>
+          <LayoutProvider>
+            <Layout>
+              <Component {...pageProps} />
+            </Layout>
+          </LayoutProvider>
+        </AuthProvider>
+      </GoogleOAuthProvider>
+    </QueryClientProvider>
+  );
 }
 
 export default MyApp;

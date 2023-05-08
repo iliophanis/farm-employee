@@ -17,6 +17,7 @@ namespace server.Data
         public virtual DbSet<Document> Documents { get; set; }
         public virtual DbSet<Employee> Employees { get; set; }
         public virtual DbSet<EmployeeRating> EmployeeRatings { get; set; }
+        public virtual DbSet<SubEmployee> SubEmployees { get; set; }
         public virtual DbSet<EmployeeRequest> EmployeeRequests { get; set; }
         public virtual DbSet<Farmer> Farmers { get; set; }
         public virtual DbSet<FarmerLocation> FarmerLocations { get; set; }
@@ -43,6 +44,8 @@ namespace server.Data
             modelBuilder.ApplyConfiguration(new EmployeeRatingMap());
 
             modelBuilder.ApplyConfiguration(new EmployeeRequestMap());
+
+            modelBuilder.ApplyConfiguration(new SubEmployeeMap());
 
             modelBuilder.ApplyConfiguration(new FarmerMap());
 
