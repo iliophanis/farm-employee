@@ -16,7 +16,7 @@ function get(key: string) {
   return value && JSON.parse(value);
 }
 
-function set(key: string, value: string) {
+function set(key: string, value: any) {
   if (!value) {
     throw new Error('cannot set a null/undefined value' + value);
   }

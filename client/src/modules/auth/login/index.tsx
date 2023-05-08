@@ -1,11 +1,15 @@
 import React from 'react';
-import { HiUserPlus } from 'react-icons/hi2';
 
 import useLogin from './useLogin';
-import Modal from '@/shared/components/modal/Modal';
+
 import GoogleButton from './components/externalAuth/GoogleButton';
-import logger from '@/shared/lib/logger';
+
 import NextImage from '@/shared/components/NextImage';
+import AddUserRole from '@/modules/auth/login/components/addUserRole';
+import { useAuth } from '@/shared/contexts/AuthProvider';
+import IconButton from '@/shared/components/buttons/IconButton';
+import { HiArrowLeftOnRectangle } from 'react-icons/hi2';
+import Button from '../../../shared/components/buttons/Button';
 
 type IProps = {
   onGoogleLogin: () => void;
@@ -21,36 +25,40 @@ const Login = () => {
     showAddRoleModal,
     setShowAddRoleModal,
   }: IProps = useLogin();
+  const authState = useAuth();
   if (showAddRoleModal) {
     return (
-      <Modal
-        openModal={showAddRoleModal}
-        setOpenModal={setShowAddRoleModal}
-        buttonName='Ολωκλήρωση Εγγραφής'
-        icon={<HiUserPlus />}
-        onClick={() => logger('submit role')}
-      >
-        <div>Επιλέξτε ένα απο τους διαθέσιμους ρόλους</div>
-      </Modal>
+      <AddUserRole
+        profile={profile}
+        shoModal={showAddRoleModal}
+        setShowModal={setShowAddRoleModal}
+      />
     );
   }
   return (
     <div>
-      {profile ? (
+      {authState.auth !== null ? (
         <div className='flex flex-col justify-center'>
           <div className='mb-2 flex flex-row items-center'>
             <NextImage
               imgClassName='ml-0 h-12 w-12 rounded-full'
-              src={profile.picture}
+              src={authState.auth?.user.picture}
               width='80'
               height='80'
-              alt={`${profile.name} image`}
+              alt={`${authState.auth?.user.displayName} image`}
             />
-            {profile.name}
+            {authState.auth?.user.displayName}
           </div>
           <hr />
           <br />
-          <button>Log out</button>
+          <Button
+            variant='outline'
+            leftIcon={HiArrowLeftOnRectangle}
+            className='inline-flex w-full justify-center border border-red-500 bg-red-500 text-gray-100 hover:bg-red-300'
+            onClick={() => authState.logout()}
+          >
+            Αποσύνδεση
+          </Button>
         </div>
       ) : (
         <GoogleButton handleGoogleLogin={onGoogleLogin} />

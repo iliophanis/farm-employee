@@ -8,7 +8,7 @@ import { IGoogleAuthResponse } from '@/modules/auth/models/IUser';
 
 type IError = { error: any };
 const useLogin = () => {
-  const auth = useAuth();
+  const authState = useAuth();
   const [profile, setProfile]: any = React.useState(null);
   const [showAddRoleModal, setShowAddRoleModal] = React.useState(false);
   const onGoogleLogin = useGoogleLogin({
@@ -28,13 +28,21 @@ const useLogin = () => {
       if (googleResponse.error) return logger(googleResponse.error);
       const data = {
         userName: googleResponse.email,
-        firstName: googleResponse.given_name || '-',
-        lastName: googleResponse.family_name || '-',
+        firstName: googleResponse.given_name || '',
+        lastName: googleResponse.family_name || '',
       };
       setProfile(googleResponse);
       const authResponse = await customAxios.post('/users/google-auth', data);
       if (authResponse.error) return logger(authResponse.error);
       if (authResponse.isNewUser) setShowAddRoleModal(true);
+      else {
+        const tokenRes = await customAxios.get(
+          `/users/token/${googleResponse.email}?authProvider=Google`
+        );
+        console.log({ tokenRes });
+        if (tokenRes.error) throw new Error(tokenRes.error);
+        authState.login({ ...tokenRes, picture: googleResponse.picture });
+      }
     },
     onError: (error) => console.log('Login Failed:', error),
   });

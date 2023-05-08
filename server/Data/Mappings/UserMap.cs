@@ -16,7 +16,6 @@ namespace server.Data.Mappings
                 .HasColumnName("id");
 
             entity.Property(e => e.AuthProvider)
-                .IsRequired()
                 .HasColumnType("enum('Google','Facebook')")
                 .HasColumnName("authProvider");
 

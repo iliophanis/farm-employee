@@ -72,7 +72,7 @@ CREATE TABLE User (
 	emailConformed boolean NOT NULL DEFAULT FALSE,
 	isActive boolean NOT NULL DEFAULT TRUE,
 	lastLoginDate datetime NULL,
-	authProvider ENUM('Google', 'Facebook') NOT NULL, 
+	authProvider ENUM('Google', 'Facebook') NULL, 
 	roleId int NULL,
 	FOREIGN KEY (roleId) REFERENCES Roles(id)
 );
@@ -85,10 +85,10 @@ CREATE TABLE Farmer (
 	avgRate decimal NOT NULL DEFAULT 0,
 	avgWorkPlaceRate decimal NOT NULL DEFAULT 0,
 	avgPaymentConsequenceRate decimal NOT NULL DEFAULT 0,
-  	paymentStatus ENUM('pendingPayment', 'processing', 'onHold', 'completed', 'canceled', 'refunded', 'failed') NOT NULL,
-	paymentMethod ENUM('bankTransfer', 'paypal', 'ebanking') NOT NULL,
+  	paymentStatus ENUM('pendingPayment', 'processing', 'onHold', 'completed', 'canceled', 'refunded', 'failed') NULL,
+	paymentMethod ENUM('bankTransfer', 'paypal', 'ebanking') NULL,
 	userId int NOT NULL,
-	contactInfoId int NOT NULL,
+	contactInfoId int NULL,
 	FOREIGN KEY (userId) REFERENCES User(id),
 	FOREIGN KEY (contactInfoId) REFERENCES Contact_Info(id)
 );
@@ -103,7 +103,7 @@ CREATE TABLE Employee (
 	avgContactQuality decimal NOT NULL DEFAULT 0,   	
 	userId int NOT NULL,
 	documentId int NULL,
-	contactInfoId int NOT NULL,
+	contactInfoId int NULL,
 	FOREIGN KEY (userId) REFERENCES User(id),
 	FOREIGN KEY (documentId) REFERENCES Document(id),
 	FOREIGN KEY (contactInfoId) REFERENCES Contact_Info(id)

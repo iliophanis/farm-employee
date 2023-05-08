@@ -1,6 +1,8 @@
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using server.Data.Entities;
+using server.Modules.Common.Exceptions;
 using server.Modules.Common.Responses;
 using server.Modules.Users.Commands.AddRole;
 using server.Modules.Users.Commands.GoogleAuth;
@@ -22,6 +24,28 @@ namespace server.Modules.Users
             .WithName("GetTokenQuery")
             .WithTags("User")
             .Produces<GetTokenResponseDto>(200)
+            .Produces(400)
+            .Produces(401)
+            .Produces(404)
+            .Produces(500);
+
+            // get all roles 
+            endpoints.MapGet(BasePath + "/roles", [AllowAnonymous] async (DataContext context, CancellationToken token) =>
+            {
+                var roles = await context.Roles.Where(x => x.Name != "Admin").Select(x => new Lookup<int>
+                {
+                    Id = x.Id,
+                    Description = x.Description
+                }).ToListAsync(token);
+
+                if (roles.Count == 0)
+                    throw new BadRequestException("Roles not found");
+
+                return Results.Ok(roles);
+            })
+            .WithName("GetRoles")
+            .WithTags("User")
+            .Produces<Lookup<int>>(200)
             .Produces(400)
             .Produces(401)
             .Produces(404)

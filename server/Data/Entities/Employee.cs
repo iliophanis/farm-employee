@@ -16,7 +16,7 @@
         public decimal AvgContactQuality { get; set; }
         public int UserId { get; set; }
         public int? DocumentId { get; set; }
-        public int ContactInfoId { get; set; }
+        public int? ContactInfoId { get; set; }
 
         public virtual ContactInfo ContactInfo { get; set; }
         public virtual Document Document { get; set; }

@@ -13,9 +13,12 @@ namespace server.Modules.Users.Queries.GetToken
     {
         private readonly DataContext _context;
 
-        public GetTokenHandler(DataContext context)
+        private readonly IConfiguration _configuration;
+
+        public GetTokenHandler(DataContext context, IConfiguration configuration)
         {
             _context = context;
+            _configuration = configuration;
         }
 
         public async Task<GetTokenResponseDto> Handle(GetTokenQuery request, CancellationToken cancellationToken)
@@ -33,10 +36,10 @@ namespace server.Modules.Users.Queries.GetToken
             var claims = new[] {
                 new Claim("userName", user.Email),
                 new Claim(ClaimTypes.Role, user.Role.Name),
-                new Claim("id",user.Id.ToString()) };
-            var credentials = new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes("Jwt:Key")), SecurityAlgorithms.HmacSha256);
+                new Claim("id",Convert.ToString(user.Id)) };
+            var credentials = new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration.GetValue<string>("Jwt:Key"))), SecurityAlgorithms.HmacSha256);
             var expiresDate = DateTime.Now.AddHours(8);
-            var token = new JwtSecurityToken("farm-employee", "farm-employee", claims, expires: DateTime.Now.AddHours(8), signingCredentials: credentials);
+            var token = new JwtSecurityToken(_configuration.GetValue<string>("Jwt:Issuer"), _configuration.GetValue<string>("Jwt:Issuer"), claims, expires: DateTime.Now.AddHours(8), signingCredentials: credentials);
             var tokenValue = new JwtSecurityTokenHandler().WriteToken(token);
             var displayName = !String.IsNullOrEmpty(user.FirstName) && !String.IsNullOrEmpty(user.LastName) ? $"{user.FirstName} {user.LastName}" : user.FirstName;
             return new GetTokenResponseDto(tokenValue, expiresDate, displayName, user.Id, user.Role.Name);

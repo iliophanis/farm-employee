@@ -20,7 +20,7 @@ namespace server.Modules.Users.Commands.GoogleAuth
             .Include(x => x.Role)
             .Where(x => x.Email == dto.UserName)
             .FirstOrDefaultAsync(cancellationToken);
-            if (user != null)
+            if (user == null)
             {
                 var newUser = new User
                 {

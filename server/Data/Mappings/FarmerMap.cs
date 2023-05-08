@@ -43,12 +43,10 @@ namespace server.Data.Mappings
                 .HasDefaultValueSql("current_timestamp()");
 
             entity.Property(e => e.PaymentMethod)
-                .IsRequired()
                 .HasColumnType("enum('bankTransfer','paypal','ebanking')")
                 .HasColumnName("paymentMethod");
 
             entity.Property(e => e.PaymentStatus)
-                .IsRequired()
                 .HasColumnType("enum('pendingPayment','processing','onHold','completed','canceled','refunded','failed')")
                 .HasColumnName("paymentStatus");
 

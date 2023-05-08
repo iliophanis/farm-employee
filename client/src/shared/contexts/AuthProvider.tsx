@@ -16,6 +16,7 @@ interface IAuth {
   user: {
     displayName: string;
     userId: number;
+    picture: string;
     isFarmer: boolean;
     isEmployee: boolean;
     isAdmin: boolean;
@@ -46,7 +47,7 @@ export const AuthProvider = ({ children }: IAuthProviderProps) => {
 
   const handleChangeAuth = useCallback(
     (
-      { token, expiration, displayName, userId, roles }: IUserResponse,
+      { token, expiration, displayName, userId, role, picture }: IUserResponse,
       darkMode: boolean
     ) => {
       setAuth({
@@ -55,9 +56,10 @@ export const AuthProvider = ({ children }: IAuthProviderProps) => {
         user: {
           displayName: displayName,
           userId: userId,
-          isFarmer: roles.includes('farmer'),
-          isAdmin: roles.includes('admin'),
-          isEmployee: roles.includes('employee'),
+          picture: picture,
+          isFarmer: role === 'farmer',
+          isAdmin: role === 'admin',
+          isEmployee: role === 'employee',
         },
       });
     },
@@ -76,7 +78,7 @@ export const AuthProvider = ({ children }: IAuthProviderProps) => {
 
   const login = useCallback(
     (userResponse: IUserResponse) => {
-      store.set('farmEmpAuth', JSON.stringify(userResponse));
+      store.set('farmEmpAuth', userResponse);
       const darkMode = store.get('farmEmpDarkMode');
       if (!darkMode) store.set('farmEmpDarkMode', 'false');
       handleChangeAuth(userResponse, darkMode ? darkMode === 'true' : false);

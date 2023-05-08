@@ -3,9 +3,22 @@ export interface IUserResponse {
   expiration: Date;
   displayName: string;
   userId: number;
-  roles: string[];
+  role: string;
+  picture: string;
 }
 
 export interface IGoogleAuthResponse {
   isNewUser: boolean;
+}
+
+export interface IAddRole {
+  roleId: number;
+  userName: string;
+  contactInfo?: {
+    address: string;
+    city: string;
+    tk: string;
+    phoneNo: string;
+    mobilePhoneNo: string;
+  };
 }
