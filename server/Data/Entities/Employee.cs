@@ -1,15 +1,13 @@
-﻿namespace server.Data.Entities
+﻿using server.Data.Entities.BaseEntity;
+
+namespace server.Data.Entities
 {
-    public partial class Employee
+    public partial class Employee : Entity
     {
         public Employee()
         {
             EmployeeRequests = new HashSet<EmployeeRequest>();
         }
-
-        public int Id { get; set; }
-        public DateTime InsertDate { get; set; }
-        public DateTime UpdateDate { get; set; }
         public decimal AvgRate { get; set; }
         public decimal AvgJobQuality { get; set; }
         public decimal AvgPrice { get; set; }

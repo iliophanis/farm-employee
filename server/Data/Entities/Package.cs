@@ -1,18 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using server.Data.Entities.BaseEntity;
 
 namespace server.Data.Entities
 {
-    public partial class Package
+    public partial class Package : Entity
     {
         public Package()
         {
             EmployeeRequests = new HashSet<EmployeeRequest>();
         }
 
-        public int Id { get; set; }
-        public DateTime InsertDate { get; set; }
-        public DateTime UpdateDate { get; set; }
         public string Name { get; set; }
         public decimal Price { get; set; }
         public decimal Discount { get; set; }

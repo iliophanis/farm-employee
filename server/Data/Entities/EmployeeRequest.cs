@@ -1,6 +1,12 @@
-﻿namespace server.Data.Entities
+﻿using server.Data.Entities.BaseEntity;
+
+namespace server.Data.Entities
 {
-    public partial class EmployeeRequest
+    public enum PaymentMethod { bankTransfer, paypal, ebanking }
+
+    public enum PaymentStatus { pemdingPayment, processing, onHold, completed, canceled, refunded, failed }
+
+    public partial class EmployeeRequest : Entity
     {
         public EmployeeRequest()
         {
@@ -8,16 +14,10 @@
             FarmerRatings = new HashSet<FarmerRating>();
         }
 
-        public enum paymentMethod{ bankTransfer, paypal, ebanking }
 
-        public enum paymentStatus{ pemdingPayment, processing, onHold, completed , canceled, refunded, failed }
-
-        public int Id { get; set; }
-        public DateTime InsertDate { get; set; }
-        public DateTime UpdateDate { get; set; }
         public bool? MessageSent { get; set; }
-        public paymentStatus PaymentStatus { get; set; }  
-        public paymentMethod PaymentMethod { get; set; }  
+        public PaymentStatus PaymentStatus { get; set; }
+        public PaymentMethod PaymentMethod { get; set; }
         public int EmployeeId { get; set; }
         public int RequestId { get; set; }
         public int PackageId { get; set; }

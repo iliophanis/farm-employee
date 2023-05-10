@@ -14,6 +14,7 @@ interface IAuth {
   darkMode: boolean;
   expires: Date;
   user: {
+    //TODO ADD token
     displayName: string;
     userId: number;
     picture: string;

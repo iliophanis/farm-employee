@@ -1,6 +1,8 @@
-﻿namespace server.Data.Entities
+﻿using server.Data.Entities.BaseEntity;
+
+namespace server.Data.Entities
 {
-    public partial class Farmer
+    public partial class Farmer : Entity
     {
         public Farmer()
         {
@@ -8,9 +10,6 @@
             Requests = new HashSet<Request>();
         }
 
-        public int Id { get; set; }
-        public DateTime InsertDate { get; set; }
-        public DateTime UpdateDate { get; set; }
         public string Description { get; set; }
         public decimal AvgRate { get; set; }
         public decimal AvgWorkPlaceRate { get; set; }

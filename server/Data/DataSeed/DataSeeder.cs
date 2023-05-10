@@ -1,4 +1,5 @@
 using Bogus;
+using Newtonsoft.Json;
 using server.Data.Entities;
 
 namespace server.Data.DataSeed;
@@ -8,13 +9,18 @@ public class DataSeeder
     private static List<User> users;
     private static List<Role> roles;
     private static List<ContactInfo> contactInfos;
-
+    private static List<Farmer> farmers;
+    private static List<Employee> employees;
+    private static List<Cultivation> cultivations;
+    private static List<Location> locations;
+    private static List<Request> requests;
+    private static string[] jobTypes = { "Fruit Tree Pruner", "Crop Picker", "Tree Trimmer", "Irrigation Technician", "Agricultural Mechanic" };
     public DataSeeder(DataContext context)
     {
         _context = context;
     }
 
-    public void SeedContactInfo(int count = 10000)
+    private void SeedContactInfo(int count = 10000)
     {
         contactInfos = _context.ContactInfos.ToList();
         if (contactInfos.Count() > 0) return;
@@ -68,9 +74,9 @@ public class DataSeeder
         _context.Users.AddRange(users);
     }
 
-    public void SeedFarmers(int count = 5000)
+    private void SeedFarmers(int count = 5000)
     {
-        var farmers = _context.Farmers.ToList();
+        farmers = _context.Farmers.ToList();
         if (farmers.Count() > 0) return;
         var farmersUsers = users.Where(x => x.Role.Name == "Farmer").ToList();
         var farmersFaker = new Faker<Farmer>()
@@ -80,9 +86,9 @@ public class DataSeeder
         _context.Farmers.AddRange(farmers);
     }
 
-    public void SeedEmployees(int count = 5000)
+    private void SeedEmployees(int count = 5000)
     {
-        var employees = _context.Employees.ToList();
+        employees = _context.Employees.ToList();
         if (employees.Count() > 0) return;
         var employeeUsers = users.Where(x => x.Role.Name == "Employee").ToList();
         var employeesFaker = new Faker<Employee>()
@@ -92,6 +98,62 @@ public class DataSeeder
         _context.Employees.AddRange(employees);
     }
 
+    private void SeedCultivations()
+    {
+        cultivations = _context.Cultivations.ToList();
+        if (cultivations.Count() > 0) return;
+
+        var dataJson = File.ReadAllText(@"Data\DataSeed\cultivations.json");
+        cultivations = JsonConvert.DeserializeObject<List<Cultivation>>(dataJson);
+        cultivations.ForEach(cult =>
+        {
+            cult.InsertDate = DateTime.Now;
+            cult.UpdateDate = DateTime.Now;
+        });
+        _context.Cultivations.AddRange(cultivations);
+    }
+
+    private void SeedLocations(int count = 1000)
+    {
+        locations = _context.Locations.ToList();
+        if (locations.Count() > 0) return;
+
+        var locationFaker = new Faker<Location>()
+            .RuleFor(b => b.Longtitude, f => Convert.ToDecimal(f.Address.Longitude(19.91975, 28.2225)))
+            .RuleFor(b => b.Latitude, f => Convert.ToDecimal(f.Address.Latitude(35.01186, 41.50306)))
+            .RuleFor(b => b.City, f => f.Address.City())
+            .RuleFor(b => b.Country, f => f.Address.Country())
+            .RuleFor(b => b.Region, f => f.Address.City())
+            .RuleFor(b => b.PostCode, f => f.Address.ZipCode())
+            .RuleFor(b => b.Street, f => f.Address.StreetName())
+            .RuleFor(b => b.Prefecture, f => f.Address.City());
+
+        locations = locationFaker.Generate(count);
+
+        _context.Locations.AddRange(locations);
+    }
+
+    private void SeedRequests(int count = 1000)
+    {
+        requests = _context.Requests.ToList();
+        if (requests.Count() > 0) return;
+        var requestFaker = new Faker<Request>()
+            .RuleFor(b => b.JobType, f => f.PickRandom(jobTypes))
+            .RuleFor(b => b.Cultivation, f => f.PickRandom(cultivations))
+            .RuleFor(b => b.Location, f => f.PickRandom(locations))
+            .RuleFor(b => b.Farmer, f => f.PickRandom(farmers))
+            .RuleFor(b => b.StartJobDate, f => f.Date.SoonDateOnly())
+            .RuleFor(b => b.EstimatedDuration, f => f.Random.Int(2, 100))
+            .RuleFor(b => b.Price, f => f.Random.Decimal(200, 5000))
+            .RuleFor(b => b.StayAmount, f => f.Random.Decimal(100, 1000))
+            .RuleFor(b => b.TravelAmount, f => f.Random.Decimal(20, 400))
+            .RuleFor(b => b.FoodAmount, f => f.Random.Decimal(50, 400));
+
+        requests = requestFaker.Generate(count);
+
+        _context.Requests.AddRange(requests);
+    }
+
     public void Seed()
     {
         SeedRoles();
@@ -99,6 +161,9 @@ public class DataSeeder
         SeedUsers();
         SeedFarmers();
         SeedEmployees();
+        SeedCultivations();
+        SeedLocations();
+        SeedRequests();
         _context.SaveChanges();
     }
 }

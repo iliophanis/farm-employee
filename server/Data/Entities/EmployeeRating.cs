@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using server.Data.Entities.BaseEntity;
 
 namespace server.Data.Entities
 {
-    public partial class EmployeeRating
+    public partial class EmployeeRating : Entity
     {
-        public int Id { get; set; }
-        public DateTime InsertDate { get; set; }
-        public DateTime UpdateDate { get; set; }
         public string Description { get; set; }
         public decimal Stars { get; set; }
         public decimal JobQualityRate { get; set; }

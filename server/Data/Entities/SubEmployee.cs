@@ -1,10 +1,9 @@
-﻿namespace server.Data.Entities
+﻿using server.Data.Entities.BaseEntity;
+
+namespace server.Data.Entities
 {
-    public partial class SubEmployee
+    public partial class SubEmployee : Entity
     {
-        public int Id { get; set; }
-        public DateTime InsertDate { get; set; }
-        public DateTime UpdateDate { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Email { get; set; }

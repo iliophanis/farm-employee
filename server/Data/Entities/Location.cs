@@ -1,19 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using server.Data.Entities.BaseEntity;
 
 namespace server.Data.Entities
 {
-    public partial class Location
+    public partial class Location : Entity
     {
         public Location()
         {
             FarmerLocations = new HashSet<FarmerLocation>();
             Requests = new HashSet<Request>();
         }
-
-        public int Id { get; set; }
-        public DateTime InsertDate { get; set; }
-        public DateTime UpdateDate { get; set; }
         public decimal Longtitude { get; set; }
         public decimal Latitude { get; set; }
         public string Prefecture { get; set; }

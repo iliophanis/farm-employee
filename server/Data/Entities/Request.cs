@@ -1,18 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using server.Data.Entities.BaseEntity;
 
 namespace server.Data.Entities
 {
-    public partial class Request
+    public partial class Request : Entity
     {
         public Request()
         {
             EmployeeRequests = new HashSet<EmployeeRequest>();
         }
-
-        public int Id { get; set; }
-        public DateTime InsertDate { get; set; }
-        public DateTime UpdateDate { get; set; }
         public string JobType { get; set; }
         public DateOnly? StartJobDate { get; set; }
         public int? EstimatedDuration { get; set; }

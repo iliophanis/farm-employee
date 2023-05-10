@@ -1,7 +1,9 @@
-﻿namespace server.Data.Entities
+﻿using server.Data.Entities.BaseEntity;
+
+namespace server.Data.Entities
 {
     public enum AuthProvider { Google, Facebook }
-    public partial class User
+    public partial class User : Entity
     {
         public User()
         {
@@ -9,9 +11,6 @@
             Farmers = new HashSet<Farmer>();
             IsActive = true;
         }
-        public int Id { get; set; }
-        public DateTime InsertDate { get; set; }
-        public DateTime UpdateDate { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Email { get; set; }
