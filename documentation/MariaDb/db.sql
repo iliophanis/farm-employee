@@ -4,8 +4,8 @@ USE farm_employee;
 
 CREATE TABLE Cultivation (
 	id int NOT NULL PRIMARY KEY AUTO_INCREMENT,
-	insertDate timestamp NOT NULL,
-	updateDate timestamp NOT NULL,
+	insertDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+	updateDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL,
 	name varchar(255) NOT NULL	 
 );
 

@@ -105,11 +105,11 @@ public class DataSeeder
 
         var dataJson = File.ReadAllText(@"Data\DataSeed\cultivations.json");
         cultivations = JsonConvert.DeserializeObject<List<Cultivation>>(dataJson);
-        cultivations.ForEach(cult =>
-        {
-            cult.InsertDate = DateTime.Now;
-            cult.UpdateDate = DateTime.Now;
-        });
+        // cultivations.ForEach(cult =>
+        // {
+        //     cult.InsertDate = DateTime.Now;
+        //     cult.UpdateDate = DateTime.Now;
+        // });
         _context.Cultivations.AddRange(cultivations);
     }
 
@@ -126,7 +126,7 @@ public class DataSeeder
             .RuleFor(b => b.Region, f => f.Address.City())
             .RuleFor(b => b.PostCode, f => f.Address.ZipCode())
             .RuleFor(b => b.Street, f => f.Address.StreetName())
-            .RuleFor(b => b.Prefecture, f => f.Address.City());
+            .RuleFor(b => b.Prefecture, f => f.Address.City());            
 
         locations = locationFaker.Generate(count);
 
