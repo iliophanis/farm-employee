@@ -9,7 +9,7 @@ namespace server.Data.Entities
             FarmerLocations = new HashSet<FarmerLocation>();
             Requests = new HashSet<Request>();
         }
-        public decimal Longtitude { get; set; }
+        public decimal Longitude { get; set; }
         public decimal Latitude { get; set; }
         public string Prefecture { get; set; }
         public string Country { get; set; }

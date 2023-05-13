@@ -32,7 +32,7 @@ namespace server.Data.Mappings
                 .HasPrecision(10)
                 .HasColumnName("latitude");
 
-            entity.Property(e => e.Longtitude)
+            entity.Property(e => e.Longitude)
                 .HasPrecision(10)
                 .HasColumnName("longtitude");
 

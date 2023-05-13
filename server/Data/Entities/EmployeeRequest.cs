@@ -4,7 +4,7 @@ namespace server.Data.Entities
 {
     public enum PaymentMethod { bankTransfer, paypal, ebanking }
 
-    public enum PaymentStatus { pemdingPayment, processing, onHold, completed, canceled, refunded, failed }
+    public enum PaymentStatus { pendingPayment, processing, onHold, completed, canceled, refunded, failed }
 
     public partial class EmployeeRequest : Entity
     {

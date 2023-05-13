@@ -19,7 +19,7 @@ namespace server.Modules.Requests.Queries.GetUserRequests
             var requests = await _context.Requests
             .Take(10)
             .Include(x => x.Location)
-            .Select(x => new GetUserRequestDto(x.Location.Longtitude, x.Location.Latitude))
+            .Select(x => new GetUserRequestDto(x.Location.Longitude, x.Location.Latitude))
             .ToListAsync();
 
             return requests;

@@ -105,11 +105,6 @@ public class DataSeeder
 
         var dataJson = File.ReadAllText(@"Data\DataSeed\cultivations.json");
         cultivations = JsonConvert.DeserializeObject<List<Cultivation>>(dataJson);
-        // cultivations.ForEach(cult =>
-        // {
-        //     cult.InsertDate = DateTime.Now;
-        //     cult.UpdateDate = DateTime.Now;
-        // });
         _context.Cultivations.AddRange(cultivations);
     }
 
@@ -119,7 +114,7 @@ public class DataSeeder
         if (locations.Count() > 0) return;
 
         var locationFaker = new Faker<Location>()
-            .RuleFor(b => b.Longtitude, f => Convert.ToDecimal(f.Address.Longitude(19.91975, 28.2225)))
+            .RuleFor(b => b.Longitude, f => Convert.ToDecimal(f.Address.Longitude(19.91975, 28.2225)))
             .RuleFor(b => b.Latitude, f => Convert.ToDecimal(f.Address.Latitude(35.01186, 41.50306)))
             .RuleFor(b => b.City, f => f.Address.City())
             .RuleFor(b => b.Country, f => f.Address.Country())
