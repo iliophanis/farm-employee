@@ -18,9 +18,9 @@ namespace server.Modules.Users.Commands.AddRole
         {
             var dto = request.AddRoleDto;
             var user = await _context.Users
-            .Where(u => u.Email == dto.UserName)
-            .Include(u => u.Role)
-            .FirstOrDefaultAsync(cancellationToken);
+                .Where(u => u.Email == dto.UserName)
+                .Include(u => u.Role)
+                .FirstOrDefaultAsync(cancellationToken);
             if (user is null) throw new NotFoundException($"User with userName {dto.UserName} not found.");
             if (user.RoleId is not null) throw new BadRequestException($"User {user.Email} has already role");
             var userRole = await _context.Roles.FirstOrDefaultAsync(x => x.Id == dto.RoleId);

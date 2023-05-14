@@ -1,7 +1,6 @@
 using FluentValidation;
-using server.Modules.Requests.Commands.CreateRequest;
 
-namespace server.Modules.Requests.Commands.CreateRequests
+namespace server.Modules.Requests.Commands.CreateRequest
 {
     public class CreateRequestValidator : AbstractValidator<CreateRequestCommand>
     {

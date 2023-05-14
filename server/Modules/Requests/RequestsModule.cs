@@ -1,7 +1,11 @@
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using server.Modules.Requests.Dto;
 using server.Modules.Requests.Queries.GetUserRequests;
+using server.Modules.Requests.Commands.CreateRequest;
+using server.Modules.Requests.Commands.DeleteRequest;
+using server.Modules.Common.Responses;
 
 namespace server.Modules.Requests
 {
@@ -18,6 +22,32 @@ namespace server.Modules.Requests
             .WithName("GetUserRequestsQuery")
             .WithTags("Requests")
             .Produces<List<GetUserRequestDto>>(200)
+            .Produces(400)
+            .Produces(401)
+            .Produces(404)
+            .Produces(500);
+
+            endpoints.MapPost(
+            BasePath + "/create",
+            [Authorize]
+            async ([FromBody] CreateRequestDto dto, IMediator mediator, CancellationToken token)
+            => Results.Ok(await mediator.Send(new CreateRequestCommand(dto), token)))
+            .WithName("CreateRequestCommand")
+            .WithTags("Requests")
+            .Produces<CommandResponse<string>>(200)
+            .Produces(400)
+            .Produces(401)
+            .Produces(404)
+            .Produces(500);
+
+            endpoints.MapPost(
+            BasePath + "/delete",
+            [AllowAnonymous]
+            async ([FromBody] DeleteRequestDto dto, IMediator mediator, CancellationToken token)
+            => Results.Ok(await mediator.Send(new DeleteRequestCommand(dto), token)))
+            .WithName("DeleteRequestCommand")
+            .WithTags("Requests")
+            .Produces<CommandResponse<string>>(200)
             .Produces(400)
             .Produces(401)
             .Produces(404)
