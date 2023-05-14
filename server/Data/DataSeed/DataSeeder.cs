@@ -105,11 +105,6 @@ public class DataSeeder
 
         var dataJson = File.ReadAllText(@"Data\DataSeed\cultivations.json");
         cultivations = JsonConvert.DeserializeObject<List<Cultivation>>(dataJson);
-        // cultivations.ForEach(cult =>
-        // {
-        //     cult.InsertDate = DateTime.Now;
-        //     cult.UpdateDate = DateTime.Now;
-        // });
         _context.Cultivations.AddRange(cultivations);
     }
 

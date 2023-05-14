@@ -1,6 +1,8 @@
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
+using server.Data.Entities;
 using server.Modules.Requests.Dto;
+using server.Modules.Requests.Queries.GetAuthorizedUserRequests;
 using server.Modules.Requests.Queries.GetUserRequests;
 
 namespace server.Modules.Requests
@@ -18,6 +20,19 @@ namespace server.Modules.Requests
             .WithName("GetUserRequestsQuery")
             .WithTags("Requests")
             .Produces<List<GetUserRequestDto>>(200)
+            .Produces(400)
+            .Produces(401)
+            .Produces(404)
+            .Produces(500);
+
+            endpoints.MapGet(
+            BasePath + "/user/authorized",
+            [Authorize]
+            async (IMediator mediator, CancellationToken token)
+            => Results.Ok(await mediator.Send(new GetAuthorizedUserRequestsQuery(), token)))
+            .WithName("GetAuthorizedUserRequestsQuery")
+            .WithTags("Requests")
+            .Produces<List<Request>>(200)
             .Produces(400)
             .Produces(401)
             .Produces(404)

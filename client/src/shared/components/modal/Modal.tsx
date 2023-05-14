@@ -8,7 +8,7 @@ type IProps = {
   icon: any;
   buttonName: string;
   buttonColor?: string;
-  onClick: any;
+  onClick?: any;
   children: JSX.Element;
   loading?: boolean;
 };
@@ -35,14 +35,16 @@ const Modal: FunctionComponent<IProps> = ({
             {children}
           </div>
           <div className='bg-gray-50 px-4 py-3'>
-            <Button
-              variant='primary'
-              onClick={onClick}
-              isLoading={loading}
-              className='mb-2 inline-flex w-full justify-center rounded-md'
-            >
-              {buttonName}
-            </Button>
+            {buttonName && onClick && (
+              <Button
+                variant='primary'
+                onClick={onClick}
+                isLoading={loading}
+                className='mb-2 inline-flex w-full justify-center rounded-md'
+              >
+                {buttonName}
+              </Button>
+            )}
             <Button
               variant='light'
               className='inline-flex w-full justify-center rounded-md '

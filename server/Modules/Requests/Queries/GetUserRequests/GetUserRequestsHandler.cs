@@ -17,6 +17,7 @@ namespace server.Modules.Requests.Queries.GetUserRequests
         public async Task<List<GetUserRequestDto>> Handle(GetUserRequestsQuery request, CancellationToken cancellationToken)
         {
             var requests = await _context.Requests
+            .OrderByDescending(x => x.Id)
             .Take(10)
             .Include(x => x.Location)
             .Select(x => new GetUserRequestDto(x.Location.Longtitude, x.Location.Latitude))
