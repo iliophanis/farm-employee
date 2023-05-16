@@ -29,7 +29,7 @@ namespace server.Modules.Requests
 
             endpoints.MapPost(
             BasePath + "/create",
-            [Authorize]
+            [AllowAnonymous]
             async ([FromBody] CreateRequestDto dto, IMediator mediator, CancellationToken token)
             => Results.Ok(await mediator.Send(new CreateRequestCommand(dto), token)))
             .WithName("CreateRequestCommand")

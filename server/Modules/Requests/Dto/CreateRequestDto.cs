@@ -1,7 +1,7 @@
 namespace server.Modules.Requests.Dto
 {    
     public record RequestDto(string jobType, 
-                             DateOnly StartJobDate, 
+                             string StartJobDate, 
                              int EstimatedDuration,
                              decimal Price,
                              decimal StayAmount,

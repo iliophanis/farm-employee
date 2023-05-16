@@ -53,7 +53,7 @@ namespace server.Modules.Requests.Commands.CreateRequest
 
             var requests = new Request{
                 JobType = dto.Request.jobType,
-                StartJobDate = dto.Request.StartJobDate,
+                StartJobDate = System.DateOnly.Parse(dto.Request.StartJobDate),
                 EstimatedDuration = dto.Request.EstimatedDuration,
                 Price = dto.Request.EstimatedDuration,
                 StayAmount = dto.Request.StayAmount,
@@ -68,6 +68,7 @@ namespace server.Modules.Requests.Commands.CreateRequest
             await _context.SaveChangesAsync(cancellationToken);
 
             return await Task.FromResult(new CreateRequestResponseDto());
+
         }
 
     }
