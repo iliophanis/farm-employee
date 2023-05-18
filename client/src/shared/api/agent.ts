@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 
 const axiosInstance = (
   token: string | undefined,
@@ -16,7 +16,7 @@ const axiosInstance = (
 };
 
 const responseBody = (response: any) => response.data;
-const errorBody = (error: any) => error;
+const errorBody = (error: AxiosError) => error.response?.data;
 const customAxios = {
   get: (url: string, token?: string, config?: any) =>
     axiosInstance(token).get(url, config).then(responseBody).catch(errorBody),

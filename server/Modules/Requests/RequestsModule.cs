@@ -1,7 +1,9 @@
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using server.Data.Entities;
 using server.Modules.Requests.Dto;
+using server.Modules.Requests.Queries.GetAuthorizedUserRequests;
 using server.Modules.Requests.Queries.GetUserRequests;
 using server.Modules.Requests.Commands.CreateRequest;
 using server.Modules.Requests.Commands.DeleteRequest;
@@ -27,9 +29,22 @@ namespace server.Modules.Requests
             .Produces(404)
             .Produces(500);
 
+            endpoints.MapGet(
+            BasePath + "/user/authorized",
+            [Authorize]
+            async (IMediator mediator, CancellationToken token)
+            => Results.Ok(await mediator.Send(new GetAuthorizedUserRequestsQuery(), token)))
+            .WithName("GetAuthorizedUserRequestsQuery")
+            .WithTags("Requests")
+            .Produces<List<Request>>(200)
+            .Produces(400)
+            .Produces(401)
+            .Produces(404)
+            .Produces(500);
+
             endpoints.MapPost(
-            BasePath + "/create",
-            [AllowAnonymous]
+            BasePath + "",
+            [Authorize(Roles = "Farmer, Admin")]
             async ([FromBody] CreateRequestDto dto, IMediator mediator, CancellationToken token)
             => Results.Ok(await mediator.Send(new CreateRequestCommand(dto), token)))
             .WithName("CreateRequestCommand")
@@ -40,9 +55,9 @@ namespace server.Modules.Requests
             .Produces(404)
             .Produces(500);
 
-            endpoints.MapPost(
-            BasePath + "/delete",
-            [AllowAnonymous]
+            endpoints.MapDelete(
+            BasePath + "",
+            [Authorize(Roles = "Farmer")]
             async ([FromBody] DeleteRequestDto dto, IMediator mediator, CancellationToken token)
             => Results.Ok(await mediator.Send(new DeleteRequestCommand(dto), token)))
             .WithName("DeleteRequestCommand")
@@ -52,6 +67,8 @@ namespace server.Modules.Requests
             .Produces(401)
             .Produces(404)
             .Produces(500);
+
+
 
             return endpoints;
         }

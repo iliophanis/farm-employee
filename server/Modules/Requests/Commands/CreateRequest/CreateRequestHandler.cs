@@ -1,11 +1,11 @@
 using MediatR;
 using server.Modules.Common.Exceptions;
-using server.Modules.Requests.Dto;
 using server.Data.Entities;
+using server.Modules.Common.Responses;
 
 namespace server.Modules.Requests.Commands.CreateRequest
 {
-    public class CreateRequestHandler : IRequestHandler<CreateRequestCommand, CreateRequestResponseDto>
+    public class CreateRequestHandler : IRequestHandler<CreateRequestCommand, CommandResponse<string>>
     {
         private readonly DataContext _context;
 
@@ -14,7 +14,7 @@ namespace server.Modules.Requests.Commands.CreateRequest
             _context = context;
         }
 
-        public async Task<CreateRequestResponseDto> Handle(CreateRequestCommand request, CancellationToken cancellationToken)
+        public async Task<CommandResponse<string>> Handle(CreateRequestCommand request, CancellationToken cancellationToken)
         {
             var dto = request.CreateRequestDto;
             var user = await _context.Users
@@ -23,10 +23,10 @@ namespace server.Modules.Requests.Commands.CreateRequest
                 .FirstOrDefaultAsync(cancellationToken);
 
             if (user is null) throw new NotFoundException($"User with userName {dto.UserName} not found.");
-            if (user.Role.Name is not "Farmer") throw new BadRequestException($"User {user.Email} is not a farmer.");
             if (dto.Request is null || dto.Location is null) throw new NotFoundException("All fields should be filled.");
 
-            var location = new Location{
+            var location = new Location
+            {
                 Longitude = dto.Location.Longitude,
                 Latitude = dto.Location.Latitude,
                 Prefecture = dto.Location.Prefecture,
@@ -37,21 +37,19 @@ namespace server.Modules.Requests.Commands.CreateRequest
                 Street = dto.Location.Street
             };
 
-            await _context.Locations.AddAsync(location, cancellationToken);
-            await _context.SaveChangesAsync(cancellationToken);
+            var farmerId = await _context.Farmers
+                            .Where(f => f.UserId == user.Id)
+                            .Select(x => x.Id)
+                            .FirstOrDefaultAsync(cancellationToken);
+            //check if farmerId null
 
-            var farmer = await _context.Farmers
-                    .Where(f => f.UserId == user.Id)
-                    .FirstOrDefaultAsync(cancellationToken);
-
-            var cultivation = new Cultivation{
+            var cultivation = new Cultivation
+            {
                 Name = dto.CultivationName
             };
 
-            await _context.Cultivations.AddAsync(cultivation, cancellationToken);
-            await _context.SaveChangesAsync(cancellationToken);
-
-            var requests = new Request{
+            var farmerRequest = new Request
+            {
                 JobType = dto.Request.jobType,
                 StartJobDate = System.DateOnly.Parse(dto.Request.StartJobDate),
                 EstimatedDuration = dto.Request.EstimatedDuration,
@@ -59,15 +57,16 @@ namespace server.Modules.Requests.Commands.CreateRequest
                 StayAmount = dto.Request.StayAmount,
                 TravelAmount = dto.Request.TravelAmount,
                 FoodAmount = dto.Request.FoodAmount,
-                LocationId = location.Id, 
-                FarmerId = farmer.Id,    
-                CultivationId = cultivation.Id 
+                LocationId = location.Id,
+                FarmerId = farmerId,
+                Cultivation = cultivation,
+                Location = location
             };
-            
-            await _context.Requests.AddAsync(requests, cancellationToken);
+
+            await _context.Requests.AddAsync(farmerRequest, cancellationToken);
             await _context.SaveChangesAsync(cancellationToken);
 
-            return await Task.FromResult(new CreateRequestResponseDto());
+            return new CommandResponse<string>().WithData($"Successful request insertion with Id {farmerRequest.Id}");
 
         }
 

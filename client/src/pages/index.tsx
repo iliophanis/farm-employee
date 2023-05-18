@@ -10,19 +10,15 @@ import Vercel from '~/svg/Vercel.svg';
 import { MapContainer, Marker, Popup, TileLayer } from 'react-leaflet';
 import dynamic from 'next/dynamic';
 import Skeleton from '@/shared/components/Skeleton';
-import UserMap from '@/modules/home/userMap/UserMap';
+import Home from '@/modules/home';
 
 export default function HomePage() {
-  const Map = dynamic(() => import('@/shared/components/map/Map'), {
-    loading: () => <Skeleton />,
-    ssr: false, // This line is important. It's what prevents server-side render
-  });
   return (
     <>
       <Seo templateTitle='Home' />
       <main>
         <section className='bg-white'>
-          <UserMap />
+          <Home />
         </section>
       </main>
     </>

@@ -6,6 +6,8 @@ namespace server.Modules.Requests.Commands.CreateRequest
     {
         public CreateRequestValidator()
         {
+
+            //TODO : ADD VALIDATIONS FOR PAYLOAD
         }
     }
 }

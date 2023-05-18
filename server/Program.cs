@@ -10,6 +10,7 @@ using server.Data.DataSeed;
 using MediatR;
 using FluentValidation;
 using server.Modules.Common.Behaviours;
+using server.Extensions.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;
@@ -69,21 +70,10 @@ builder.Services.AddCors(options =>
 // seed test data in db
 builder.Services.AddScoped<DataSeeder>();
 
-builder.Services.AddAuthentication()
-        .AddGoogle(googleOptions =>
-        {
-            IConfigurationSection googleAuthNSection =
-            builder.Configuration.GetSection("Authentication:Google");
-            googleOptions.ClientId = builder.Configuration["Google:client_id"];
-            googleOptions.ClientSecret = builder.Configuration["Google:client_secret"];
-        });
-        
-builder.Services.AddAuthorization();
-
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(opt =>
 {
     opt.TokenValidationParameters = new()
-    
+
     {
         ValidateIssuer = true,
         ValidateAudience = true,
@@ -94,6 +84,8 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
     };
 });
+builder.Services.AddAuthorization();
+
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddTransient<CurrentUserService>();
 builder.Services.AddTransient<CurrentUserService>();
@@ -116,7 +108,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseAuthentication();
 app.UseAuthorization();
-
+app.UseCustomExceptionHandler();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {

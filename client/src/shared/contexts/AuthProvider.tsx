@@ -11,10 +11,9 @@ import store from '../utils/store';
 import { IUserResponse } from '@/modules/auth/models/IUser';
 
 interface IAuth {
-  darkMode: boolean;
+  token: string;
   expires: Date;
   user: {
-    //TODO ADD token
     displayName: string;
     userId: number;
     picture: string;
@@ -23,12 +22,16 @@ interface IAuth {
     isAdmin: boolean;
   };
 }
+interface IProfileSettings {
+  darkMode: boolean;
+}
 
 type AuthContextProps = {
   logout: () => void;
   login: (userResponse: IUserResponse) => void;
   isAuthenticated: () => boolean;
   auth: IAuth | null;
+  profileSettings: IProfileSettings | null;
 };
 
 const AuthContext = createContext<AuthContextProps>({
@@ -36,6 +39,7 @@ const AuthContext = createContext<AuthContextProps>({
   login: () => {},
   isAuthenticated: () => false,
   auth: null,
+  profileSettings: null,
 });
 
 type IAuthProviderProps = {
@@ -44,15 +48,21 @@ type IAuthProviderProps = {
 
 export const AuthProvider = ({ children }: IAuthProviderProps) => {
   const [auth, setAuth] = useState<IAuth | null>(null);
+  const [profileSettings, setProfileSettings] =
+    useState<IProfileSettings | null>(null);
   //hint can use useMemo localstorage.getItem and check if exist
 
   const handleChangeAuth = useCallback(
-    (
-      { token, expiration, displayName, userId, role, picture }: IUserResponse,
-      darkMode: boolean
-    ) => {
+    ({
+      token,
+      expiration,
+      displayName,
+      userId,
+      role,
+      picture,
+    }: IUserResponse) => {
       setAuth({
-        darkMode: darkMode,
+        token: token,
         expires: expiration,
         user: {
           displayName: displayName,
@@ -66,13 +76,20 @@ export const AuthProvider = ({ children }: IAuthProviderProps) => {
     },
     [setAuth]
   );
-
+  const isAuthenticatedState = (authState: any) => {
+    if (authState && authState.expiration) {
+      return new Date() < new Date(authState.expiration);
+    }
+    return false;
+  };
   useEffect(() => {
     const loadUser = async () => {
       const authState = store.get('farmEmpAuth');
       const darkMode = store.get('farmEmpDarkMode');
-      if (authState) handleChangeAuth(authState, darkMode);
-      else setAuth(null);
+      if (darkMode) setProfileSettings({ darkMode: darkMode });
+      if (authState && isAuthenticatedState(authState)) {
+        handleChangeAuth(authState);
+      } else setAuth(null);
     };
     loadUser();
   }, [handleChangeAuth]);
@@ -82,7 +99,8 @@ export const AuthProvider = ({ children }: IAuthProviderProps) => {
       store.set('farmEmpAuth', userResponse);
       const darkMode = store.get('farmEmpDarkMode');
       if (!darkMode) store.set('farmEmpDarkMode', 'false');
-      handleChangeAuth(userResponse, darkMode ? darkMode === 'true' : false);
+      handleChangeAuth(userResponse);
+      setProfileSettings({ darkMode: darkMode ? darkMode === 'true' : false });
     },
     [handleChangeAuth]
   );
@@ -94,7 +112,7 @@ export const AuthProvider = ({ children }: IAuthProviderProps) => {
 
   const isAuthenticated = useCallback(() => {
     if (auth && auth.expires) {
-      return new Date() > new Date(auth.expires);
+      return new Date() < new Date(auth.expires);
     }
     return false;
   }, [auth]);
@@ -104,6 +122,7 @@ export const AuthProvider = ({ children }: IAuthProviderProps) => {
       logout,
       login,
       auth,
+      profileSettings,
       isAuthenticated,
     }),
     [logout, login, auth, isAuthenticated]

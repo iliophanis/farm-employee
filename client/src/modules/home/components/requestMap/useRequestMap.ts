@@ -1,10 +1,14 @@
 import customAxios from '@/shared/api/agent';
+import { errorNotify } from '@/shared/components/toast';
 import { useQuery } from '@/shared/hooks/useQuery';
 
-const useUserMap = () => {
+const useRequestMap = () => {
   const userRequestsQuery = useQuery(['user.requests'], async () => {
     const response = await customAxios.get(`/requests/user`);
-    if (response.error) return console.log('error');
+    if (response.error) {
+      errorNotify('Σφάλμα', 'Κατι πήγε στραβά κατα την παραλαβή των αιτήσεων');
+      return [];
+    }
     return response;
   });
   return {
@@ -16,4 +20,4 @@ const useUserMap = () => {
   };
 };
 
-export default useUserMap;
+export default useRequestMap;

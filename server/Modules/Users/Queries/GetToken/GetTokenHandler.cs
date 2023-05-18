@@ -35,7 +35,7 @@ namespace server.Modules.Users.Queries.GetToken
 
             var claims = new[] {
                 new Claim("userName", user.Email),
-                new Claim(ClaimTypes.Role, user.Role.Name),
+                new Claim("role", user.Role.Name),
                 new Claim("id",Convert.ToString(user.Id)) };
             var credentials = new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration.GetValue<string>("Jwt:Key"))), SecurityAlgorithms.HmacSha256);
             var expiresDate = DateTime.Now.AddHours(8);

@@ -9,6 +9,7 @@ import '@/shared/styles/main.css';
 import Layout from '@/shared/components/layout/Layout';
 import AuthProvider from '@/shared/contexts/AuthProvider';
 import { LayoutProvider } from '@/shared/contexts/LayoutProvider';
+import { Toaster } from 'react-hot-toast';
 
 /**
  * !STARTERCONF info
@@ -38,6 +39,7 @@ function MyApp({ Component, pageProps }: AppProps) {
           </LayoutProvider>
         </AuthProvider>
       </GoogleOAuthProvider>
+      <Toaster />
     </QueryClientProvider>
   );
 }

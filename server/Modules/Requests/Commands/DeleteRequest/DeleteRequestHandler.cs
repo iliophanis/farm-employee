@@ -1,7 +1,6 @@
 using MediatR;
 using server.Modules.Common.Exceptions;
 using server.Modules.Requests.Dto;
-using server.Data.Entities;
 
 namespace server.Modules.Requests.Commands.DeleteRequest
 {
@@ -21,9 +20,8 @@ namespace server.Modules.Requests.Commands.DeleteRequest
                 .Where(u => u.Email == dto.UserName)
                 .Include(u => u.Role)
                 .FirstOrDefaultAsync(cancellationToken);
-            
+
             if (user is null) throw new NotFoundException($"User with userName {dto.UserName} not found.");
-            if (user.Role.Name is not "Farmer") throw new BadRequestException($"User {dto.UserName} is not authorised to delete post");
 
             var farmer = await _context.Farmers
                             .Where(f => f.UserId == user.Id)
@@ -32,7 +30,7 @@ namespace server.Modules.Requests.Commands.DeleteRequest
             var req = await _context.Requests
                         .Where(r => r.Id == dto.RequestId)
                         .FirstOrDefaultAsync(cancellationToken);
-
+            if (req is null) throw new NotFoundException("Request not found");
             if (req.FarmerId != farmer.Id) throw new BadRequestException("Changes are allowed only from owner");
 
             if (req is not null)
@@ -52,7 +50,7 @@ namespace server.Modules.Requests.Commands.DeleteRequest
                 await _context.SaveChangesAsync(cancellationToken);
             }
 
-            return await Task.FromResult(new DeleteRequestResponseDto()); 
+            return await Task.FromResult(new DeleteRequestResponseDto());
         }
     }
 }
