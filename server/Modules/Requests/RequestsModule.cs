@@ -6,6 +6,7 @@ using server.Modules.Requests.Dto;
 using server.Modules.Requests.Queries.GetAuthorizedUserRequests;
 using server.Modules.Requests.Queries.GetUserRequests;
 using server.Modules.Requests.Commands.CreateRequest;
+using server.Modules.Requests.Commands.UpdateRequest;
 using server.Modules.Requests.Commands.DeleteRequest;
 using server.Modules.Common.Responses;
 
@@ -55,6 +56,19 @@ namespace server.Modules.Requests
             .Produces(404)
             .Produces(500);
 
+            endpoints.MapPut(
+            BasePath + "",
+            [Authorize(Roles = "Farmer, Admin")]
+            async ([FromBody] UpdateRequestDto dto, IMediator mediator, CancellationToken token)
+            => Results.Ok(await mediator.Send(new UpdateRequestCommand(dto), token)))
+            .WithName("UpdateRequestCommand")
+            .WithTags("Requests")
+            .Produces<CommandResponse<string>>(200)
+            .Produces(400)
+            .Produces(401)
+            .Produces(404)
+            .Produces(500);
+
             endpoints.MapDelete(
             BasePath + "",
             [Authorize(Roles = "Farmer")]
@@ -67,8 +81,6 @@ namespace server.Modules.Requests
             .Produces(401)
             .Produces(404)
             .Produces(500);
-
-
 
             return endpoints;
         }

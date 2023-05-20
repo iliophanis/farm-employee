@@ -1,23 +1,25 @@
 namespace server.Modules.Requests.Dto
-{    
-    public record RequestDto(string jobType, 
+{
+    public record URequestDto(string jobType, 
                              string StartJobDate, 
                              int EstimatedDuration,
                              decimal Price,
                              decimal StayAmount,
                              decimal TravelAmount,
-                             decimal FoodAmount,
-                             int FarmerId,
-                             int CultivationId
+                             decimal FoodAmount
+                            //  int FarmerId,
+                            //  int CultivationId
                              );
-    public record LocationDto(decimal Longitude,
+    public record ULocationDto(decimal Longitude,
                                 decimal Latitude,
                                 string Prefecture,
                                 string Country,
                                 string Region,
                                 string City,
                                 string PostCode,
-                                string Street);
-    public record CreateRequestDto(string UserName, RequestDto Request, LocationDto Location, string CultivationName);
-    public record CreateRequestResponseDto();
+                                string Street
+                                );
+
+    public record UpdateRequestDto(string UserName, int RequestId, string CultivationName, URequestDto Request, ULocationDto Location);
+    public record UpdateRequestResponseDto();
 }

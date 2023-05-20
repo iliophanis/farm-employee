@@ -9,7 +9,7 @@ namespace server.Modules.Requests.Commands.CreateRequest
     {
         private readonly DataContext _context;
 
-        public CreateRequestHandler(DataContext context, IConfiguration configuration)
+        public CreateRequestHandler(DataContext context)
         {
             _context = context;
         }
@@ -23,7 +23,7 @@ namespace server.Modules.Requests.Commands.CreateRequest
                 .FirstOrDefaultAsync(cancellationToken);
 
             if (user is null) throw new NotFoundException($"User with userName {dto.UserName} not found.");
-            if (dto.Request is null || dto.Location is null) throw new NotFoundException("All fields should be filled.");
+            // if (dto.Request is null || dto.Location is null) throw new NotFoundException("All fields should be filled.");
 
             var location = new Location
             {
@@ -41,7 +41,8 @@ namespace server.Modules.Requests.Commands.CreateRequest
                             .Where(f => f.UserId == user.Id)
                             .Select(x => x.Id)
                             .FirstOrDefaultAsync(cancellationToken);
-            //check if farmerId null
+            
+            if (farmerId == 0) throw new NotFoundException($"User with userName {dto.UserName} not found.");
 
             var cultivation = new Cultivation
             {
@@ -57,7 +58,7 @@ namespace server.Modules.Requests.Commands.CreateRequest
                 StayAmount = dto.Request.StayAmount,
                 TravelAmount = dto.Request.TravelAmount,
                 FoodAmount = dto.Request.FoodAmount,
-                LocationId = location.Id,
+                //LocationId = location.Id,
                 FarmerId = farmerId,
                 Cultivation = cultivation,
                 Location = location

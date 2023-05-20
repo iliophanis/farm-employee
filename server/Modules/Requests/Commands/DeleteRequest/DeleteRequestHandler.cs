@@ -8,7 +8,7 @@ namespace server.Modules.Requests.Commands.DeleteRequest
     {
         private readonly DataContext _context;
 
-        public DeleteRequestHandler(DataContext context, IConfiguration configuration)
+        public DeleteRequestHandler(DataContext context)
         {
             _context = context;
         }
