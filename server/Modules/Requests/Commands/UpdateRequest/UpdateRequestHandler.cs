@@ -36,9 +36,10 @@ namespace server.Modules.Requests.Commands.UpdateRequest
                     .Where(r => r.Id == dto.RequestId)
                     .Include(l => l.Location)
                     .Include(c => c.Cultivation)
+                    .AsNoTracking()
                     .FirstOrDefaultAsync(cancellationToken);
 
-            if (updateRequest is null) throw new NotFoundException($"Request with id {dto.RequestId} not found");
+            if (updateRequest is null) throw new NotFoundException($"Request with id {dto.RequestId} not found.");
 
             _context.Attach(updateRequest);
 
@@ -50,20 +51,26 @@ namespace server.Modules.Requests.Commands.UpdateRequest
             updateRequest.Location.City = dto.Location.City.Equals("string") ? updateRequest.Location.City : dto.Location.City;
             updateRequest.Location.PostCode = dto.Location.PostCode.Equals("string") ? updateRequest.Location.PostCode : dto.Location.PostCode;
             updateRequest.Location.Street = dto.Location.Street.Equals("string") ? updateRequest.Location.Street : dto.Location.Street;
-
+                   
             updateRequest.Cultivation.Name = dto.CultivationName.Equals("string") ? updateRequest.Cultivation.Name : dto.CultivationName;
-
+                
             updateRequest.JobType = dto.Request.jobType.Equals("string") ? updateRequest.JobType : dto.Request.jobType;
             updateRequest.StartJobDate = dto.Request.StartJobDate.Equals(null) ? updateRequest.StartJobDate : System.DateOnly.Parse(dto.Request.StartJobDate);
             updateRequest.EstimatedDuration = dto.Request.EstimatedDuration.Equals(0) ? updateRequest.EstimatedDuration : dto.Request.EstimatedDuration;
             updateRequest.Price = dto.Request.Price.Equals(0) ? updateRequest.Price : dto.Request.Price;
             updateRequest.StayAmount = dto.Request.StayAmount.Equals(0) ? dto.Request.StayAmount : updateRequest.StayAmount;
             updateRequest.FoodAmount = dto.Request.FoodAmount.Equals(0) ? updateRequest.FoodAmount : dto.Request.FoodAmount;
+            updateRequest.LocationId = updateRequest.Location.Id;
+            updateRequest.CultivationId = updateRequest.Cultivation.Id;
+            updateRequest.FarmerId = farmerId;
+            updateRequest.Cultivation = updateRequest.Cultivation;
+            updateRequest.Location = updateRequest.Location;
 
-            _context.Requests.Update(updateRequest);
+            _context.Update(updateRequest);  
+
             await _context.SaveChangesAsync(cancellationToken);
 
-            return new CommandResponse<string>().WithData($"Successful request update with Id {dto.RequestId}");
+            return new CommandResponse<string>().WithData($"Successful update in request with Id {dto.RequestId}");
         }
     }
 }
