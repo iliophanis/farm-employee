@@ -7,8 +7,6 @@ namespace server.Modules.Requests.Dto
                              decimal StayAmount,
                              decimal TravelAmount,
                              decimal FoodAmount
-                            //  int FarmerId,
-                            //  int CultivationId
                              );
     public record ULocationDto(decimal Longitude,
                                 decimal Latitude,

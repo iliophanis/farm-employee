@@ -23,7 +23,6 @@ namespace server.Modules.Requests.Commands.CreateRequest
                 .FirstOrDefaultAsync(cancellationToken);
 
             if (user is null) throw new NotFoundException($"User with userName {dto.UserName} not found.");
-            // if (dto.Request is null || dto.Location is null) throw new NotFoundException("All fields should be filled.");
 
             var location = new Location
             {
@@ -58,7 +57,6 @@ namespace server.Modules.Requests.Commands.CreateRequest
                 StayAmount = dto.Request.StayAmount,
                 TravelAmount = dto.Request.TravelAmount,
                 FoodAmount = dto.Request.FoodAmount,
-                //LocationId = location.Id,
                 FarmerId = farmerId,
                 Cultivation = cultivation,
                 Location = location

@@ -26,9 +26,9 @@ namespace server.Modules.Requests.Commands.UpdateRequest
             if (user is null) throw new NotFoundException($"User with userName {dto.UserName} not found.");
 
             var farmerId = await _context.Farmers
-                            .Where(f => f.UserId == user.Id)
-                            .Select(x => x.Id)
-                            .FirstOrDefaultAsync(cancellationToken);
+                    .Where(f => f.UserId == user.Id)
+                    .Select(x => x.Id)
+                    .FirstOrDefaultAsync(cancellationToken);
 
             if (farmerId == 0) throw new NotFoundException($"User with userName {dto.UserName} not found.");
 
@@ -60,12 +60,7 @@ namespace server.Modules.Requests.Commands.UpdateRequest
             updateRequest.Price = dto.Request.Price.Equals(0) ? updateRequest.Price : dto.Request.Price;
             updateRequest.StayAmount = dto.Request.StayAmount.Equals(0) ? dto.Request.StayAmount : updateRequest.StayAmount;
             updateRequest.FoodAmount = dto.Request.FoodAmount.Equals(0) ? updateRequest.FoodAmount : dto.Request.FoodAmount;
-            updateRequest.LocationId = updateRequest.Location.Id;
-            updateRequest.CultivationId = updateRequest.Cultivation.Id;
-            updateRequest.FarmerId = farmerId;
-            updateRequest.Cultivation = updateRequest.Cultivation;
-            updateRequest.Location = updateRequest.Location;
-
+            
             _context.Update(updateRequest);  
 
             await _context.SaveChangesAsync(cancellationToken);
