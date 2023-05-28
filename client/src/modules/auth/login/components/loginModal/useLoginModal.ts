@@ -4,7 +4,7 @@ import { useGoogleLogin } from '@react-oauth/google';
 import { useAuth } from '@/shared/contexts/AuthProvider';
 import customAxios from '@/shared/api/agent';
 import logger from '@/shared/lib/logger';
-import { IGoogleAuthResponse } from '@/modules/auth/models/IUser';
+import { errorNotify } from '@/shared/components/toast';
 
 type IError = { error: any };
 const useLoginModal = (setShowLoginModal: any) => {
@@ -13,7 +13,6 @@ const useLoginModal = (setShowLoginModal: any) => {
   const [showAddRoleModal, setShowAddRoleModal] = React.useState(false);
   const onGoogleLogin = useGoogleLogin({
     onSuccess: async (codeResponse) => {
-      // auth.login()
       const googleResponse = await customAxios.get(
         `/oauth2/v1/userinfo?alt=json&access_token=${codeResponse.access_token}`,
         undefined,
@@ -33,7 +32,11 @@ const useLoginModal = (setShowLoginModal: any) => {
       };
       setProfile(googleResponse);
       const authResponse = await customAxios.post('/users/google-auth', data);
-      if (authResponse.error) return logger(authResponse.error);
+      if (authResponse.error)
+        return errorNotify(
+          'Σφάλμα',
+          'Κατι πήγε στραβά κατα την δημιουργία του χρήστη'
+        );
       if (authResponse.isNewUser) {
         setShowAddRoleModal(true);
         setShowLoginModal(false);
@@ -41,8 +44,12 @@ const useLoginModal = (setShowLoginModal: any) => {
         const tokenRes = await customAxios.get(
           `/users/token/${googleResponse.email}?authProvider=Google`
         );
-        console.log({ tokenRes });
-        if (tokenRes.error) throw new Error(tokenRes.error);
+
+        if (tokenRes.error)
+          return errorNotify(
+            'Σφάλμα',
+            'Κατι πήγε στραβά κατα την δημιουργία του token'
+          );
         authState.login({ ...tokenRes, picture: googleResponse.picture });
       }
       setShowLoginModal(false);

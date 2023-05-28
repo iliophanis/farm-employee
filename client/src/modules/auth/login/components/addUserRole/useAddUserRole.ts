@@ -1,15 +1,19 @@
-import React from 'react';
 import { useCommand, useQuery } from '@/shared/hooks/useQuery';
 import customAxios from '@/shared/api/agent';
 import { IAddRole } from '@/modules/auth/models/IUser';
 import { handleValidateForm } from '@/shared/utils/validateForm';
-import { useAuth } from '../../../../../shared/contexts/AuthProvider';
+import { useAuth } from '@/shared/contexts/AuthProvider';
+import { errorNotify } from '@/shared/components/toast';
 
 const useAddUserRole = (profile: any, setShowModal: any) => {
   const authState = useAuth();
   const rolesQuery = useQuery(['user.roles'], async () => {
     const response = await customAxios.get(`/users/roles`);
-    if (response.error) return console.log('error');
+    if (response.error)
+      return errorNotify(
+        'Σφάλμα',
+        'Κάτι πήγε στραβά κατα την παραλαβή των ρόλων'
+      );
     return response;
   });
   const command = useCommand([], async (data) => {
@@ -31,7 +35,11 @@ const useAddUserRole = (profile: any, setShowModal: any) => {
           `/users/token/${profile.email}?authProvider=Google`
         );
         console.log({ tokenRes });
-        if (tokenRes.error) throw new Error(tokenRes.error);
+        if (tokenRes.error)
+          return errorNotify(
+            'Σφάλμα',
+            'Κατι πήγε στραβά κατα την δημιουργία του token'
+          );
         authState.login({ ...tokenRes, picture: profile.picture });
         setShowModal(false);
         return tokenRes;
