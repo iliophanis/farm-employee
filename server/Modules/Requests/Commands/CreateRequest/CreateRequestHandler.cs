@@ -41,7 +41,7 @@ namespace server.Modules.Requests.Commands.CreateRequest
                             .Where(f => f.UserId == user.Id)
                             .Select(x => x.Id)
                             .FirstOrDefaultAsync(cancellationToken);
-            
+
             if (farmerId == 0) throw new NotFoundException($"User with userName {dto.UserName} not found.");
 
             var cultivation = new Cultivation
@@ -52,7 +52,7 @@ namespace server.Modules.Requests.Commands.CreateRequest
             var farmerRequest = new Request
             {
                 JobType = dto.Request.jobType,
-                StartJobDate = System.DateOnly.Parse(dto.Request.StartJobDate),
+                StartJobDate = System.DateTime.Parse(dto.Request.StartJobDate),
                 EstimatedDuration = dto.Request.EstimatedDuration,
                 Price = dto.Request.EstimatedDuration,
                 StayAmount = dto.Request.StayAmount,

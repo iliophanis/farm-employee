@@ -1,14 +1,13 @@
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using server.Data.Entities;
 using server.Modules.Requests.Dto;
-using server.Modules.Requests.Queries.GetAuthorizedUserRequests;
 using server.Modules.Requests.Queries.GetUserRequests;
 using server.Modules.Requests.Commands.CreateRequest;
 using server.Modules.Requests.Commands.UpdateRequest;
 using server.Modules.Requests.Commands.DeleteRequest;
 using server.Modules.Common.Responses;
+using server.Modules.Requests.Queries.GetUserRequestById;
 
 namespace server.Modules.Requests
 {
@@ -30,14 +29,27 @@ namespace server.Modules.Requests
             .Produces(404)
             .Produces(500);
 
+            // endpoints.MapGet(
+            // BasePath + "/user/authorized",
+            // [Authorize]
+            // async (IMediator mediator, CancellationToken token)
+            // => Results.Ok(await mediator.Send(new GetAuthorizedUserRequestsQuery(), token)))
+            // .WithName("GetAuthorizedUserRequestsQuery")
+            // .WithTags("Requests")
+            // .Produces<List<Request>>(200)
+            // .Produces(400)
+            // .Produces(401)
+            // .Produces(404)
+            // .Produces(500);
+
             endpoints.MapGet(
-            BasePath + "/user/authorized",
+            BasePath + "/user/{id}",
             [Authorize]
-            async (IMediator mediator, CancellationToken token)
-            => Results.Ok(await mediator.Send(new GetAuthorizedUserRequestsQuery(), token)))
-            .WithName("GetAuthorizedUserRequestsQuery")
+            async (int id, IMediator mediator, CancellationToken token)
+            => Results.Ok(await mediator.Send(new GetUserRequestByIdQuery(id), token)))
+            .WithName("GetUserRequestByIdQuery")
             .WithTags("Requests")
-            .Produces<List<Request>>(200)
+            .Produces<GetUserRequestByIdDto>(200)
             .Produces(400)
             .Produces(401)
             .Produces(404)

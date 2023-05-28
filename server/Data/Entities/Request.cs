@@ -9,7 +9,7 @@ namespace server.Data.Entities
             EmployeeRequests = new HashSet<EmployeeRequest>();
         }
         public string JobType { get; set; }
-        public DateOnly? StartJobDate { get; set; }
+        public DateTime? StartJobDate { get; set; }
         public int? EstimatedDuration { get; set; }
         public decimal? Price { get; set; }
         public decimal? StayAmount { get; set; }

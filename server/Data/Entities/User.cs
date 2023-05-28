@@ -24,6 +24,11 @@ namespace server.Data.Entities
         public virtual ICollection<Employee> Employees { get; set; }
         public virtual ICollection<Farmer> Farmers { get; set; }
 
+        public string DisplayName =>
+                !String.IsNullOrEmpty(FirstName) && !String.IsNullOrEmpty(LastName)
+                ? $"{FirstName} {LastName}"
+                : FirstName;
+
     }
 
 }
