@@ -81,7 +81,10 @@ public class DataSeeder
         var farmersUsers = users.Where(x => x.Role.Name == "Farmer").ToList();
         var farmersFaker = new Faker<Farmer>()
             .RuleFor(b => b.ContactInfo, f => f.PickRandom(contactInfos))
-            .RuleFor(b => b.User, f => f.PickRandom(farmersUsers));
+            .RuleFor(b => b.User, f => f.PickRandom(farmersUsers))
+            .RuleFor(b => b.AvgRate, f => f.Random.Decimal(0, 5))
+            .RuleFor(b => b.AvgWorkPlaceRate, f => f.Random.Decimal(0, 5))
+            .RuleFor(b => b.AvgPaymentConsequenceRate, f => f.Random.Decimal(0, 5));
         farmers = farmersFaker.Generate(count);
         _context.Farmers.AddRange(farmers);
     }
@@ -93,7 +96,11 @@ public class DataSeeder
         var employeeUsers = users.Where(x => x.Role.Name == "Employee").ToList();
         var employeesFaker = new Faker<Employee>()
             .RuleFor(b => b.ContactInfo, f => f.PickRandom(contactInfos))
-            .RuleFor(b => b.User, f => f.PickRandom(employeeUsers));
+            .RuleFor(b => b.User, f => f.PickRandom(employeeUsers))
+            .RuleFor(b => b.AvgRate, f => f.Random.Decimal(0, 5))
+            .RuleFor(b => b.AvgPrice, f => f.Random.Decimal(0, 5))
+            .RuleFor(b => b.AvgJobQuality, f => f.Random.Decimal(0, 5))
+            .RuleFor(b => b.AvgContactQuality, f => f.Random.Decimal(0, 5));
         employees = employeesFaker.Generate(count);
         _context.Employees.AddRange(employees);
     }

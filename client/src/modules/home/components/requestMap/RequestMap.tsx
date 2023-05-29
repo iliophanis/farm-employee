@@ -8,6 +8,7 @@ import useRequestMap from '@/modules/home/components/requestMap/useRequestMap';
 import { useAuth } from '@/shared/contexts/AuthProvider';
 import LoginModal from '@/modules/auth/login/components/loginModal';
 import RequestDetailsModal from '../requestDetailsModal';
+
 import { UserRequest } from './request.models';
 
 const Map = dynamic(() => import('@/shared/components/map/Map'), {
@@ -16,7 +17,7 @@ const Map = dynamic(() => import('@/shared/components/map/Map'), {
 });
 
 const RequestMap = () => {
-  const authState = useAuth();
+  const auth = useAuth();
   const { userRequests, loading, handleGetRequestById } = useRequestMap();
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [openDetailsModal, setOpenDetailsModal] = useState(false);
@@ -28,7 +29,7 @@ const RequestMap = () => {
   });
 
   const handleOpenDetails = (id: number) => {
-    if (!authState.isAuthenticated()) {
+    if (!auth.isAuthenticated()) {
       setShowLoginModal(true);
     } else {
       setShowLoginModal(false);
@@ -61,11 +62,13 @@ const RequestMap = () => {
         showLoginModal={showLoginModal}
         setShowLoginModal={setShowLoginModal}
       />
-      <RequestDetailsModal
-        openModal={openDetailsModal}
-        setOpenModal={setOpenDetailsModal}
-        data={modalData}
-      />
+      {auth.isAuthenticated() && modalData && (
+        <RequestDetailsModal
+          openModal={openDetailsModal}
+          setOpenModal={setOpenDetailsModal}
+          data={modalData}
+        />
+      )}
     </>
   );
 };

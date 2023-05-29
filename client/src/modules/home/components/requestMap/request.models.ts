@@ -18,8 +18,12 @@ type UserRequestLocation = {
   displayName: string;
 };
 
-type UserRequestFarmer = {
+export type UserRequestFarmer = {
   id: number;
   name: string;
   email: string;
+  contactInfo: string;
+  avgRate: number;
+  avgWorkPlaceRate: number;
+  avgPaymentConsequenceRate: number;
 };

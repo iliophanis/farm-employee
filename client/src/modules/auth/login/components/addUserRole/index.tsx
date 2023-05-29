@@ -55,16 +55,16 @@ const AddUserRole = ({ profile, shoModal, setShowModal }: IProps) => {
           errorName={errors.contactInfo?.address}
         />
         <TextInput
-          label='Πόλη'
-          type='text'
-          register={register('contactInfo.city')}
-          errorName={errors.contactInfo?.city}
-        />
-        <TextInput
           label='ΤΚ'
           type='number'
           register={register('contactInfo.tk')}
           errorName={errors.contactInfo?.tk}
+        />
+        <TextInput
+          label='Πόλη'
+          type='text'
+          register={register('contactInfo.city')}
+          errorName={errors.contactInfo?.city}
         />
         <TextInput
           label='Σταθερό Τηλ.'

@@ -68,9 +68,9 @@ export const AuthProvider = ({ children }: IAuthProviderProps) => {
           displayName: displayName,
           userId: userId,
           picture: picture,
-          isFarmer: role === 'farmer',
-          isAdmin: role === 'admin',
-          isEmployee: role === 'employee',
+          isFarmer: role === 'Farmer',
+          isAdmin: role === 'Admin',
+          isEmployee: role === 'Employee',
         },
       });
     },
