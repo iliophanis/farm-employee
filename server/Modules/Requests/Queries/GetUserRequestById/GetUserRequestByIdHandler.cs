@@ -18,8 +18,8 @@ namespace server.Modules.Requests.Queries.GetUserRequestById
             var jobRequest = await _context.Requests
             .Include(x => x.Location)
             .Include(x => x.Cultivation)
-            .Include(x => x.Farmer)
-            .ThenInclude(x => x.User)
+            .Include(x => x.Farmer).ThenInclude(x => x.User)
+            .Include(x => x.Farmer).ThenInclude(x => x.ContactInfo)
             .Where(x => x.Id == request.RequestId)
             .Select(x => x.ToGetUserRequestByIdDto())
             .FirstOrDefaultAsync(cancellationToken);

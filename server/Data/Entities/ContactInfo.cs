@@ -15,6 +15,8 @@ namespace server.Data.Entities
         public string PhoneNo { get; set; }
         public string MobilePhoneNo { get; set; }
 
+        public string DisplayName => $"{Address} {Tk}, {City}";
+
         public virtual ICollection<Employee> Employees { get; set; }
         public virtual ICollection<Farmer> Farmers { get; set; }
         public virtual ICollection<SubEmployee> SubEmployees { get; set; }

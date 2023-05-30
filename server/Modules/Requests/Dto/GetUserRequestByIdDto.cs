@@ -9,7 +9,15 @@ public record GetUserRequestByIdLocationDto(
         string DisplayName);
 
 
-public record GetUserRequestByIdFarmerDto(int Id, string Name, string Email);
+public record GetUserRequestByIdFarmerDto(
+    int Id,
+    string Name,
+    string Email,
+    string ContactInfo,
+    decimal AvgRate,
+    decimal AvgWorkPlaceRate,
+    decimal AvgPaymentConsequenceRate
+ );
 public record GetUserRequestByIdDto(
     int Id,
     string JobType,
@@ -42,7 +50,11 @@ public static class GetUserRequestByIdDtoExtensions
         (
             Id: request.Farmer?.Id ?? 0,
             Name: request.Farmer?.User.DisplayName,
-            Email: request.Farmer?.User.Email
+            Email: request.Farmer.User.Email,
+            ContactInfo: request.Farmer.ContactInfo.DisplayName,
+            AvgRate: request.Farmer.AvgRate,
+            AvgWorkPlaceRate: request.Farmer.AvgWorkPlaceRate,
+            AvgPaymentConsequenceRate: request.Farmer.AvgPaymentConsequenceRate
         ),
         Location: new GetUserRequestByIdLocationDto
         (

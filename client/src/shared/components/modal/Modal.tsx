@@ -6,7 +6,7 @@ type IProps = {
   openModal: boolean;
   setOpenModal: any;
   icon: any;
-  buttonName: string;
+  buttonName?: string;
   buttonColor?: string;
   onClick?: any;
   children: JSX.Element;

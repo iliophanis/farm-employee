@@ -2,20 +2,20 @@ import React from 'react';
 
 type IRowProps = {
   caption: string;
-  value: string | number;
+  value: string | number | JSX.Element;
 };
 
 const Row = ({ caption, value }: IRowProps) => {
   return (
-    <div className='space-y-1 border-b p-6  md:grid md:grid-cols-2 md:space-y-0'>
-      <p className='flex flex-row items-center text-gray-100'>{caption}</p>
-      <p className='text-gray-400'>{value}</p>
+    <div className='space-y-1 p-4 md:grid md:grid-cols-2  md:space-y-0 '>
+      <p className='flex flex-row items-center text-white'>{caption}</p>
+      <p className='text-gray-300'>{value}</p>
     </div>
   );
 };
 
 type IDescriptionListProps = {
-  items: { caption: string; value: string | number }[];
+  items: { caption: string; value: string | number | JSX.Element }[];
 };
 
 const DescriptionList = ({ items }: IDescriptionListProps) => {

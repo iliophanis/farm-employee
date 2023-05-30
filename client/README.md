@@ -123,4 +123,6 @@ Check out the [expansion pack repository](https://github.com/theodorusclarence/e
 
 ## Helpfull Tools
 
-- https://developers.arcgis.com/documentation/mapping-apis-and-services/search/services/geocoding-service/#service-url
+## Geocoding
+
+- https://nominatim.org/
