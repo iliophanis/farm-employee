@@ -20,5 +20,8 @@ namespace server.Data.Entities
 
         public virtual ICollection<FarmerLocation> FarmerLocations { get; set; }
         public virtual ICollection<Request> Requests { get; set; }
+
+        public string DisplayName => $"{Street} {PostCode}, {City}, {Prefecture}, {Country}";
+
     }
 }

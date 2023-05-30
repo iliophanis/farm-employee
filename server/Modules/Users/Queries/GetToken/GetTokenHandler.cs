@@ -41,7 +41,7 @@ namespace server.Modules.Users.Queries.GetToken
             var expiresDate = DateTime.Now.AddHours(8);
             var token = new JwtSecurityToken(_configuration.GetValue<string>("Jwt:Issuer"), _configuration.GetValue<string>("Jwt:Issuer"), claims, expires: DateTime.Now.AddHours(8), signingCredentials: credentials);
             var tokenValue = new JwtSecurityTokenHandler().WriteToken(token);
-            var displayName = !String.IsNullOrEmpty(user.FirstName) && !String.IsNullOrEmpty(user.LastName) ? $"{user.FirstName} {user.LastName}" : user.FirstName;
+            var displayName = user.DisplayName;
             return new GetTokenResponseDto(tokenValue, expiresDate, displayName, user.Id, user.Role.Name);
         }
     }

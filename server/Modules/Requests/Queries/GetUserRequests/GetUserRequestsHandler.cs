@@ -20,7 +20,7 @@ namespace server.Modules.Requests.Queries.GetUserRequests
             .OrderByDescending(x => x.Id)
             .Take(10)
             .Include(x => x.Location)
-            .Select(x => new GetUserRequestDto(x.Location.Longitude, x.Location.Latitude))
+            .Select(x => new GetUserRequestDto(x.Id, new GetUserRequestLocationDto(x.Location.Longitude, x.Location.Latitude)))
             .ToListAsync();
 
             return requests;

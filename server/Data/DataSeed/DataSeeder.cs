@@ -121,7 +121,7 @@ public class DataSeeder
             .RuleFor(b => b.Region, f => f.Address.City())
             .RuleFor(b => b.PostCode, f => f.Address.ZipCode())
             .RuleFor(b => b.Street, f => f.Address.StreetName())
-            .RuleFor(b => b.Prefecture, f => f.Address.City());            
+            .RuleFor(b => b.Prefecture, f => f.Address.City());
 
         locations = locationFaker.Generate(count);
 
@@ -137,7 +137,7 @@ public class DataSeeder
             .RuleFor(b => b.Cultivation, f => f.PickRandom(cultivations))
             .RuleFor(b => b.Location, f => f.PickRandom(locations))
             .RuleFor(b => b.Farmer, f => f.PickRandom(farmers))
-            .RuleFor(b => b.StartJobDate, f => f.Date.SoonDateOnly())
+            .RuleFor(b => b.StartJobDate, f => f.Date.Soon())
             .RuleFor(b => b.EstimatedDuration, f => f.Random.Int(2, 100))
             .RuleFor(b => b.Price, f => f.Random.Decimal(200, 5000))
             .RuleFor(b => b.StayAmount, f => f.Random.Decimal(100, 1000))
