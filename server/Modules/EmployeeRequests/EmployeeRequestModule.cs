@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using server.Data.Entities;
 using server.Modules.EmployeeRequests.Dto;
-using server.Modules.EmployeeRequests.Commands.CreateEmployeeRequest;
+using server.Modules.EmployeeRequests.Commands.SubmitRequest;
 using server.Modules.EmployeeRequests.Commands.UpdateEmployeeRequest;
 using server.Modules.EmployeeRequests.Commands.DeleteEmployeeRequest;
 using server.Modules.EmployeeRequests.Queries.GetByIdEmployeeRequest;
@@ -46,8 +46,8 @@ namespace server.Modules.Requests
             endpoints.MapPost(
             BasePath + "",
             [Authorize(Roles = "Employee, Admin")]
-            async ([FromBody] CreateEmployeeRequestDto dto, IMediator mediator, CancellationToken token)
-            => Results.Ok(await mediator.Send(new CreateEmployeeRequestCommand(dto), token)))
+            async ([FromBody] SubmitRequestDto dto, IMediator mediator, CancellationToken token)
+            => Results.Ok(await mediator.Send(new SubmitRequestCommand(dto), token)))
             .WithName("CreateEmployeeRequestCommand")
             .WithTags("EmployeeRequest")
             .Produces<CommandResponse<string>>(200)

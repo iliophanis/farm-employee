@@ -18,6 +18,6 @@ namespace server.Modules.EmployeeRequests.Dto
                             decimal Discount,
                             int MaxRequests
                             );
-    public record CreateEmployeeRequestDto(string UserName, int requestId, PackageDto Package, List<SubEmployeeDto> SubEmployee, EmployeeRequestDto EmployeeRequest);
-    public record CreateRequestEmployeeResponseDto();
+    public record SubmitRequestDto(string UserName, int requestId, PackageDto Package, List<SubEmployeeDto> SubEmployee, EmployeeRequestDto EmployeeRequest);
+    public record SubmitRequestResponseDto();
 }
