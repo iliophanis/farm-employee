@@ -24,10 +24,6 @@ namespace server.Modules.EmployeeRequests.Commands.UpdateEmployeeRequest
 
             if (user is null) throw new NotFoundException($"User with userName {dto.UserName} not found.");
 
-            var employee = await _context.Employees
-                            .Where(x => x.UserId == user.Id)
-                            .FirstOrDefaultAsync(cancellationToken);
-
             var emplRequest = await _context.EmployeeRequests
                             .Where(x => x.Id == dto.RequestId)
                             .Include(x => x.Package)
@@ -38,32 +34,30 @@ namespace server.Modules.EmployeeRequests.Commands.UpdateEmployeeRequest
 
             _context.Attach(emplRequest);
 
-            emplRequest.Package.Name = dto.Package.Name.Equals("string") ? emplRequest.Package.Name : dto.Package.Name;
-            emplRequest.Package.Price = dto.Package.Price.Equals("string") ? emplRequest.Package.Price : dto.Package.Price;
+            emplRequest.Package.Name = dto.Package.Name ?? emplRequest.Package.Name;
+            emplRequest.Package.Price = dto.Package.Price.Equals(0) ? emplRequest.Package.Price : dto.Package.Price;
             emplRequest.Package.Discount = dto.Package.Discount.Equals(0) ? emplRequest.Package.Discount : dto.Package.Discount;
             emplRequest.Package.MaxRequests = dto.Package.MaxRequests.Equals(0) ? emplRequest.Package.MaxRequests : dto.Package.MaxRequests;
              
             emplRequest.MessageSent = true;
-            emplRequest.PaymentMethod = dto.EmployeeRequest.PaymentMethod.Equals(null) ? emplRequest.PaymentMethod : dto.EmployeeRequest.PaymentMethod;
-            emplRequest.PaymentStatus = dto.EmployeeRequest.PaymentStatus.Equals(null) ? emplRequest.PaymentStatus : dto.EmployeeRequest.PaymentStatus;
-           
+            emplRequest.PaymentMethod = dto.EmployeeRequest?.PaymentMethod ?? emplRequest.PaymentMethod;
+            emplRequest.PaymentStatus = dto.EmployeeRequest?.PaymentStatus ?? emplRequest.PaymentStatus;
+
+
             foreach (var SubEmployee in dto.SubEmployee)
             {
-                var subEmpl = await _context.SubEmployees
-                        .Where(x => x.Email == SubEmployee.Email)
-                        .Where(x => x.EmployeeRequestId == dto.RequestId)
-                        .FirstOrDefaultAsync(cancellationToken);
+                var subEmpl = emplRequest.SubEmployees
+                        .Where(x => x.Email == SubEmployee.Email && x.EmployeeRequestId == dto.RequestId)
+                        .FirstOrDefault();
 
-                if (subEmpl is null) continue;               
+                if (subEmpl is null) continue;
 
-                subEmpl.FirstName = SubEmployee.FirstName.Equals("string") ? subEmpl.FirstName : SubEmployee.FirstName;
-                subEmpl.LastName = SubEmployee.LastName.Equals("string") ? subEmpl.LastName : SubEmployee.LastName;
+                subEmpl.FirstName = SubEmployee.FirstName ?? subEmpl.FirstName;
+                subEmpl.LastName = SubEmployee.LastName ?? subEmpl.LastName;
+            }   
 
-                _context.Add(subEmpl);
-
-            }
+            await _context.SaveChangesAsync(cancellationToken);       
             
-            await _context.SaveChangesAsync(cancellationToken);
 
             return new CommandResponse<string>().WithData($"Successful update in request with Id {dto.RequestId}");  
         }
