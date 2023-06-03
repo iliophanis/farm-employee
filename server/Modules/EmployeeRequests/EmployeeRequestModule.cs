@@ -20,11 +20,11 @@ namespace server.Modules.Requests
             endpoints.MapGet(
             BasePath + "/employee",
             [AllowAnonymous]
-            async (int employeeRequestId, int employeeId, IMediator mediator, CancellationToken token)
-            => Results.Ok(await mediator.Send(new GetByIdEmployeeRequestQuery(employeeRequestId, employeeId), token)))
+            async (int employeeRequestId, IMediator mediator, CancellationToken token)
+            => Results.Ok(await mediator.Send(new GetByIdEmployeeRequestQuery(employeeRequestId), token)))
             .WithName("GetByIdEmployeeRequestQuery")
             .WithTags("EmployeeRequest")
-            .Produces<List<GetByIdEmployeeRequestResponseDto>>(200)
+            .Produces<List<GetByIdEmployeeRequestDto>>(200)
             .Produces(400)
             .Produces(401)
             .Produces(404)
@@ -33,8 +33,8 @@ namespace server.Modules.Requests
             endpoints.MapGet(
             BasePath + "/employee/all",
             [AllowAnonymous]
-            async (int employeeRequestId, IMediator mediator, CancellationToken token)
-            => Results.Ok(await mediator.Send(new GetListEmployeeRequestQuery(employeeRequestId), token)))
+            async (int requestId, IMediator mediator, CancellationToken token)
+            => Results.Ok(await mediator.Send(new GetListEmployeeRequestQuery(requestId), token)))
             .WithName("GetListEmployeeRequestQuery")
             .WithTags("EmployeeRequest")
             .Produces<List<Request>>(200)

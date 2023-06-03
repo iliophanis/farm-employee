@@ -19,7 +19,7 @@ namespace server.Modules.EmployeeRequests.Commands.UpdateEmployeeRequest
             var dto = request.UpdateEmployeeRequestDto;
             var user = await _context.Users
                 .Where(u => u.Email == dto.UserName)
-                .Include(u => u.Role)                
+                .Include(u => u.Role)             
                 .FirstOrDefaultAsync(cancellationToken);
 
             if (user is null) throw new NotFoundException($"User with userName {dto.UserName} not found.");
@@ -56,9 +56,8 @@ namespace server.Modules.EmployeeRequests.Commands.UpdateEmployeeRequest
                 subEmpl.LastName = SubEmployee.LastName ?? subEmpl.LastName;
             }   
 
-            await _context.SaveChangesAsync(cancellationToken);       
+            await _context.SaveChangesAsync(cancellationToken);     
             
-
             return new CommandResponse<string>().WithData($"Successful update in request with Id {dto.RequestId}");  
         }
 

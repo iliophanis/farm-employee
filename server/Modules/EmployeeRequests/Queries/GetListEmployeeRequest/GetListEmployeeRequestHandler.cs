@@ -5,33 +5,29 @@ using server.Modules.EmployeeRequests.Dto;
 
 namespace server.Modules.EmployeeRequests.Queries.GetListEmployeeRequest
 {
-    public class GetListEmployeeRequestHandler : IRequestHandler<GetListEmployeeRequestQuery, GetListEmployeeRequestResponseDto>
+    public class GetListEmployeeRequestHandler : IRequestHandler<GetListEmployeeRequestQuery, List<GetListEmployeeRequestDto>>
     {
         private readonly DataContext _context;
+        private readonly IConfiguration _configuration;
 
-        public GetListEmployeeRequestHandler(DataContext context)
+        public GetListEmployeeRequestHandler(DataContext context, IConfiguration configuration)
         {
             _context = context;
+            _configuration = configuration;
         }
 
-        public async Task<GetListEmployeeRequestResponseDto> Handle(GetListEmployeeRequestQuery request, CancellationToken cancellationToken)
+        public async Task<List<GetListEmployeeRequestDto>> Handle(GetListEmployeeRequestQuery request, CancellationToken cancellationToken)
         {
              var employeeRequest = await _context.EmployeeRequests
-                            .Where(x => x.Id == request.employeeRequestId)
-                            .FirstOrDefaultAsync(cancellationToken);
-
-            if (employeeRequest is null) throw new NotFoundException("Request not found.");
-
-            var subEmployees = await _context.SubEmployees
-                            .Where(x => x.EmployeeRequestId == employeeRequest.Id)
+                            .Include(x => x.Employee).ThenInclude(x => x.User)
+                            .Include(x => x.SubEmployees)
+                            .Where(x => x.RequestId == request.requestId)
+                            .Select(x => new GetListEmployeeRequestDto(x.Employee.User.FirstName, x.Employee.User.LastName, x.Employee.User.Email))
                             .ToListAsync(cancellationToken);
 
-            var employee = await _context.Employees
-                    .Include(x => x.User)
-                    .Where(x => x.Id == employeeRequest.EmployeeId)
-                    .FirstOrDefaultAsync(cancellationToken);            
+            if (employeeRequest is null) throw new NotFoundException("Request not found."); 
 
-            return new GetListEmployeeRequestResponseDto(employee.User.FirstName, employee.User.LastName, employee.User.Email, employeeRequest.MessageSent, employeeRequest.PaymentStatus, employeeRequest.PaymentMethod, subEmployees);
+            return employeeRequest;
         }
     }
 }

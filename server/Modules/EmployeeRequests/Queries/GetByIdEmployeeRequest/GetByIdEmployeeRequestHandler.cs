@@ -1,38 +1,36 @@
 using MediatR;
 using server.Modules.Common.Exceptions;
 using server.Modules.EmployeeRequests.Dto;
+using server.Data.Entities;
 
 namespace server.Modules.EmployeeRequests.Queries.GetByIdEmployeeRequest
 {
-    public class GetByIdEmployeeRequestHandler : IRequestHandler<GetByIdEmployeeRequestQuery, GetByIdEmployeeRequestResponseDto>
+    public class GetByIdEmployeeRequestHandler : IRequestHandler<GetByIdEmployeeRequestQuery, GetByIdEmployeeRequestDto>
     {
         private readonly DataContext _context;
-        private readonly IConfiguration _configuration;
 
         public GetByIdEmployeeRequestHandler(DataContext context, IConfiguration configuration)
         {
             _context = context;
-            _configuration = configuration;
         }
 
-        public async Task<GetByIdEmployeeRequestResponseDto> Handle(GetByIdEmployeeRequestQuery request, CancellationToken cancellationToken)
+        public async Task<GetByIdEmployeeRequestDto> Handle(GetByIdEmployeeRequestQuery request, CancellationToken cancellationToken)
         {
             var employeeRequest = await _context.EmployeeRequests
-                            .Where(x => x.Id == request.employeeRequestId && x.EmployeeId == request.employeeId)
+                            .Include(x => x.Employee).ThenInclude(x => x.User)
+                            .Where(x => x.Id == request.employeeRequestId)
                             .FirstOrDefaultAsync(cancellationToken);
 
             if (employeeRequest is null) throw new NotFoundException("Request not found.");
 
-            var subEmployees = await _context.SubEmployees
+            var subEmployee = await _context.SubEmployees
                             .Where(x => x.EmployeeRequestId == request.employeeRequestId)
                             .ToListAsync(cancellationToken);
 
-            var employee = await _context.Employees
-                    .Include(x => x.User)
-                    .Where(x => x.Id == employeeRequest.EmployeeId)
-                    .FirstOrDefaultAsync(cancellationToken);            
+            var dto = employeeRequest.ToGetByIdEmployeeRequestDto();
+            dto.Subemployees = subEmployee;
 
-            return new GetByIdEmployeeRequestResponseDto(employee.User.FirstName, employee.User.LastName, employee.User.Email, employeeRequest.MessageSent, employeeRequest.PaymentStatus, employeeRequest.PaymentMethod, subEmployees);
+            return dto;
         }
     }
 }
