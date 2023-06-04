@@ -8,7 +8,7 @@ namespace server.Data.Entities
         public string LastName { get; set; }
         public string Email { get; set; }
         public int EmployeeRequestId { get; set; }
-        public int ContactInfoId { get; set; }
+        public int? ContactInfoId { get; set; }
 
         public virtual ContactInfo ContactInfo { get; set; }
         public virtual EmployeeRequest EmployeeRequest { get; set; }

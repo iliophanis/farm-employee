@@ -17,7 +17,7 @@ namespace server.Data.Entities
 
         public bool? MessageSent { get; set; }
         public PaymentStatus PaymentStatus { get; set; }
-        public PaymentMethod PaymentMethod { get; set; }
+        public PaymentMethod? PaymentMethod { get; set; }
         public int EmployeeId { get; set; }
         public int RequestId { get; set; }
         public int PackageId { get; set; }

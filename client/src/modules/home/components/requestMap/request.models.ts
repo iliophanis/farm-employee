@@ -10,6 +10,7 @@ export type UserRequest = {
   cultivationName: string;
   farmer: UserRequestFarmer;
   location: UserRequestLocation;
+  actions: string[];
 };
 
 type UserRequestLocation = {

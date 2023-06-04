@@ -52,7 +52,7 @@ const RequestMap = () => {
 
   return (
     <>
-      <Map>
+      <Map userRequests={userRequests}>
         <div className='mt-5 flex justify-center'>
           <SearchSelect
             loadOptions={debounce(handleGetLocationOptions, 500)}

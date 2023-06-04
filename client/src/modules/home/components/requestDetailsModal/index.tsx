@@ -25,11 +25,13 @@ const RequestDetailsModal = ({
   const button = useMemo(() => {
     let buttonName = undefined;
     let onClick = undefined;
+    let isDisabled = false;
     if (auth?.user.isEmployee) {
       buttonName = 'Αίτηση';
       onClick = () => logger('submitApplication');
+      isDisabled = !data.actions.includes('Submit');
     }
-    return { buttonName, onClick };
+    return { buttonName, onClick, isDisabled };
   }, [auth]);
   const items = [
     {
@@ -82,6 +84,7 @@ const RequestDetailsModal = ({
         setOpenModal={setOpenModal}
         buttonName={button.buttonName}
         onClick={button.onClick}
+        isDisabled={button.isDisabled}
         icon={<MdOutlineAgriculture />}
       >
         <DescriptionList items={items} />

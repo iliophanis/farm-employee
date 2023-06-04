@@ -5,12 +5,13 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.OpenApi.Models;
 using server.Modules;
 using Serilog;
-using server.Services;
 using server.Data.DataSeed;
 using MediatR;
 using FluentValidation;
 using server.Modules.Common.Behaviours;
 using server.Extensions.Middlewares;
+using server.Modules.Common.Services.Email;
+using server.Modules.Common.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;
@@ -88,7 +89,7 @@ builder.Services.AddAuthorization();
 
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddTransient<CurrentUserService>();
-builder.Services.AddTransient<CurrentUserService>();
+builder.Services.AddScoped<EmailService>();
 builder.Services.AddMediatR(Assembly.GetExecutingAssembly());
 builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestValidationBehaviour<,>));
 builder.Services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());

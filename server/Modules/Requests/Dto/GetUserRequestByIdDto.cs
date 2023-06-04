@@ -29,13 +29,14 @@ public record GetUserRequestByIdDto(
     decimal? FoodAmount,
     string CultivationName,
     GetUserRequestByIdFarmerDto Farmer,
-    GetUserRequestByIdLocationDto Location
+    GetUserRequestByIdLocationDto Location,
+    List<string> Actions
 );
 
 
 public static class GetUserRequestByIdDtoExtensions
 {
-    public static GetUserRequestByIdDto ToGetUserRequestByIdDto(this Request request) => new GetUserRequestByIdDto
+    public static GetUserRequestByIdDto ToGetUserRequestByIdDto(this Request request, List<string> actions) => new GetUserRequestByIdDto
     (
         Id: request.Id,
         JobType: request.JobType,
@@ -61,6 +62,7 @@ public static class GetUserRequestByIdDtoExtensions
             Longitude: request.Location?.Longitude ?? 0,
             Latitude: request.Location?.Latitude ?? 0,
             DisplayName: request.Location.DisplayName
-        )
+        ),
+        Actions: actions
     );
 }

@@ -8,6 +8,7 @@ type IProps = {
   icon: any;
   buttonName?: string;
   buttonColor?: string;
+  isDisabled?: boolean;
   onClick?: any;
   children: JSX.Element;
   loading?: boolean;
@@ -18,6 +19,7 @@ const Modal: FunctionComponent<IProps> = ({
   setOpenModal,
   icon,
   buttonName,
+  isDisabled = false,
   buttonColor = 'indigo',
   onClick,
   loading = false,
@@ -40,6 +42,7 @@ const Modal: FunctionComponent<IProps> = ({
                 variant='primary'
                 onClick={onClick}
                 isLoading={loading}
+                disabled={isDisabled}
                 className='mb-2 inline-flex w-full justify-center rounded-md'
               >
                 {buttonName}

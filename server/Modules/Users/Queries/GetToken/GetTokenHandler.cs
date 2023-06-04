@@ -27,6 +27,8 @@ namespace server.Modules.Users.Queries.GetToken
             var authProvider = request.AuthProvider == "Google" ? AuthProvider.Google : AuthProvider.Facebook;
             var user = await _context.Users
             .Include(x => x.Role)
+            .Include(x => x.Employees)
+            .Include(x => x.Farmers)
             .Where(x => x.Email == request.UserName && x.AuthProvider == authProvider)
             .FirstOrDefaultAsync(cancellationToken);
             if (user is null) throw new NotFoundException($"User with userName {request.UserName} not found.");
@@ -37,6 +39,17 @@ namespace server.Modules.Users.Queries.GetToken
                 new Claim("userName", user.Email),
                 new Claim("role", user.Role.Name),
                 new Claim("id",Convert.ToString(user.Id)) };
+
+            if (user.Employees.Count() > 0)
+            {
+                claims.Append(new Claim("employeeId", user.Employees.First().Id.ToString()));
+            }
+
+            if (user.Farmers.Count() > 0)
+            {
+                claims.Append(new Claim("farmerId", user.Farmers.First().Id.ToString()));
+            }
+
             var credentials = new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration.GetValue<string>("Jwt:Key"))), SecurityAlgorithms.HmacSha256);
             var expiresDate = DateTime.Now.AddHours(8);
             var token = new JwtSecurityToken(_configuration.GetValue<string>("Jwt:Issuer"), _configuration.GetValue<string>("Jwt:Issuer"), claims, expires: DateTime.Now.AddHours(8), signingCredentials: credentials);

@@ -6,6 +6,11 @@
     <UserSecretsId>49d899b4-f844-47c8-aa02-b73500d134ad</UserSecretsId>
   </PropertyGroup>
 
+    <PropertyGroup>
+        <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+        <GenerateTargetFrameworkAttribute>false</GenerateTargetFrameworkAttribute>    
+    </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="Bogus" Version="34.0.2" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="6.0.0" />
@@ -31,6 +36,7 @@
     <PackageReference Include="Serilog.Sinks.Console" Version="4.0.1" />
     <PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
     <PackageReference Include="Serilog.AspNetCore" Version="6.0.1" />
+    <PackageReference Include="MailKit" Version="3.3.0" /> 
   </ItemGroup>
 
 </Project>
