@@ -38,9 +38,9 @@ function StarRating({ ratingValue }: any) {
   return (
     <div className='flex items-center'>
       {starIcons}
-      <p className='ml-2 text-sm font-medium text-gray-300 dark:text-gray-400'>
+      <div className='ml-2 text-sm font-medium text-gray-300 dark:text-gray-400'>
         {ratingValue} στα 5
-      </p>
+      </div>
     </div>
   );
 }

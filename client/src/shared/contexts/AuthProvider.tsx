@@ -125,7 +125,7 @@ export const AuthProvider = ({ children }: IAuthProviderProps) => {
       profileSettings,
       isAuthenticated,
     }),
-    [logout, login, auth, isAuthenticated]
+    [logout, login, auth, isAuthenticated, profileSettings]
   );
   return (
     <AuthContext.Provider value={providerValue}>

@@ -20,11 +20,11 @@ const InfoModal = ({ openModal, setOpenModal }: IProps) => {
               Επιτυχής Ενεργοποίηση!
             </h3>
             <div className='mt-2 px-7 py-3'>
-              <p className='text-sm text-gray-500'>
+              <div className='text-sm text-gray-500'>
                 Ενεργοποιήσατε επιτυχώς το δωρεάν πακέτο γνωριμιάς και έχετε
                 διαθέσιμες 5 απαντήσεις και 7 ημέρες απεριόριστης περιήγησης
                 στην εφαρμογή.
-              </p>
+              </div>
             </div>
             <div className='items-center px-4 py-3'>
               <button

@@ -1,5 +1,4 @@
-import { createContext, useContext, useState, useEffect } from 'react';
-import { useMemo } from 'react';
+import { createContext, useContext, useState, useEffect, useMemo } from 'react';
 
 type LayoutContextProps = {
   view: string;

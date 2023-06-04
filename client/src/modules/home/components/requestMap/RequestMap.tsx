@@ -9,15 +9,20 @@ import { useAuth } from '@/shared/contexts/AuthProvider';
 import LoginModal from '@/modules/auth/login/components/loginModal';
 import RequestDetailsModal from '../requestDetailsModal';
 import { UserRequest } from './request.models';
-
-const Map = dynamic(() => import('@/shared/components/map/Map'), {
-  loading: () => <Skeleton />,
-  ssr: false,
-});
+import SearchSelect from '@/shared/components/formControls/SearchSelect';
+import useDebounce from '@/shared/hooks/useDebounce';
+import Map from '@/shared/components/map/Map';
 
 const RequestMap = () => {
   const auth = useAuth();
-  const { userRequests, loading, handleGetRequestById } = useRequestMap();
+  const { debounce } = useDebounce();
+  const {
+    userRequests,
+    loading,
+    handleGetRequestById,
+    handleGetLocationOptions,
+    setSearchLocation,
+  } = useRequestMap();
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [openDetailsModal, setOpenDetailsModal] = useState(false);
   const [modalData, setModalData] = useState<UserRequest | null>(null);
@@ -48,9 +53,20 @@ const RequestMap = () => {
   return (
     <>
       <Map>
+        <div className='mt-5 flex justify-center'>
+          <SearchSelect
+            loadOptions={debounce(handleGetLocationOptions, 500)}
+            defaultOptions
+            cacheOptions
+            getOptionLabel={(option: any) => option['label']}
+            getOptionValue={(option: any) => option['value']}
+            onChange={(newValue: any) => setSearchLocation(newValue)}
+          />
+        </div>
+
         {userRequests?.map((d, idx) => (
           <Marker
-            key={idx}
+            key={d.id}
             position={[d.location.latitude, d.location.longitude]}
             icon={customMarker}
             eventHandlers={{ click: () => handleOpenDetails(d.id) }}

@@ -19,8 +19,8 @@ namespace server.Modules.Requests
             endpoints.MapGet(
             BasePath + "/user",
             [AllowAnonymous]
-            async (IMediator mediator, CancellationToken token)
-            => Results.Ok(await mediator.Send(new GetUserRequestsQuery(), token)))
+            async ([FromQuery] decimal? MinLat, [FromQuery] decimal? MaxLat, [FromQuery] decimal? MinLon, [FromQuery] decimal? MaxLon, IMediator mediator, CancellationToken token)
+            => Results.Ok(await mediator.Send(new GetUserRequestsQuery(MinLat, MaxLat, MinLon, MaxLon), token)))
             .WithName("GetUserRequestsQuery")
             .WithTags("Requests")
             .Produces<List<GetUserRequestDto>>(200)

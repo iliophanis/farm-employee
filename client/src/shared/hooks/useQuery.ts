@@ -1,6 +1,5 @@
 import {
   QueryFunction,
-  QueryFunctionContext,
   QueryKey,
   useMutation,
   useQuery as useQueryBase,

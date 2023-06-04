@@ -126,3 +126,5 @@ Check out the [expansion pack repository](https://github.com/theodorusclarence/e
 ## Geocoding
 
 - https://nominatim.org/
+
+https://nominatim.openstreetmap.org/?accept-language=gr-GR&countrycodes=[gr]&q=%CE%91%CE%B8%CE%AE%CE%BD%CE%B1&format=json&limit=10

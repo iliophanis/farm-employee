@@ -10,7 +10,7 @@ import Layout from '@/shared/components/layout/Layout';
 import AuthProvider from '@/shared/contexts/AuthProvider';
 import { LayoutProvider } from '@/shared/contexts/LayoutProvider';
 import { Toaster } from 'react-hot-toast';
-
+import 'leaflet/dist/leaflet.css';
 /**
  * !STARTERCONF info
  * ? `Layout` component is called in every page using `np` snippets. If you have consistent layout across all page, you can add it here too

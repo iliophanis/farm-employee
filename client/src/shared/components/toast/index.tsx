@@ -1,5 +1,4 @@
 import React from 'react';
-import clsxm from '@/shared/lib/clsxm';
 import toast from 'react-hot-toast';
 import { MdOutlineClose } from 'react-icons/md';
 import {
@@ -8,7 +7,8 @@ import {
   HiExclamationTriangle,
   HiXCircle,
 } from 'react-icons/hi2';
-import { IconType } from 'react-icons';
+
+import clsxm from '@/shared/lib/clsxm';
 
 export const notify = (
   title: string,
@@ -28,9 +28,9 @@ export const notify = (
           <h1 className='text-base font-semibold leading-none tracking-wider text-white'>
             {title}
           </h1>
-          <p className='mt-2 text-sm leading-relaxed tracking-wider text-gray-200'>
+          <div className='mt-2 text-sm leading-relaxed tracking-wider text-gray-200'>
             {description}
-          </p>
+          </div>
         </div>
         <div
           className='absolute top-2 right-2 cursor-pointer text-lg'

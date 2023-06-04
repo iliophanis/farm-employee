@@ -6,15 +6,10 @@ import {
   HiOutlineUserGroup,
   HiOutlinePhone,
   HiOutlineXCircle,
-  HiArrowLeftOnRectangle,
 } from 'react-icons/hi2';
 
-import UnstyledLink from '@/shared/components/links/UnstyledLink';
-import logger from '@/shared/lib/logger';
 import IconButton from '@/shared/components/buttons/IconButton';
 import Login from '@/modules/auth/login';
-import dynamic from 'next/dynamic';
-import Skeleton from '../Skeleton';
 
 const links = [
   { href: '/', label: 'Κεντρική', Icon: HiOutlineHome },

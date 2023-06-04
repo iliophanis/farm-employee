@@ -1,5 +1,5 @@
 import { FunctionComponent } from 'react';
-import TextButton from '../buttons/TextButton';
+
 import Button from '../buttons/Button';
 
 type IProps = {
