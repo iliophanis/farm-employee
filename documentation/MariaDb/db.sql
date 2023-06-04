@@ -147,10 +147,10 @@ CREATE TABLE Employee_Request (
 	updateDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL,
 	messageSent BOOLEAN DEFAULT FALSE,
 	paymentStatus ENUM('pendingPayment', 'processing', 'onHold', 'completed', 'canceled', 'refunded', 'failed') NOT NULL,
-	paymentMethod ENUM('bankTransfer', 'paypal', 'ebanking') NOT NULL,
+	paymentMethod ENUM('bankTransfer', 'paypal', 'ebanking') NULL,
 	employeeId int NOT NULL,
 	requestId int NOT NULL,
-	packageId int NOT NULL,
+	packageId int NULL,
 	FOREIGN KEY (employeeId) REFERENCES Employee(id),
 	FOREIGN KEY (requestId) REFERENCES Request(id),
 	FOREIGN KEY (packageId) REFERENCES Package(id)
