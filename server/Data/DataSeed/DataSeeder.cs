@@ -114,23 +114,39 @@ public class DataSeeder
         cultivations = JsonConvert.DeserializeObject<List<Cultivation>>(dataJson);
         _context.Cultivations.AddRange(cultivations);
     }
-
+    private record BoundingBox(string City, string Region, string PostCode, double MaxLon, double MinLon, double MaxLat, double MinLat);
     private void SeedLocations(int count = 1000)
     {
+
         locations = _context.Locations.ToList();
         if (locations.Count() > 0) return;
 
-        var locationFaker = new Faker<Location>()
-            .RuleFor(b => b.Longitude, f => Convert.ToDecimal(f.Address.Longitude(19.91975, 28.2225)))
-            .RuleFor(b => b.Latitude, f => Convert.ToDecimal(f.Address.Latitude(35.01186, 41.50306)))
-            .RuleFor(b => b.City, f => f.Address.City())
-            .RuleFor(b => b.Country, f => f.Address.Country())
-            .RuleFor(b => b.Region, f => f.Address.City())
-            .RuleFor(b => b.PostCode, f => f.Address.ZipCode())
-            .RuleFor(b => b.Street, f => f.Address.StreetName())
-            .RuleFor(b => b.Prefecture, f => f.Address.City());
+        var boundingBoxList = new List<BoundingBox>()
+        {
+            new BoundingBox("Λάρισα","Περιφέρεια Θεσσαλίας","42222", 22.5760706, 22.2560706, 39.7983092, 39.4783092),
+            new BoundingBox("Αθήνα","Περιφέρεια Αττικής","10431", 23.8883052, 23.5683052, 38.1439412, 37.8239412),
+            new BoundingBox("Κρήτη","Περιφέρεια Κρήτης","71409", 26.3189698, 23.5144812, 35.6957793, 34.9212109),
+            new BoundingBox("Δράμα","Περιφέρεια Ανατολικής Μακεδονίας και Θράκης","66100", 24.3068286, 23.9868286, 41.3099443,  40.9899443),
+            new BoundingBox("Θεσσαλονίκη","Περιφέρεια Κεντρικής Μακεδονίας","54626", 23.0952716, 22.7752716, 40.8003167,  40.4803167),
+            new BoundingBox("Αγρίνιο","Περιφέρεια Δυτικής Ελλάδας","30100", 21.5694206, 21.2494206, 38.7848275,  38.4648275),
+        };
 
-        locations = locationFaker.Generate(count);
+        var dataCount = (int)(count / boundingBoxList.Count());
+
+        foreach (var b in boundingBoxList)
+        {
+            var locationFaker = new Faker<Location>()
+                        .RuleFor(b => b.Longitude, f => Convert.ToDecimal(f.Address.Longitude(b.MinLon, b.MaxLon)))
+                        .RuleFor(b => b.Latitude, f => Convert.ToDecimal(f.Address.Latitude(b.MinLat, b.MaxLat)))
+                        .RuleFor(b => b.City, f => b.City)
+                        .RuleFor(b => b.Country, f => "Ελλάς")
+                        .RuleFor(b => b.Region, f => b.Region)
+                        .RuleFor(b => b.PostCode, f => b.PostCode)
+                        .RuleFor(b => b.Street, f => b.City)
+                        .RuleFor(b => b.Prefecture, f => b.City);
+            var items = locationFaker.Generate(dataCount);
+            locations = locations.Union(items).ToList();
+        }
 
         _context.Locations.AddRange(locations);
     }
