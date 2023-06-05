@@ -24,7 +24,7 @@ namespace server.Modules.Requests.Queries.GetUserRequestById
             var employeeId = _currentUserService.GetEmployeeId();
             if (employeeId != null)
             {
-                var hasExistedOpenRequest = await _context.EmployeeRequests.AnyAsync(x => x.EmployeeId == employeeId, cancellationToken);
+                var hasExistedOpenRequest = await _context.EmployeeRequests.AnyAsync(x => x.EmployeeId == employeeId && x.RequestId == request.RequestId, cancellationToken);
                 if (!hasExistedOpenRequest) actions.Add(ApplicationPermission.Submit.ToString());
             }
 

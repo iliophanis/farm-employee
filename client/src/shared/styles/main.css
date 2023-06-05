@@ -7,17 +7,16 @@ body {
 
 /* Make a custom scrollbar */
 ::-webkit-scrollbar {
-  height: 4px;
-  width: 4px;
+  height: 7px;
+  width: 7px;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: linear-gradient(transparent, #374151);
-  border-radius: 3px;
+  background: #ffffff;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(transparent, #4338ca);
+  background: #4338ca;
 }
 
 .leaflet-control-attribution.leaflet-control a {

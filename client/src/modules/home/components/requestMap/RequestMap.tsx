@@ -8,7 +8,7 @@ import useRequestMap from '@/modules/home/components/requestMap/useRequestMap';
 import { useAuth } from '@/shared/contexts/AuthProvider';
 import LoginModal from '@/modules/auth/login/components/loginModal';
 import RequestDetailsModal from '../requestDetailsModal';
-import { UserRequest } from './request.models';
+import { UserRequest } from '../../models/IUserRequest';
 import SearchSelect from '@/shared/components/formControls/SearchSelect';
 import useDebounce from '@/shared/hooks/useDebounce';
 import Map from '@/shared/components/map/Map';
@@ -37,12 +37,13 @@ const RequestMap = () => {
       setShowLoginModal(true);
     } else {
       setShowLoginModal(false);
-      const jobRequest = userRequests.find((x) => x.id == id);
-      if (jobRequest?.farmer !== undefined) {
-        setModalData(jobRequest);
-        setOpenDetailsModal(true);
-        return;
-      }
+      //TODO Update Data only if authUser Change
+      // const jobRequest = userRequests.find((x) => x.id == id);
+      // if (jobRequest?.farmer !== undefined) {
+      //   setModalData(jobRequest);
+      //   setOpenDetailsModal(true);
+      //   return;
+      // }
 
       handleGetRequestById(id, setModalData, setOpenDetailsModal);
     }

@@ -35,19 +35,19 @@ namespace server.Modules.Users.Queries.GetToken
             if (user.IsActive == false) throw new NotFoundException($"User {user.Email} is not active.");
             if (user.RoleId == null) throw new BadRequestException($"User {user.Email} not having a role");
 
-            var claims = new[] {
+            var claims = new List<Claim> {
                 new Claim("userName", user.Email),
                 new Claim("role", user.Role.Name),
                 new Claim("id",Convert.ToString(user.Id)) };
 
             if (user.Employees.Count() > 0)
             {
-                claims.Append(new Claim("employeeId", user.Employees.First().Id.ToString()));
+                claims.Add(new Claim("employeeId", user.Employees.First().Id.ToString()));
             }
 
             if (user.Farmers.Count() > 0)
             {
-                claims.Append(new Claim("farmerId", user.Farmers.First().Id.ToString()));
+                claims.Add(new Claim("farmerId", user.Farmers.First().Id.ToString()));
             }
 
             var credentials = new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration.GetValue<string>("Jwt:Key"))), SecurityAlgorithms.HmacSha256);

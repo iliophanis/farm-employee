@@ -37,7 +37,6 @@ const LoginModal = ({ showLoginModal, setShowLoginModal }: any) => {
     <Modal
       openModal={showLoginModal}
       setOpenModal={setShowLoginModal}
-      buttonName='Ολoκλήρωση Εγγραφής'
       icon={<HiArrowRightOnRectangle />}
     >
       <GoogleButton handleGoogleLogin={onGoogleLogin} />

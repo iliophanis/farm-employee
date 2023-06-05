@@ -35,12 +35,12 @@ const UnControlledInput = ({
             />
           </div>
         </div>
+        {errorName && (
+          <div className='pl-16px text-red-500'>
+            <small>{errorName.message}</small>
+          </div>
+        )}
       </div>
-      {errorName && (
-        <div className='pl-16px float-left text-red-500'>
-          <small>{errorName.message}</small>
-        </div>
-      )}
     </>
   );
 };

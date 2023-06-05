@@ -177,15 +177,18 @@ See the [open issues](https://github.com/iliophanis/farm-employee) for a full li
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
-## Farm Employee mail
 
-- Email: farmemployee3@gmail.com
+## EmailService Provider
+### Development Environment
+  - website  : https://ethereal.email/
+  - smtp : smtp.ethereal.email
+  - port : 587
+  - name : lexus.mckenzie@ethereal.email
+  - password: TYbtnjxdXaUTypy8mP
 
-- password: F@rm3mployee!23
-- name: Farm Employee
-
-- clientID: 835350653644-8e8j2lns21efkrdc3u746vflrj759v88.apps.googleusercontent.com
-- client secret: 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
-
-
-
+### Production Environment
+  - website  : https://mail.google.com/
+  - port : 465 
+  - smtp : smtp.gmail.com
+  - name : lexus.mckenzie@ethereal.email
+  - password: TYbtnjxdXaUTypy8mP

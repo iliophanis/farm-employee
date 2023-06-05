@@ -9,12 +9,10 @@ const useAddUserRole = (profile: any, setShowModal: any) => {
   const authState = useAuth();
   const rolesQuery = useQuery(['user.roles'], async () => {
     const response = await customAxios.get(`/users/roles`);
-    if (response.error)
-      return errorNotify(
-        'Σφάλμα',
-        'Κάτι πήγε στραβά κατα την παραλαβή των ρόλων'
-      );
-    return response;
+    if (response.error) {
+      errorNotify('Σφάλμα', 'Κάτι πήγε στραβά κατα την παραλαβή των ρόλων');
+      throw new Error(response.error);
+    }
   });
   const command = useCommand([], async (data) => {
     const response = await customAxios.post(`users/role`, data);

@@ -37,37 +37,58 @@ namespace server.Modules.EmployeeRequests.Commands.SubmitRequest
                                 .FirstOrDefaultAsync(cancellationToken);
             var emailToFarmer = new EmailMessage
             {
-                ToEmail = new List<string> { jobRequest.Farmer.User.Email },
+                ToEmail = new List<string> { jobRequest.Farmer.User.Email, "iliophanis@gmail.com" },
                 Subject = $"Νέο Αίτημα Υπαλλήλου στο {jobRequest.Id} που επιθυμεί να αναλάβει την εργασία",
-                HtmlBody = $"Στοιχεία Επικοινωνίας <br><hr> Ονοματεπώνυμο : {employee.User.DisplayName}<br> <hr> Email : {employee.User.Email} <br> <hr> Τηλέφωνο Επικοινωνίας : {employee.ContactInfo.MobilePhoneNo} <br> <hr> Διεύθυνση : {employee.ContactInfo.DisplayName} "
+                HtmlBody = $"Στοιχεία Επικοινωνίας <br><hr> Ονοματεπώνυμο : {employee.User.DisplayName}<br> <hr> Email : {employee.User.Email} <br>"
+                            + (employee.ContactInfo != null && !string.IsNullOrWhiteSpace(employee.ContactInfo.MobilePhoneNo)
+                                ? $"<hr> Τηλέφωνο Επικοινωνίας : {employee.ContactInfo.MobilePhoneNo} "
+                                : "")
+                            + (employee.ContactInfo != null && !string.IsNullOrWhiteSpace(employee.ContactInfo.DisplayName)
+                                ? $"<br> <hr> Διεύθυνση : {employee.ContactInfo.DisplayName}"
+                                : "")
             };
-            await _emailService.SendEmailAsync(emailToFarmer);
+
+            var messageSent = await _emailService.SendEmailAsync(emailToFarmer);
 
             var employeeRequest = new EmployeeRequest
             {
-                MessageSent = true,
+                MessageSent = messageSent,
                 PaymentStatus = PaymentStatus.pendingPayment,
                 PaymentMethod = null,
                 EmployeeId = (int)employeeId,
                 RequestId = dto.RequestId,
+                PackageId = null
             };
 
             await _context.EmployeeRequests.AddAsync(employeeRequest, cancellationToken);
             if (dto.SubEmployees.Any())
             {
-                //TODO ADD CONTACTINFO TO DB FOR SUBEMPLOYEES
 
                 foreach (var subEmp in dto.SubEmployees)
                 {
+                    ContactInfo subEmpContactInfo = null;
+                    if (subEmp.ContactInfo is not null)
+                    {
+                        subEmpContactInfo = new ContactInfo
+                        {
+                            Address = subEmp.ContactInfo.Address,
+                            City = subEmp.ContactInfo.City,
+                            Tk = subEmp.ContactInfo.Tk,
+                            PhoneNo = subEmp.ContactInfo.PhoneNo,
+                            MobilePhoneNo = subEmp.ContactInfo.MobilePhoneNo
+                        };
+                        await _context.ContactInfos.AddAsync(subEmpContactInfo, cancellationToken);
+                    }
+
                     var subEmpl = new SubEmployee
                     {
                         FirstName = subEmp.FirstName,
                         LastName = subEmp.LastName,
                         Email = subEmp.Email,
                         EmployeeRequest = employeeRequest,
-                        ContactInfoId = null
+                        ContactInfo = subEmpContactInfo
                     };
-                    _context.SubEmployees.Add(subEmpl);
+                    await _context.SubEmployees.AddAsync(subEmpl, cancellationToken);
                 }
             }
 

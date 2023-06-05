@@ -1,4 +1,5 @@
 using MailKit.Net.Smtp;
+using MailKit.Security;
 using MimeKit;
 
 namespace server.Modules.Common.Services.Email;
@@ -13,7 +14,7 @@ public class EmailService
         _emailConfiguration = configuration.GetSection("EmailConfiguration").Get<EmailConfiguration>();
     }
 
-    public async Task SendEmailAsync(EmailMessage emailMessage)
+    public async Task<bool> SendEmailAsync(EmailMessage emailMessage)
     {
         //create message
         var email = new MimeMessage();
@@ -41,19 +42,18 @@ public class EmailService
         }
         builder.HtmlBody = emailMessage.HtmlBody;
         email.Body = builder.ToMessageBody();
-        var smtp = new SmtpClient
-        {
-            ServerCertificateValidationCallback = (s, c, h, e) => true
-        };
+        using var smtp = new SmtpClient();
         try
         {
-            await smtp.ConnectAsync(_emailConfiguration.SmtpHost, _emailConfiguration.SmtpPort, false);
+            await smtp.ConnectAsync(_emailConfiguration.SmtpHost, _emailConfiguration.SmtpPort, SecureSocketOptions.StartTls); //TODO change Tls in production using google
             await smtp.AuthenticateAsync(_emailConfiguration.SmtpUserName, _emailConfiguration.SmtpPassword);
             await smtp.SendAsync(email);
+            return true;
         }
         catch (Exception exc)
         {
             _logger.LogError("Email doesn't send something goes wrong with stmp: " + exc);
+            return false;
         }
         finally
         {

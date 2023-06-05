@@ -9,7 +9,7 @@ import {
   UnControlledInput as TextInput,
   UncontrolledSelect as SelectInput,
 } from '@/shared/components/formControls';
-import Modal from '@/shared/components/modal/Modal';
+import Modal, { ModalButtonProps } from '@/shared/components/modal/Modal';
 
 type IProps = {
   profile: any;
@@ -27,13 +27,21 @@ const AddUserRole = ({ profile, shoModal, setShowModal }: IProps) => {
     handleSubmit,
     formState: { errors },
   } = useForm<IAddRole>();
+
+  const modalButtons: ModalButtonProps[] = [
+    {
+      label: 'Ολoκλήρωση Εγγραφής',
+      onClick: handleSubmit(handleAddRole),
+      isDisabled: false,
+      isLoading: loading,
+    },
+  ];
   return (
     <Modal
       openModal={shoModal}
       setOpenModal={setShowModal}
-      buttonName='Ολoκλήρωση Εγγραφής'
+      buttons={modalButtons}
       icon={<HiUserPlus />}
-      onClick={handleSubmit(handleAddRole)}
     >
       <div className='grid grid-cols-1 gap-4'>
         <SelectInput

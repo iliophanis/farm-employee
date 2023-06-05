@@ -63,7 +63,7 @@ const UncontrolledSelect = ({
           </div>
         </div>
         {errorName && (
-          <div className='pl-16px float-left text-red-500'>
+          <div className='pl-16px text-red-500'>
             <small>{errorName.message}</small>
           </div>
         )}

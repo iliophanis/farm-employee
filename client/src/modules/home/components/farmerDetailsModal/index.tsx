@@ -2,7 +2,7 @@ import React, { Dispatch, useMemo } from 'react';
 import { GiFarmer } from 'react-icons/gi';
 
 import Modal from '@/shared/components/modal/Modal';
-import { UserRequestFarmer } from '@/modules/home/components/requestMap/request.models';
+import { UserRequestFarmer } from '@/modules/home/models/IUserRequest';
 import DescriptionList from '@/shared/components/list/DescriptionList';
 import { useAuth } from '@/shared/contexts/AuthProvider';
 import StarRating from '@/shared/components/rating/StarRating';

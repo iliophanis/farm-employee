@@ -20,7 +20,7 @@ namespace server.Data.Entities
         public PaymentMethod? PaymentMethod { get; set; }
         public int EmployeeId { get; set; }
         public int RequestId { get; set; }
-        public int PackageId { get; set; }
+        public int? PackageId { get; set; }
 
         public virtual Employee Employee { get; set; }
         public virtual Package Package { get; set; }

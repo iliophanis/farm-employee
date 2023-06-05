@@ -7,7 +7,7 @@ type IRowProps = {
 
 const Row = ({ caption, value }: IRowProps) => {
   return (
-    <div className='space-y-1 p-4 md:grid md:grid-cols-2  md:space-y-0 '>
+    <div className='p-3 '>
       <div className='flex flex-row items-center text-white'>{caption}</div>
       <div className='text-gray-300'>{value}</div>
     </div>

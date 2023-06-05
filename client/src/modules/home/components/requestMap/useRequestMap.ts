@@ -5,7 +5,7 @@ import customAxios from '@/shared/api/agent';
 import { errorNotify } from '@/shared/components/toast';
 import { useCommand, useQuery } from '@/shared/hooks/useQuery';
 import { useAuth } from '@/shared/contexts/AuthProvider';
-import { UserRequest } from './request.models';
+import { UserRequest } from '../../models/IUserRequest';
 import { getQueryParams } from '../../../../shared/api/utilities';
 
 const useRequestMap = () => {
@@ -22,11 +22,13 @@ const useRequestMap = () => {
   });
   const command = useCommand([], async (id) => {
     const response = await customAxios.get(`/requests/user/${id}`, auth?.token);
-    if (response.error)
+    if (response.error) {
       errorNotify(
         'Σφάλμα',
         'Κατι πήγε στραβά κατα το άνοιγμα της αίτησης με id ' + id
       );
+      throw new Error(response.error);
+    }
     return response;
   });
 
@@ -42,11 +44,13 @@ const useRequestMap = () => {
         },
       }
     );
-    if (response.error)
+    if (response.error) {
       errorNotify(
         'Σφάλμα',
         'Κατι πήγε στραβά κατα την ανάκτηση της λίστας τοποθεσιών '
       );
+      throw new Error(response.error);
+    }
     return response;
   };
 
@@ -84,7 +88,7 @@ const useRequestMap = () => {
           'Σφάλμα',
           'Κατι πήγε στραβά κατα την παραλαβή των αιτήσεων'
         );
-        return;
+        throw new Error(response.error);
       }
       queryClient.setQueryData(['user.requests'], () => response);
     };

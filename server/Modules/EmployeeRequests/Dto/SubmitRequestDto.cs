@@ -15,5 +15,4 @@ namespace server.Modules.EmployeeRequests.Dto
     public record SubmitRequestDto(int RequestId,
                                    List<SubEmployeeDto> SubEmployees
                                    );
-    public record SubmitRequestResponseDto();
 }

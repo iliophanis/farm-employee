@@ -114,7 +114,7 @@ public class DataSeeder
         cultivations = JsonConvert.DeserializeObject<List<Cultivation>>(dataJson);
         _context.Cultivations.AddRange(cultivations);
     }
-    private record BoundingBox(string City, string Region, string PostCode, double MaxLon, double MinLon, double MaxLat, double MinLat);
+    private record BoundingBox(string City, string Region, string Prefecture, string PostCode, double MaxLon, double MinLon, double MaxLat, double MinLat);
     private void SeedLocations(int count = 1000)
     {
 
@@ -123,12 +123,12 @@ public class DataSeeder
 
         var boundingBoxList = new List<BoundingBox>()
         {
-            new BoundingBox("Λάρισα","Περιφέρεια Θεσσαλίας","42222", 22.5760706, 22.2560706, 39.7983092, 39.4783092),
-            new BoundingBox("Αθήνα","Περιφέρεια Αττικής","10431", 23.8883052, 23.5683052, 38.1439412, 37.8239412),
-            new BoundingBox("Κρήτη","Περιφέρεια Κρήτης","71409", 26.3189698, 23.5144812, 35.6957793, 34.9212109),
-            new BoundingBox("Δράμα","Περιφέρεια Ανατολικής Μακεδονίας και Θράκης","66100", 24.3068286, 23.9868286, 41.3099443,  40.9899443),
-            new BoundingBox("Θεσσαλονίκη","Περιφέρεια Κεντρικής Μακεδονίας","54626", 23.0952716, 22.7752716, 40.8003167,  40.4803167),
-            new BoundingBox("Αγρίνιο","Περιφέρεια Δυτικής Ελλάδας","30100", 21.5694206, 21.2494206, 38.7848275,  38.4648275),
+            new BoundingBox("Λάρισα","Περιφέρεια Θεσσαλίας","Δήμος Λαρισαίων","42222", 22.5760706, 22.2560706, 39.7983092, 39.4783092),
+            new BoundingBox("Αθήνα","Περιφέρεια Αττικής","10431","Δήμος Αθηναίων", 23.8883052, 23.5683052, 38.1439412, 37.8239412),
+            new BoundingBox("Κρήτη","Περιφέρεια Κρήτης","71409", "Δήμος Κρήτης",26.3189698, 23.5144812, 35.6957793, 34.9212109),
+            new BoundingBox("Δράμα","Περιφέρεια Ανατολικής Μακεδονίας και Θράκης","Δήμος Δράμας","66100", 24.3068286, 23.9868286, 41.3099443,  40.9899443),
+            new BoundingBox("Θεσσαλονίκη","Περιφέρεια Κεντρικής Μακεδονίας","54626","Δήμος Θεσσαλονίκης", 23.0952716, 22.7752716, 40.8003167,  40.4803167),
+            new BoundingBox("Αγρίνιο","Περιφέρεια Δυτικής Ελλάδας","30100","Δήμος Αγρινίου", 21.5694206, 21.2494206, 38.7848275,  38.4648275),
         };
 
         var dataCount = (int)(count / boundingBoxList.Count());
@@ -142,8 +142,8 @@ public class DataSeeder
                         .RuleFor(b => b.Country, f => "Ελλάς")
                         .RuleFor(b => b.Region, f => b.Region)
                         .RuleFor(b => b.PostCode, f => b.PostCode)
-                        .RuleFor(b => b.Street, f => b.City)
-                        .RuleFor(b => b.Prefecture, f => b.City);
+                        .RuleFor(b => b.Street, f => f.Address.StreetName())
+                        .RuleFor(b => b.Prefecture, f => b.Prefecture);
             var items = locationFaker.Generate(dataCount);
             locations = locations.Union(items).ToList();
         }
