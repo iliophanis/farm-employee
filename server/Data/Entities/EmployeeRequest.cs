@@ -12,6 +12,7 @@ namespace server.Data.Entities
         {
             EmployeeRatings = new HashSet<EmployeeRating>();
             FarmerRatings = new HashSet<FarmerRating>();
+            SubEmployees = new HashSet<SubEmployee>();
         }
 
 
@@ -28,7 +29,6 @@ namespace server.Data.Entities
         public virtual ICollection<EmployeeRating> EmployeeRatings { get; set; }
         public virtual ICollection<FarmerRating> FarmerRatings { get; set; }
         public virtual ICollection<SubEmployee> SubEmployees { get; set; }
-        // public List<SubEmployee> Subemployee { get; internal set; }
     }
 
 }

@@ -1,5 +1,4 @@
 import { MapContainer, TileLayer } from 'react-leaflet';
-import 'leaflet/dist/leaflet.css';
 import styles from './map.module.scss';
 
 const Map = ({ children }: any) => {

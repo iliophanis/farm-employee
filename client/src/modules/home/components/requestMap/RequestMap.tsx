@@ -53,7 +53,7 @@ const RequestMap = () => {
 
   return (
     <>
-      <Map userRequests={userRequests}>
+      <Map>
         <div className='mt-5 flex justify-center'>
           <SearchSelect
             loadOptions={debounce(handleGetLocationOptions, 500)}
@@ -65,14 +65,16 @@ const RequestMap = () => {
           />
         </div>
 
-        {userRequests?.map((d, idx) => (
-          <Marker
-            key={d.id}
-            position={[d.location.latitude, d.location.longitude]}
-            icon={customMarker}
-            eventHandlers={{ click: () => handleOpenDetails(d.id) }}
-          ></Marker>
-        ))}
+        {userRequests &&
+          userRequests.length > 0 &&
+          userRequests?.map((d, idx) => (
+            <Marker
+              key={d.id}
+              position={[d.location.latitude, d.location.longitude]}
+              icon={customMarker}
+              eventHandlers={{ click: () => handleOpenDetails(d.id) }}
+            ></Marker>
+          ))}
       </Map>
       <LoginModal
         showLoginModal={showLoginModal}

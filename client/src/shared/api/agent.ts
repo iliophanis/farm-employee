@@ -1,3 +1,4 @@
+import { errorNotify } from '@/shared/components/toast';
 import axios, { AxiosError } from 'axios';
 
 const axiosInstance = (
@@ -16,7 +17,16 @@ const axiosInstance = (
 };
 
 const responseBody = (response: any) => response.data;
-const errorBody = (error: AxiosError) => error.response?.data;
+const errorBody = (error: AxiosError): any => {
+  if (error.message === 'Network Error' && !error.response) {
+    errorNotify(
+      'Σφάλμα',
+      'Παρουσιάστηκε σφάλμα στον διακομιστή. Επικοινωνήστε με τον διαχειριστή της εφαρμογής για την επίλυση του.'
+    );
+    return { error: error.message };
+  }
+  return error.response?.data;
+};
 const customAxios = {
   get: (url: string, token?: string, config?: any) =>
     axiosInstance(token).get(url, config).then(responseBody).catch(errorBody),

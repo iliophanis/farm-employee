@@ -37,7 +37,6 @@ namespace server.Data.Mappings
                 .HasColumnName("packageId");
 
             entity.Property(e => e.PaymentMethod)
-                .IsRequired()
                 .HasColumnType("enum('bankTransfer','paypal','ebanking')")
                 .HasColumnName("paymentMethod");
 

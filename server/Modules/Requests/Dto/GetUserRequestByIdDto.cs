@@ -14,9 +14,9 @@ public record GetUserRequestByIdFarmerDto(
     string Name,
     string Email,
     string ContactInfo,
-    decimal AvgRate,
-    decimal AvgWorkPlaceRate,
-    decimal AvgPaymentConsequenceRate
+    decimal? AvgRate,
+    decimal? AvgWorkPlaceRate,
+    decimal? AvgPaymentConsequenceRate
  );
 public record GetUserRequestByIdDto(
     int Id,

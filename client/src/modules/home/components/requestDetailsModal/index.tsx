@@ -134,6 +134,10 @@ const RequestDetailsModal = ({
       value: `${data.price}€` || '-',
     },
   ];
+  const isSubmitEnabled = useMemo(
+    () => auth?.user.isEmployee && data.actions.includes('Submit'),
+    [data, auth]
+  );
   return (
     <>
       <Modal
@@ -143,7 +147,7 @@ const RequestDetailsModal = ({
         icon={<MdOutlineAgriculture />}
       >
         <DescriptionList items={items} />
-        {subEmployees.length === 0 && showInfoAlert && (
+        {isSubmitEnabled && subEmployees.length === 0 && showInfoAlert && (
           <div
             id='alert-1'
             className='mb-4 flex rounded-lg bg-blue-50 p-4 text-blue-800 dark:bg-gray-800 dark:text-blue-400'
@@ -163,7 +167,7 @@ const RequestDetailsModal = ({
             ></IconButton>
           </div>
         )}
-        {subEmployees && subEmployees.length > 0 && (
+        {isSubmitEnabled && subEmployees && subEmployees.length > 0 && (
           <>
             <div className='p-3'>
               <div className='flex flex-row items-center text-white'>
@@ -195,19 +199,21 @@ const RequestDetailsModal = ({
             </div>
           </>
         )}
-        <div className='align-center flex flex-row justify-center'>
-          <Button
-            variant='outline'
-            leftIcon={
-              showSubEmployeeForm ? HiOutlineChevronUp : HiOutlineChevronDown
-            }
-            onClick={() => setShowSubEmployeeForm((state) => !state)}
-          >
-            Υπάλληλος
-          </Button>
-        </div>
+        {isSubmitEnabled && (
+          <div className='align-center flex flex-row justify-center'>
+            <Button
+              variant='outline'
+              leftIcon={
+                showSubEmployeeForm ? HiOutlineChevronUp : HiOutlineChevronDown
+              }
+              onClick={() => setShowSubEmployeeForm((state) => !state)}
+            >
+              Υπάλληλος
+            </Button>
+          </div>
+        )}
 
-        {showSubEmployeeForm && (
+        {isSubmitEnabled && showSubEmployeeForm && (
           <>
             <div className='border-white/1 mb-1 border-b'>
               <h2 className='text-base font-semibold leading-7 text-gray-100'>

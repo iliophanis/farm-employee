@@ -72,7 +72,7 @@ const SearchSelect = (props: any) => (
     menuPortalTarget={document.body}
     styles={{
       // Fixes the overlapping problem of the component
-      menuPortal: (base) => ({ ...base, zIndex: 9999 }),
+      menuPortal: (base) => ({ ...base, zIndex: 100 }),
       input: (base) => ({
         ...base,
         zIndex: 10000,

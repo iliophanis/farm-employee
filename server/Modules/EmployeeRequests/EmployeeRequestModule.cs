@@ -9,6 +9,7 @@ using server.Modules.EmployeeRequests.Commands.DeleteEmployeeRequest;
 using server.Modules.EmployeeRequests.Queries.GetByIdEmployeeRequest;
 using server.Modules.EmployeeRequests.Queries.GetListEmployeeRequest;
 using server.Modules.Common.Responses;
+using server.Modules.EmployeeRequests.Queries.GetAllEmployeeRequests;
 
 namespace server.Modules.Requests
 {
@@ -38,6 +39,19 @@ namespace server.Modules.Requests
             .WithName("GetListEmployeeRequestQuery")
             .WithTags("EmployeeRequest")
             .Produces<List<Request>>(200)
+            .Produces(400)
+            .Produces(401)
+            .Produces(404)
+            .Produces(500);
+
+            endpoints.MapGet(
+            BasePath + "/list",
+            [Authorize(Roles = "Employee")]
+            async ([FromQuery] int PageSize, [FromQuery] int CurrentPage, [FromQuery] string? Filter, [FromQuery] string Type, IMediator mediator, CancellationToken token)
+            => Results.Ok(await mediator.Send(new GetAllEmployeeRequestsQuery(PageSize, CurrentPage, Filter, Type), token)))
+            .WithName("GetAllEmployeeRequestsQuery")
+            .WithTags("EmployeeRequest")
+            .Produces<GetAllEmployeeRequestsResponseDto>(200)
             .Produces(400)
             .Produces(401)
             .Produces(404)

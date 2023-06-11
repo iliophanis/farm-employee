@@ -13,7 +13,7 @@ export type UserRequest = {
   actions: string[];
 };
 
-type UserRequestLocation = {
+export type UserRequestLocation = {
   longitude: number;
   latitude: number;
   displayName: string;

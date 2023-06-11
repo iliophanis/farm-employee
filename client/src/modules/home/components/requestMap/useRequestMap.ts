@@ -14,10 +14,12 @@ const useRequestMap = () => {
   const [searchLocation, setSearchLocation] = useState(null);
   const userRequestsQuery = useQuery(['user.requests'], async () => {
     const response = await customAxios.get(`/requests/user`);
-    if (response.error) {
+
+    if (response.error && response.error !== 'Network Error')
       errorNotify('Σφάλμα', 'Κατι πήγε στραβά κατα την παραλαβή των αιτήσεων');
-      return [];
-    }
+
+    if (response.error) return [];
+
     return response;
   });
   const command = useCommand([], async (id) => {
@@ -83,13 +85,15 @@ const useRequestMap = () => {
       const response = await customAxios.get(
         `/requests/user?${searchQueryParams}`
       );
-      if (response.error) {
+
+      if (response.error && response.error !== 'Network Error')
         errorNotify(
           'Σφάλμα',
           'Κατι πήγε στραβά κατα την παραλαβή των αιτήσεων'
         );
-        throw new Error(response.error);
-      }
+
+      if (response.error) return [];
+
       queryClient.setQueryData(['user.requests'], () => response);
     };
     getSearchRequests();
