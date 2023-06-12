@@ -3,9 +3,8 @@
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
-   #TODO LOGO
 
-  <h3 align="center">FARM EMPLOYEE</h3>
+   ![Logo](client/public/favicon/full_logo.png)
 
   <p align="center">
     HIRING EMPLOYEES SYSTEM FOR FARMERS 
