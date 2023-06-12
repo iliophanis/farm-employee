@@ -12,6 +12,7 @@ import { useRouter } from 'next/router';
 import IconButton from '@/shared/components/buttons/IconButton';
 import Login from '@/modules/auth/login';
 import { useAuth } from '@/shared/contexts/AuthProvider';
+import clsxm from '../../lib/clsxm';
 
 const unAuthorizedMenu = [
   { href: '/', label: 'Κεντρική', Icon: HiOutlineHome },
@@ -50,9 +51,15 @@ export default function Sidebar() {
         : unAuthorizedMenu,
     [auth, isAuthenticated]
   );
+  const buttonStyle = router.pathname === '/' ? 'sm:top-5 top-16' : 'top-5';
   return (
     <>
-      <span className='absolute top-5 right-4 z-10 cursor-pointer text-2xl text-white'>
+      <span
+        className={clsxm(
+          buttonStyle,
+          'absolute right-4 z-50 cursor-pointer text-2xl text-white'
+        )}
+      >
         <IconButton
           variant='dark'
           icon={HiBars3BottomLeft}
@@ -62,7 +69,7 @@ export default function Sidebar() {
       </span>
       {openSidebar && (
         <div
-          className='sidebar fixed right-0 top-0 bottom-0 z-10
+          className='sidebar fixed right-0 top-0 bottom-0 z-50
     h-screen w-[300px] overflow-y-auto bg-gray-900 p-3 text-center text-white text-dark shadow duration-1000'
         >
           <div className='text-xl '>
