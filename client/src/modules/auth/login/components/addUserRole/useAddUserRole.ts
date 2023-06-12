@@ -13,6 +13,7 @@ const useAddUserRole = (profile: any, setShowModal: any) => {
       errorNotify('Σφάλμα', 'Κάτι πήγε στραβά κατα την παραλαβή των ρόλων');
       throw new Error(response.error);
     }
+    return response;
   });
   const command = useCommand([], async (data) => {
     const response = await customAxios.post(`users/role`, data);
