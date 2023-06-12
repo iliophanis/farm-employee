@@ -10,6 +10,7 @@ import { useAuth } from '@/shared/contexts/AuthProvider';
 import IconButton from '@/shared/components/buttons/IconButton';
 import { HiArrowLeftOnRectangle } from 'react-icons/hi2';
 import Button from '../../../shared/components/buttons/Button';
+import { useRouter } from 'next/router';
 
 type IProps = {
   onGoogleLogin: () => void;
@@ -26,6 +27,7 @@ const Login = () => {
     setShowAddRoleModal,
   }: IProps = useLogin();
   const authState = useAuth();
+  const router = useRouter();
   if (showAddRoleModal) {
     return (
       <AddUserRole
@@ -55,7 +57,10 @@ const Login = () => {
             variant='outline'
             leftIcon={HiArrowLeftOnRectangle}
             className='inline-flex w-full justify-center border border-red-500 bg-red-500 text-gray-100 hover:bg-red-300'
-            onClick={() => authState.logout()}
+            onClick={() => {
+              authState.logout();
+              router.push('/');
+            }}
           >
             Αποσύνδεση
           </Button>

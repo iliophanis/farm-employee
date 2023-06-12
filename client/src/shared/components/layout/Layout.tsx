@@ -11,7 +11,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     <>
       <Sidebar />
       <React.Suspense fallback={<Skeleton className='w-100 h-100' />}>
-        <div className='mb-10'>{children}</div>
+        {children}
       </React.Suspense>
       <div className='flex items-center justify-center text-center'>
         <Footer />

@@ -11,25 +11,33 @@ import Button from '@/shared/components/buttons/Button';
 
 type IRequestsListProps = {
   isPersonalRequests: boolean;
+  type: string;
   data: IEmployeeRequestItem[];
   setData: Dispatch<SetStateAction<IEmployeeRequestItem[]>>;
   loading: boolean;
   userRequests: IEmployeeRequestResponse;
   handleChangePage: () => void;
+  handleDelRequest: (empReqId: number) => void;
+  handleOpenDetails: (id: number) => void;
 };
 const RequestsList = ({
   isPersonalRequests,
+  type,
   data,
   setData,
   loading,
   userRequests,
   handleChangePage,
+  handleDelRequest,
+  handleOpenDetails,
 }: IRequestsListProps) => {
   useEffect(() => {
+    console.log({ data });
     setData([]);
   }, []);
 
   useEffect(() => {
+    console.log({ data });
     if (!loading) setData((state) => state.concat(userRequests.data));
   }, [userRequests, loading]);
 
@@ -56,7 +64,7 @@ const RequestsList = ({
       next={handleChangePage}
       hasMore={loading ? false : data.length < userRequests.totalSize}
       loader={<Skeleton />}
-      className='grid grid-cols-1 gap-0 pl-10 pr-10'
+      className='mb-7 grid grid-cols-1 gap-0 pl-10 pr-10'
     >
       <>
         {data.map((d: IEmployeeRequestItem, idx) => (
@@ -99,11 +107,20 @@ const RequestsList = ({
                   </div>
                 </div>
                 <div className='flex flex-row justify-end'>
-                  <Button variant='primary' className='mr-2' size='sm'>
+                  <Button
+                    variant='primary'
+                    className='mr-2'
+                    size='sm'
+                    onClick={() => handleOpenDetails(d.requestId)}
+                  >
                     Προβολή
                   </Button>
                   {isPersonalRequests && (
-                    <Button variant='red' size='sm'>
+                    <Button
+                      variant='red'
+                      size='sm'
+                      onClick={() => handleDelRequest(d.employeeRequestId)}
+                    >
                       Διαγραφή
                     </Button>
                   )}

@@ -84,10 +84,10 @@ namespace server.Modules.Requests
             .Produces(500);
 
             endpoints.MapDelete(
-            BasePath + "",
+            BasePath + "/{id}",
             [Authorize(Roles = "Employee")]
-            async ([FromBody] DeleteEmployeeRequestDto dto, IMediator mediator, CancellationToken token)
-            => Results.Ok(await mediator.Send(new DeleteEmployeeRequestCommand(dto), token)))
+            async (int id, IMediator mediator, CancellationToken token)
+            => Results.Ok(await mediator.Send(new DeleteEmployeeRequestCommand(id), token)))
             .WithName("DeleteEmployeeRequestCommand")
             .WithTags("EmployeeRequest")
             .Produces<CommandResponse<string>>(200)

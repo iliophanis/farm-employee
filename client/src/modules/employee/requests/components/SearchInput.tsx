@@ -1,17 +1,27 @@
 import Button from '@/shared/components/buttons/Button';
 import IconButton from '@/shared/components/buttons/IconButton';
 import useEventListener from '@/shared/hooks/useEventListener';
-import React, { useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { HiOutlineSearch, HiXCircle } from 'react-icons/hi';
 
 type SearchInputProps = {
+  type: string;
   filter: string;
   handleChangeFilter: (value: string, clear?: boolean) => void;
 };
 
-const SearchInput = ({ filter, handleChangeFilter }: SearchInputProps) => {
+const SearchInput = ({
+  filter,
+  handleChangeFilter,
+  type,
+}: SearchInputProps) => {
   const searchRef = useRef<HTMLInputElement>(null);
 
+  useEffect(() => {
+    if (searchRef.current !== null) {
+      searchRef.current.value = '';
+    }
+  }, [type]);
   useEventListener('keydown', (evt: any) => {
     if (evt.keyCode !== 13) return;
     handleChangeFilter(searchRef.current?.value ?? '');

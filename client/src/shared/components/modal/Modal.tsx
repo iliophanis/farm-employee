@@ -7,6 +7,7 @@ export type ModalButtonProps = {
   isDisabled: boolean;
   isLoading: boolean;
   label: string;
+  variant?: 'primary' | 'outline' | 'ghost' | 'light' | 'dark' | 'red';
 };
 
 type IProps = {
@@ -44,7 +45,7 @@ const Modal: FunctionComponent<IProps> = ({
                 {buttons.map((btn, idx) => (
                   <Button
                     key={idx}
-                    variant='primary'
+                    variant={btn.variant ? btn.variant : 'primary'}
                     onClick={btn.onClick}
                     isLoading={btn.isLoading}
                     disabled={btn.isDisabled || btn.isLoading}

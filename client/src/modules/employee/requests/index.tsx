@@ -2,12 +2,18 @@ import SearchInput from '@/modules/employee/requests/components/SearchInput';
 import RequestsList from '@/modules/employee/requests/components/requestsList/RequestsList';
 import { IEmployeeRequestItem } from '@/modules/employee/requests/models/IEmployeeRequestList';
 import useEmployeeRequests from '@/modules/employee/requests/useEmployeeRequests';
+import RequestDetailsModal from '@/modules/home/components/requestDetailsModal';
+import { UserRequest } from '@/modules/home/models/IUserRequest';
 import Skeleton from '@/shared/components/Skeleton';
+import Breadcrumb from '@/shared/components/breadcrumb/Breadcrumb';
 import Button from '@/shared/components/buttons/Button';
+import DeleteContent from '@/shared/components/modal/DeleteContent';
+import Modal from '@/shared/components/modal/Modal';
 import { useAuth } from '@/shared/contexts/AuthProvider';
 import React, { useEffect, useState } from 'react';
 import { HiOutlineSearch } from 'react-icons/hi';
 import {
+  HiExclamationTriangle,
   HiOutlineChevronRight,
   HiOutlineHome,
   HiOutlineInformationCircle,
@@ -15,6 +21,10 @@ import {
 
 const EmployeeRequests = () => {
   const auth = useAuth();
+  const [openDelModal, setOpenDelModal] = useState(false);
+  const [selectedEmpReqId, setSelectedEmpReqId] = useState<number | null>(null);
+  const [openDetailsModal, setOpenDetailsModal] = useState(false);
+  const [modalData, setModalData] = useState<UserRequest | null>(null);
   const {
     queryParams,
     data,
@@ -24,38 +34,31 @@ const EmployeeRequests = () => {
     handleChangePage,
     handleChangeFilter,
     handleChangeType,
+    onDeleteRequest,
+    deleteLoading,
+    handleGetRequestById,
   } = useEmployeeRequests();
+
+  const handleDelRequest = (empReqId: number) => {
+    setSelectedEmpReqId(empReqId);
+    setOpenDelModal(true);
+  };
+
+  const handleOpenDetails = (id: number) => {
+    handleGetRequestById(id, setModalData, setOpenDetailsModal);
+  };
 
   if (!auth.isAuthenticated()) return <></>;
   return (
     <>
       <div className='mt-5 inline-block flex min-w-full flex-row flex-wrap items-center justify-between px-6 align-middle'>
         <div className='select-none text-gray-900'>
-          <nav
-            className='flex rounded-lg border border-gray-200 bg-gray-50 px-5 py-2 text-gray-700 dark:border-gray-700 dark:bg-gray-800'
-            aria-label='Breadcrumb'
-          >
-            <ol className='inline-flex items-center space-x-1 md:space-x-2'>
-              <li className='inline-flex items-center'>
-                <a
-                  href='#'
-                  className='inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600 dark:text-gray-400 dark:hover:text-white'
-                >
-                  <HiOutlineHome className='mr-2 h-5 w-5' />
-                  Κεντρική
-                </a>
-              </li>
-              <li aria-current='page'>
-                <div className='flex items-center'>
-                  <HiOutlineChevronRight className='h-5 w-5 text-gray-400' />
-
-                  <span className='ml-1 text-sm font-medium text-gray-500 dark:text-gray-400 md:ml-2'>
-                    Αιτήσεις
-                  </span>
-                </div>
-              </li>
-            </ol>
-          </nav>
+          <Breadcrumb
+            data={[
+              { Icon: HiOutlineHome, label: 'Κεντρική', href: '/' },
+              { label: 'Αιτήσεις' },
+            ]}
+          />
         </div>
       </div>
       <div className='mt-3 flex min-w-full flex-row flex-wrap items-center justify-between py-2 px-6  align-middle'>
@@ -84,6 +87,7 @@ const EmployeeRequests = () => {
         </div>
         <div className='mt-2 w-full sm:mt-0 md:w-5/12'>
           <SearchInput
+            type={queryParams.type}
             filter={queryParams.filter}
             handleChangeFilter={handleChangeFilter}
           />
@@ -92,13 +96,40 @@ const EmployeeRequests = () => {
       <div className='mt-2'>
         <RequestsList
           data={data}
+          type={queryParams.type}
           setData={setData}
           loading={loading}
           userRequests={userRequests}
           isPersonalRequests={queryParams.type === 'personal'}
           handleChangePage={handleChangePage}
+          handleDelRequest={handleDelRequest}
+          handleOpenDetails={handleOpenDetails}
         />
       </div>
+      <Modal
+        openModal={openDelModal}
+        setOpenModal={setOpenDelModal}
+        icon={<HiExclamationTriangle />}
+        buttons={[
+          {
+            variant: 'red',
+            label: 'Διαγραφή',
+            onClick: () => onDeleteRequest(selectedEmpReqId!, setOpenDelModal),
+            isDisabled: deleteLoading,
+            isLoading: deleteLoading, //TODO setDynamically
+          },
+        ]}
+      >
+        <DeleteContent />
+      </Modal>
+
+      {modalData && openDetailsModal && (
+        <RequestDetailsModal
+          openModal={openDetailsModal}
+          setOpenModal={setOpenDetailsModal}
+          data={modalData}
+        />
+      )}
     </>
   );
 };
