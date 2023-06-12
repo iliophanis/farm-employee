@@ -38,7 +38,7 @@ public static class GetAllEmployeeRequestsDtoExtensions
             Id: empRequest.Request.Farmer?.Id ?? 0,
             Name: empRequest.Request.Farmer?.User.DisplayName,
             Email: empRequest.Request.Farmer.User.Email,
-            ContactInfo: empRequest.Request.Farmer.ContactInfo.DisplayName,
+            ContactInfo: empRequest.Request.Farmer.ContactInfo != null ? empRequest.Request.Farmer.ContactInfo.DisplayName : "-",
             AvgRate: empRequest.Request.Farmer.AvgRate,
             AvgWorkPlaceRate: empRequest.Request.Farmer.AvgWorkPlaceRate,
             AvgPaymentConsequenceRate: empRequest.Request.Farmer.AvgPaymentConsequenceRate
@@ -68,7 +68,7 @@ public static class GetAllEmployeeRequestsDtoExtensions
             Id: empRequest.Farmer?.Id ?? 0,
             Name: empRequest.Farmer?.User.DisplayName,
             Email: empRequest.Farmer.User.Email,
-            ContactInfo: empRequest.Farmer.ContactInfo.DisplayName,
+            ContactInfo: empRequest.Farmer.ContactInfo != null ? empRequest.Farmer.ContactInfo.DisplayName : "-",
             AvgRate: empRequest.Farmer.AvgRate,
             AvgWorkPlaceRate: empRequest.Farmer.AvgWorkPlaceRate,
             AvgPaymentConsequenceRate: empRequest.Farmer.AvgPaymentConsequenceRate

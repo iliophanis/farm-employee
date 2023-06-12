@@ -12,5 +12,10 @@ namespace server.Data.Entities
 
         public virtual ContactInfo ContactInfo { get; set; }
         public virtual EmployeeRequest EmployeeRequest { get; set; }
+
+        public string DisplayName =>
+        !String.IsNullOrEmpty(FirstName) && !String.IsNullOrEmpty(LastName)
+        ? $"{FirstName} {LastName}"
+        : FirstName;
     }
 }

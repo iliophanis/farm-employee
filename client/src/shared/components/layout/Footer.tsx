@@ -13,7 +13,7 @@ const Footer = () => {
   return (
     <footer className={clsxm(className, 'text-gray-700')}>
       © {new Date().getFullYear()} By{' '}
-      <UnderlineLink href='/team' openNewTab className='text-violet-700'>
+      <UnderlineLink href='/about-us' openNewTab className='text-violet-700'>
         Team Farm Employee
       </UnderlineLink>
     </footer>

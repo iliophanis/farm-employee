@@ -52,7 +52,7 @@ public static class GetUserRequestByIdDtoExtensions
             Id: request.Farmer?.Id ?? 0,
             Name: request.Farmer?.User.DisplayName,
             Email: request.Farmer.User.Email,
-            ContactInfo: request.Farmer.ContactInfo.DisplayName,
+            ContactInfo: request.Farmer.ContactInfo != null ? request.Farmer.ContactInfo.DisplayName : "-",
             AvgRate: request.Farmer.AvgRate,
             AvgWorkPlaceRate: request.Farmer.AvgWorkPlaceRate,
             AvgPaymentConsequenceRate: request.Farmer.AvgPaymentConsequenceRate
